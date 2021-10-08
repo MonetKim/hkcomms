@@ -105,7 +105,7 @@ const RestaurantListView = React.memo(({route}) => {
       <View style={globalStyles.marginTop30}>
         {noDataAvailable ? null : (
           <LongButton
-            title={'LOAD MORE'}
+            title={'LOAD MORE^^'}
             titleFontSize={18}
             titleFontColor={allColors.black}
             titleFontWeight={'300'}
