@@ -21,16 +21,14 @@ const App = () => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
 
-  return (
-    <UserProvider>
+  return ( 
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NetworkProvider>
           <AppRootNavigation />
         </NetworkProvider>
       </PersistGate>
-    </Provider>
-    </UserProvider>
+    </Provider>    
   );
 };
  

@@ -24,7 +24,8 @@ import LogoIcon from '../../components/icons/LogoIcon/LogoIcon';
 //import EmailIcon from '../../components/icons/EmailIcon/EmailIcon';
 //Utils
 //import action from '../../redux/action';
-import  onSignin from '../../redux/action';
+ 
+import {onSignin} from '../../redux/action';
 
 import { connect } from 'react-redux'
 import globalStyles from '../../assets/styles/globalStyles';
@@ -42,12 +43,20 @@ const Tab = createMaterialTopTabNavigator();
 //const { state, onSignin, onDissmiss } = useContext(UserContext);
 /*------------------------------------------ Login Tab Content Start --------------------------------*/
 const LoginTab = (props) => {
-  //const dispatch = useDispatch();    
-  //const isLoggedIn = useSelector(state => state.isLoggedIn);
 
+  console.log(JSON.stringify(props)+'프롭');
+  const dispatch = useDispatch();    
+  //const isLoggedIn = useSelector(state => state.isLoggedIn);
+  //const {onSignin} = action.onSignin();
   //const [mobileNumber, setMobileNumber] = useState('');
   const [email,setEmail] = useState("");
   const [password, setPassword] = useState('');
+
+
+  //function FinalInputs(email,password){
+    
+  //}
+
 
   return (
     <View style={[globalStyles.flex, globalStyles.bgWhite]}>
@@ -88,7 +97,11 @@ const LoginTab = (props) => {
           titleFontWeight={'400'}
           titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
           //type={BUTTON_TYPE.SECONDARY}
-          onPress={() => props.onSignin({email,password})}
+          onPress={() => onSignin({email,password})}
+//          onPress={() => console.log({email,password})}
+ 
+          //onPress={() => alert('ㅇㅇ')}
+          
           //dispatch(action.isLoggedIn(true))        
           buttonShadow={true}
           buttonShadowOpacity={0.5}

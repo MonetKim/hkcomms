@@ -98,6 +98,12 @@ const reducer = (state = reducerInitialState, action) => {
         loginStatus: action.payload, 
       };
 
+    // case ActionType.onSignin:
+    //   return {
+    //     ...state,
+    //     token: action.payload
+    //   }
+   
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });
 

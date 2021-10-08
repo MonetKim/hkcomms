@@ -17,10 +17,9 @@ const middleware = [thunk]
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 //, applyMiddleware(logger) for dev true
-const store = __DEV__
-  ? createStore(persistedReducer)
-  : createStore(persistedReducer, reducer, applyMiddleware(...middleware));
-  
+//const store = __DEV__ ? createStore(persistedReducer, reducer, applyMiddleware(...middleware))  : createStore(persistedReducer, reducer, applyMiddleware(...middleware));
+const store =  createStore(persistedReducer,  applyMiddleware(...middleware));
+    
 const persistor = persistStore(store, null, () => {
   console.log('rehydrated');
 });
