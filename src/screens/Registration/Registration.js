@@ -4,6 +4,7 @@ import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 //Third Party
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useDispatch} from 'react-redux';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 //import { onSignup, onSignin } from '../dataStore/';
 import { Context as UserContext } from '../../redux/dataStore/userAccessContext';
@@ -22,8 +23,10 @@ import UnderlineTextIcon from '../../components/UnderlineTextIcon/UnderlineTextI
 import LogoIcon from '../../components/icons/LogoIcon/LogoIcon';
 //import EmailIcon from '../../components/icons/EmailIcon/EmailIcon';
 //Utils
-//import action from '../../redux/userRedux/action';
-import action from '../../redux/action';
+//import action from '../../redux/action';
+import  onSignin from '../../redux/action';
+
+import { connect } from 'react-redux'
 import globalStyles from '../../assets/styles/globalStyles';
 import Routes from '../../navigation/Routes';
 import styles from './style';
@@ -38,9 +41,10 @@ import {navigate} from '../../utility/NavigationService';
 const Tab = createMaterialTopTabNavigator();
 //const { state, onSignin, onDissmiss } = useContext(UserContext);
 /*------------------------------------------ Login Tab Content Start --------------------------------*/
-const LoginTab = () => {
-  const dispatch = useDispatch();  
-  const { state, onSignin, onDissmiss } = useContext(UserContext);
+const LoginTab = (props) => {
+  //const dispatch = useDispatch();    
+  //const isLoggedIn = useSelector(state => state.isLoggedIn);
+
   //const [mobileNumber, setMobileNumber] = useState('');
   const [email,setEmail] = useState("");
   const [password, setPassword] = useState('');
@@ -84,9 +88,8 @@ const LoginTab = () => {
           titleFontWeight={'400'}
           titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
           //type={BUTTON_TYPE.SECONDARY}
-          onPress={() => onSignin({ email, password})
-          //dispatch(action.isLoggedIn(true))
-          }
+          onPress={() => props.onSignin({email,password})}
+          //dispatch(action.isLoggedIn(true))        
           buttonShadow={true}
           buttonShadowOpacity={0.5}
         />
@@ -314,15 +317,15 @@ const Registration = () => {
 
 const mapStateToProps = (state) => {
   return {
-
+    //loginStatus: state.loginStatus,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //onSignin : (item) => dispatch(onSignin()),
+    onSignin: (email,password) => dispatch(onSignin(email,password)),
   }
 }
 
 
-export default Registration;
+export default connect(mapStateToProps,mapDispatchToProps)(Registration);

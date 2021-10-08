@@ -1,6 +1,6 @@
 import ActionType from './action-type';
 import {reducerInitialState} from './reducer';
-
+import API from "../API/WebService";
 // Third Party
 import {REHYDRATE} from 'redux-persist/src/constants';
 
@@ -38,24 +38,6 @@ const isLoggedIn = isLoggedIn => ({
   type: ActionType.isLoggedIn,
   data: isLoggedIn,
 });
-
-
-// const isLoggedIn = (dispatch) => async ({ email, password }) => {
-   
-//   API.post("user/login", {
-//     email,
-//     password,
-//   }) 
-//     .then((response) => {
-//       configureAPI({ token: `Bearer ${response.data}` });       
-//       console.log('여기까지 온다' + email +' 이메일 -------------' + password);
-//       dispatch(LOGIN(response.data));         
-//       //navigate("MainHome");
-//     })
-//     .catch((err) => {
-//       dispatch(ERROR(err));      
-//     });
-// };
 
 
 const logout = () => ({type: REHYDRATE, payload: reducerInitialState});
@@ -282,8 +264,59 @@ const updateInternetStatus = isConnected => ({
   data: isConnected,
 });
 
+
+const loginStatus = (comments) => {
+  return {
+      type: ActionType.loginStatus,
+      payload: comments
+  }
+} 
+ 
+// const onSignin = (email, password) => {
+//   console.log('오냐');
+//   return (dispatch) => {
+//       // dispatch(fetchCommentRequest())
+//       // fetch("http://jsonplaceholder.typicode.com/comments")
+//       //dispatch(fetchMenulistRequest())
+//       API.post("user/login",{
+//         email,
+//         password
+//       })
+//           //.then(response => response.json())
+//           .then((response) => {
+//               configureAPI({ token: `Bearer ${response.data}` });
+//               dispatch(loginStatus(response.data));
+//               console.log(JSON.stringify(response.data)+'시발 ');
+//           }) 
+//   }
+// }
+const onSignin = (dispatch) => async ({ email, password }) => {
+  console.log('오냐1');
+  API.post("user/login", {
+    email,
+    password,
+  }) 
+    .then((response) => {
+      console.log('오냐2');
+      
+      dispatch(loginStatus(response.data));       
+     // navigate("MainHome");
+    })
+    .catch((err) => {
+      dispatch({
+        //type: aType.ERROR,
+        //payload: "잘못된 비밀번호 혹은 존재하지 않은 ID입니다"+err,        
+      });
+      //alert("잘못된 비밀번호 혹은 존재하지 않은 ID입니다"); 
+ 
+    });
+};
+
+
 export default {
   addPayPalAddress,
+  onSignin,
+  loginStatus,
   addUserAddress,
   changePayPalAddresses,
   changeUserAddress,

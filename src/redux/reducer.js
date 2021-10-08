@@ -13,10 +13,12 @@ import PayPal from '../assets/images/paypalSVG.svg';
 
 //Utils
 import ActionType from './action-type';
+
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
-  authToken: null,
+  loginStatus:null,
+  authToken: null, 
   userInfo: null,
   internetConnected: false,
   showActivityLoader: false,
@@ -89,6 +91,12 @@ const reducer = (state = reducerInitialState, action) => {
   switch (action.type) {
     case ActionType.storeAuthToken:
       return Object.assign({}, state, { authToken: action.data });
+
+    case ActionType.loginStatus:
+      return {
+        ...state,
+        loginStatus: action.payload, 
+      };
 
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });

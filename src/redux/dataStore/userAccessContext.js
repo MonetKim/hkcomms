@@ -18,7 +18,8 @@ const onSignup = (dispatch) => async ({name,password,Phonenum,birth,pi_agreement
     .then((response) => {      
       configureAPI({ token: `Bearer ${response.data}` }); 
       dispatch({ type: aType.LOGIN, payload: response.data });
-     // navigate("HomeScreen");     
+     // navigate("HomeScreen"); 
+    
     })
     .catch((err) => {
       dispatch({ 

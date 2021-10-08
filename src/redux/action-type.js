@@ -1,4 +1,6 @@
 const ActionType = {
+  loginStatus : 'LOGINSTATUS',
+  onSignin : 'onSignin',
   addPayPalAddress: 'ADD_PAYPAL_ADDRESS',
   addUserAddress: 'ADD_USER_ADDRESS',
   changePayPalAddresses: 'CHANGE_PAY_PAL_ADDRESS',
