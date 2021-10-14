@@ -5,268 +5,268 @@ import API from "../API/WebService";
 // Third Party
 import {REHYDRATE} from 'redux-persist/src/constants';
 
-export const addPayPalAddress = item => ({
+ const addPayPalAddress = item => ({
   type: ActionType.addPayPalAddress,
   data: item,
 });
 
-export const addUserAddress = item => ({
+ const addUserAddress = item => ({
   type: ActionType.addUserAddress,
   data: item,
 });
 
-export const changePayPalAddresses = id => ({
+ const changePayPalAddresses = id => ({
   type: ActionType.changePayPalAddresses,
   data: id,
 });
 
-export const changeUserAddress = id => ({
+ const changeUserAddress = id => ({
   type: ActionType.changeUserAddress,
   data: id,
 });
 
-export const deleteCheckoutItem = id => ({
+ const deleteCheckoutItem = id => ({
   type: ActionType.deleteCheckoutItem,
   data: id,
 });
 
-export const hideActivityLoader = () => ({
+ const hideActivityLoader = () => ({
   type: ActionType.hideActivityLoader,
   data: false,
 });
 
-export const isLoggedIn = isLoggedIn => ({
+ const isLoggedIn = isLoggedIn => ({
   type: ActionType.isLoggedIn,
   data: isLoggedIn,
 });
 
 
-export const logout = () => ({type: REHYDRATE, payload: reducerInitialState});
+ const logout = () => ({type: REHYDRATE, payload: reducerInitialState});
 
-export const performAutoLogout = () => ({
+ const performAutoLogout = () => ({
   type: ActionType.performAutoLogout,
   data: true,
 });
 
-export const pushNewMessage = message => ({
+ const pushNewMessage = message => ({
   type: ActionType.pushNewMessage,
   data: message,
 });
 
-export const setCurrentAddress = address => ({
+ const setCurrentAddress = address => ({
   type: ActionType.setCurrentAddress,
   data: address,
 });
 
-export const setProfileTabInitialScreen = screen => ({
+ const setProfileTabInitialScreen = screen => ({
   type: ActionType.setProfileTabInitialScreen,
   data: screen,
 });
 
-export const showActivityLoader = () => ({
+ const showActivityLoader = () => ({
   type: ActionType.showActivityLoader,
   data: true,
 });
 
-export const storeAuthToken = token => ({
+ const storeAuthToken = token => ({
   type: ActionType.storeAuthToken,
   data: token,
 });
 
-export const storeBrowseList = items => ({
+ const storeBrowseList = items => ({
   type: ActionType.storeBrowseList,
   data: items,
 });
 
-export const storeCheckoutList = items => ({
+ const storeCheckoutList = items => ({
   type: ActionType.storeCheckoutList,
   data: items,
 });
 
-export const storeCouponList = items => ({
+ const storeCouponList = items => ({
   type: ActionType.storeCouponList,
   data: items,
 });
 
-export const storeDeliveryAddressData = item => ({
+ const storeDeliveryAddressData = item => ({
   type: ActionType.storeDeliveryAddressData,
   data: item,
 });
 
-export const storeDeliveryItem = item => ({
+ const storeDeliveryItem = item => ({
   type: ActionType.storeDeliveryItem,
   data: item,
 });
 
-export const storeFAQs = items => ({
+ const storeFAQs = items => ({
   type: ActionType.storeFAQs,
   data: items,
 });
 
-export const storeFavoriteList = items => ({
+ const storeFavoriteList = items => ({
   type: ActionType.storeFavoriteList,
   data: items,
 });
 
-export const storeFilterHighLightsList = items => ({
+ const storeFilterHighLightsList = items => ({
   type: ActionType.storeFilterHighLightsList,
   data: items,
 });
 
-export const storeFoodItems = items => ({
+ const storeFoodItems = items => ({
   type: ActionType.storeFoodItems,
   data: items,
 });
 
-export const storeFoodOptions = foodOptions => ({
+ const storeFoodOptions = foodOptions => ({
   type: ActionType.storeFoodOptions,
   data: foodOptions,
 });
 
-export const storeMenuList = items => ({
+ const storeMenuList = items => ({
   type: ActionType.storeMenuList,
   data: items,
 });
 
-export const storeOrderedItem = (restaurantName, items) => ({
+ const storeOrderedItem = (restaurantName, items) => ({
   type: ActionType.storeOrderedItem,
   restaurantName: restaurantName,
   itemsOrdered: items,
 });
 
-export const storeOrderHistoryList = items => ({
+ const storeOrderHistoryList = items => ({
   type: ActionType.storeOrderHistoryList,
   data: items,
 });
 
-export const storePayPalAddresses = addresses => ({
+ const storePayPalAddresses = addresses => ({
   type: ActionType.storePayPalAddresses,
   data: addresses,
 });
 
-export const storeRestaurantList = items => ({
+ const storeRestaurantList = items => ({
   type: ActionType.storeRestaurantList,
   data: items,
 });
 
-export const storeSelectedLanguage = selectedLanguage => ({
+ const storeSelectedLanguage = selectedLanguage => ({
   type: ActionType.selectedLanguage,
   data: selectedLanguage,
 });
 
-export const storeShareEarnList = items => ({
+ const storeShareEarnList = items => ({
   type: ActionType.storeShareEarnList,
   data: items,
 });
 
-export const storeSortByTitleList = items => ({
+ const storeSortByTitleList = items => ({
   type: ActionType.storeSortByTitleList,
   data: items,
 });
 
-export const storeSubItemData = items => ({
+ const storeSubItemData = items => ({
   type: ActionType.storeSubItemData,
   data: items,
 });
 
-export const storeTabMenuItems = items => ({
+ const storeTabMenuItems = items => ({
   type: ActionType.storeTabMenuItems,
   data: items,
 });
 
-export const storeTypeOfFoodList = items => ({
+ const storeTypeOfFoodList = items => ({
   type: ActionType.storeTypeOfFoodList,
   data: items,
 });
 
-export const storeUserAddress = items => ({
+ const storeUserAddress = items => ({
   type: ActionType.storeUserAddress,
   data: items,
 });
 
-export const storeUserInfo = userInfo => ({
+ const storeUserInfo = userInfo => ({
   type: ActionType.storeUserInfo,
   data: userInfo,
 });
 
-export const storeUserMessages = messages => ({
+ const storeUserMessages = messages => ({
   type: ActionType.storeMessages,
   data: messages,
 });
 
-export const storeUserReviewList = items => ({
+ const storeUserReviewList = items => ({
   type: ActionType.storeUserReviewList,
   data: items,
 });
 
-export const toggleFavoriteItem = items => ({
+ const toggleFavoriteItem = items => ({
   type: ActionType.toggleFavoriteItem,
   data: items,
 });
 
-export const toggleFilterHighLightsItem = item => ({
+ const toggleFilterHighLightsItem = item => ({
   type: ActionType.toggleFilterHighLightsItem,
   data: item,
 });
 
-export const toggleFoodOption = item => ({
+ const toggleFoodOption = item => ({
   type: ActionType.toggleFoodOption,
   data: item,
 });
 
-export const storeInvoiceData = data => ({
+ const storeInvoiceData = data => ({
   type: ActionType.storeInvoiceData,
   data: data,
 });
 
-export const toggleSortByTitleItem = item => ({
+ const toggleSortByTitleItem = item => ({
   type: ActionType.toggleSortByTitleItem,
   data: item,
 });
 
-export const toggleTabMenuItem = item => ({
+ const toggleTabMenuItem = item => ({
   type: ActionType.toggleTabMenuItem,
   data: item,
 });
 
-export const toggleTypeOfFoodItem = item => ({
+ const toggleTypeOfFoodItem = item => ({
   type: ActionType.toggleTypeOfFoodItem,
   data: item,
 });
 
-export const updateAppFirstLaunchToFalse = () => ({
+ const updateAppFirstLaunchToFalse = () => ({
   type: ActionType.updateAppFirstLaunchToFalse,
 });
 
-export const updateCounterOfInvoiceList = (id, counter) => ({
+ const updateCounterOfInvoiceList = (id, counter) => ({
   type: ActionType.updateCounterOfInvoiceList,
   data: id,
   counter: counter,
 });
 
-export const updateDeliveryItemStatus = item => ({
+ const updateDeliveryItemStatus = item => ({
   type: ActionType.updateDeliveryItemStatus,
   data: item,
 });
 
-export const updateCounterOfCheckoutList = (id, counter) => ({
+ const updateCounterOfCheckoutList = (id, counter) => ({
   type: ActionType.updateCounterOfCheckoutList,
   data: id,
   counter: counter,
 });
 
-export const updateInvoiceStatus = status => ({
+ const updateInvoiceStatus = status => ({
   type: ActionType.updateInvoiceStatus,
   data: status,
 });
 
-export const updateInternetStatus = isConnected => ({
+ const updateInternetStatus = isConnected => ({
   type: ActionType.updateInternetStatus,
   data: isConnected,
 });
 
 
-export const loginStatus = (comments) => {
+ const loginStatus = (comments) => {
   console.log("에라이 집가 "+ comments);
   return {
       type: ActionType.loginStatus,
@@ -274,7 +274,7 @@ export const loginStatus = (comments) => {
   }
 } 
   
-// export const onSignin = (email, password) => {
+//  const onSignin = (email, password) => {
 //   console.log('이메일' + email  + ' 페수워드      '  + password);
 //   return (dispatch) => {
 //       // dispatch(fetchCommentRequest())
@@ -291,7 +291,7 @@ export const loginStatus = (comments) => {
 //   }
 // }
 
-export const onSignin = (email, password) => {
+ const onSignin = (email, password) => {
   console.log('이메일' + email  + ' 페수워드      '  + password);
   return (dispatch) => {
       // dispatch(fetchCommentRequest())
@@ -304,13 +304,14 @@ export const onSignin = (email, password) => {
       )
             //.then(response => response.json())
             .then((response) => {
-              console.log('성공이에요');
+              console.log('성공이에요' + JSON.stringify(response.data));
                 configureAPI({ token: `Bearer ${response.data}` });
-                //dispatch(loginStatus(true));
-                
+                dispatch(isLoggedIn(true));
             })
             //.catch(error => console.log("오류는??      "  +JSON.stringify(error)))
-            .catch(error => {console.log('오류에요'); alert("잘못된 비밀번호 혹은 존재하지 않은 ID입니다");})
+            //.catch(error => {console.log('오류에요'); alert("잘못된 비밀번호 혹은 존재하지 않은 ID입니다");})  //동기적이라서 서버에서 응답받기전에 벌써 안된다고 답이온다.. 이부분을 비동기로
+            //바거서 서버응답 기다릴때가지 로딩으로 처리 반드시해야할것임
+            //서버에서도 응답을 바로할수잇게 오류를 넘기지말고 리턴을 다른것으로 해주는게 좋을듯
   }
 }
 
@@ -342,4 +343,61 @@ export const onSignin = (email, password) => {
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
+};
+
+
+  export default {
+  onSignin,
+  addPayPalAddress,
+  addUserAddress,
+  changePayPalAddresses,
+  changeUserAddress,
+  deleteCheckoutItem,
+  hideActivityLoader,
+  isLoggedIn,
+  logout,
+  performAutoLogout,
+  pushNewMessage,
+  setCurrentAddress,
+  setProfileTabInitialScreen,
+  showActivityLoader,
+  storeAuthToken,
+  storeBrowseList,
+  storeCheckoutList,
+  storeCouponList,
+  storeDeliveryAddressData,
+  storeDeliveryItem,
+  storeFAQs,
+  storeFavoriteList,
+  storeFilterHighLightsList,
+  storeFoodItems,
+  storeFoodOptions,
+  storeInvoiceData,
+  storeMenuList,
+  storeOrderedItem,
+  storeOrderHistoryList,
+  storePayPalAddresses,
+  storeRestaurantList,
+  storeSelectedLanguage,
+  storeShareEarnList,
+  storeSortByTitleList,
+  storeSubItemData,
+  storeTabMenuItems,
+  storeTypeOfFoodList,
+  storeUserAddress,
+  storeUserInfo,
+  storeUserMessages,
+  storeUserReviewList,
+  toggleFavoriteItem,
+  toggleFilterHighLightsItem,
+  toggleFoodOption,
+  toggleSortByTitleItem,
+  toggleTabMenuItem,
+  toggleTypeOfFoodItem,
+  updateAppFirstLaunchToFalse,
+  updateCounterOfCheckoutList,
+  updateCounterOfInvoiceList,
+  updateDeliveryItemStatus,
+  updateInternetStatus,
+  updateInvoiceStatus,
 };

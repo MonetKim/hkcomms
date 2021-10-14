@@ -25,9 +25,9 @@ import LogoIcon from '../../components/icons/LogoIcon/LogoIcon';
 //Utils
 //import action from '../../redux/action';
  
-import {loginStatus , onSignin} from '../../redux/action';
+//import {loginStatus , onSignin,isLoggedIn} from '../../redux/action';
+import Action from '../../redux/action';
 
-import { connect } from 'react-redux'
 import globalStyles from '../../assets/styles/globalStyles';
 import Routes from '../../navigation/Routes';
 import styles from './style';
@@ -98,7 +98,8 @@ const LoginTab = (props) => {
           titleFontWeight={'400'}
           titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
           //type={BUTTON_TYPE.SECONDARY}
-          onPress={() => dispatch(onSignin(email,password))}
+          onPress={() => dispatch(Action.onSignin(email,password))}
+         // onPress={() => dispatch(onSignin(email,password))}
 //          onPress={() => console.log({email,password})}
  
           //onPress={() => alert('ㅇㅇ')}
@@ -329,17 +330,7 @@ const Registration = () => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    //loginStatus: state.loginStatus,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSignin: (email,password) => dispatch(onSignin(email,password)),
-  }
-}
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Registration);
+
+export default Registration;

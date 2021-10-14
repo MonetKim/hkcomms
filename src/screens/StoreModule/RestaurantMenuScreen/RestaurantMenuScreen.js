@@ -164,7 +164,7 @@ const RestaurantMenuScreen = ({ navigation, route }) => {
               null
               :
               <LongButton
-                  title={'LOAD MORE'}
+                  title={'LOAD MORE!!'}
                   titleFontSize={18}
                   titleFontColor={allColors.white}
                   titleFontWeight={'400'}
