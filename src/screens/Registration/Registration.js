@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 
 //Third Party
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector } from 'react-redux';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 //import { onSignup, onSignin } from '../dataStore/';
@@ -25,7 +25,7 @@ import LogoIcon from '../../components/icons/LogoIcon/LogoIcon';
 //Utils
 //import action from '../../redux/action';
  
-import {onSignin} from '../../redux/action';
+import {loginStatus , onSignin} from '../../redux/action';
 
 import { connect } from 'react-redux'
 import globalStyles from '../../assets/styles/globalStyles';
@@ -46,7 +46,8 @@ const LoginTab = (props) => {
 
   console.log(JSON.stringify(props)+'프롭');
   const dispatch = useDispatch();    
-  //const isLoggedIn = useSelector(state => state.isLoggedIn);
+  
+  const testis = useSelector(state => state.testis);
   //const {onSignin} = action.onSignin();
   //const [mobileNumber, setMobileNumber] = useState('');
   const [email,setEmail] = useState("");
@@ -97,7 +98,7 @@ const LoginTab = (props) => {
           titleFontWeight={'400'}
           titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
           //type={BUTTON_TYPE.SECONDARY}
-          onPress={() => onSignin({email,password})}
+          onPress={() => dispatch(onSignin(email,password))}
 //          onPress={() => console.log({email,password})}
  
           //onPress={() => alert('ㅇㅇ')}

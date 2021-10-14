@@ -17,7 +17,7 @@ import ActionType from './action-type';
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
-  loginStatus:null,
+  testis:[],
   authToken: null, 
   userInfo: null,
   internetConnected: false,
@@ -55,6 +55,7 @@ const reducerInitialState = {
 };
 
 const reducerLogoutState = {
+  testis:[],
   authToken: null,
   showActivityLoader: false,
   autoLogout: false,
@@ -90,12 +91,14 @@ const reducerLogoutState = {
 const reducer = (state = reducerInitialState, action) => {
   switch (action.type) {
     case ActionType.storeAuthToken:
+      console.log("지금타지는곳?  ")
       return Object.assign({}, state, { authToken: action.data });
 
     case ActionType.loginStatus:
+      console.log("리듀스 갑변화는?  "+ JSON.stringify(state.isLoggedIn))
       return {
         ...state,
-        loginStatus: action.payload, 
+        isLoggedIn: action.payload, 
       };
 
     // case ActionType.onSignin:
