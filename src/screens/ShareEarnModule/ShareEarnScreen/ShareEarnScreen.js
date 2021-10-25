@@ -140,7 +140,7 @@ const ShareEarnScreen = ({navigation}) => {
     <View style={globalStyles.marginTop20}>
       {noDataAvailable ? null : (
         <LongButton
-          title={'LOAD MORE'}
+          title={'LOAD MORE****'}
           titleFontSize={18}
           titleFontColor={allColors.white}
           titleFontWeight={'400'}

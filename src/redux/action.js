@@ -335,6 +335,14 @@ const passwordFinder = (email,Phonenum) => {
       })         
     }
   };
+//-------------------------------------유저정보----------------------------------------------------------------------
+ const loginStatus = (comments) => {
+  console.log("에라이 집가 "+ comments);
+  return {
+      type: ActionType.loginStatus,
+      payload: comments
+  }
+} 
 
  const onSignin = (email, password) => {
   console.log('이메일' + email  + ' 페수워드      '  + password);
@@ -359,10 +367,98 @@ const passwordFinder = (email,Phonenum) => {
             //서버에서도 응답을 바로할수잇게 오류를 넘기지말고 리턴을 다른것으로 해주는게 좋을듯
   }
 }
+//-------------------------------------메뉴갖고오기----------------------------------------------------------------------
+const fetchMenulistSuccess = (item) => {
+  return {
+      type: ActionType.getmenuitem,
+      payload: item
+  }
+} 
 
 
+const fetchGetmenu = () => {
+  return (dispatch) => {
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      //dispatch(fetchMenulistRequest())
+      API.post("user/menu",)
+            //.then(response => response.json())
+            .then((response) => {
+                configureAPI({ token: `Bearer ${response.data}` });
+                dispatch(fetchMenulistSuccess(response.data));
+            })
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------오더갖고오기----------------------------------------------------------------------
+const fetchOrderSuccess = (item) => {
+  console.log("오더아이템 "+ JSON.stringify(item) );
+  return {
+      type: ActionType.getorderitem,
+      payload: item
+  }
+} 
 
 
+export const getOrderresults =(user_id) =>{
+  return (dispatch) => {
+      API.post("user/orderresult",{    
+        user_id, 
+      })
+            .then((response) => {
+                configureAPI({ token: `Bearer ${response.data}` });
+                dispatch(fetchOrderSuccess(response.data));
+            })
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------상세 오더갖고오기----------------------------------------------------------------------
+const fetchOrderResultDetailRequest  =() =>{
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_REQUEST
+  }
+}
+const fetchOrderResultDetailSuccess  =(item) =>{
+  
+  console.log("상세오더아이템 "+ JSON.stringify(item) );
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_SUCCESS,
+      payload :item
+  }
+}
+const fetchOrderResultDetailFailure  =() =>{
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_FAILURE
+  }
+}
+
+
+const getOrderresultsDetail =(user_id) =>{
+    return (dispatch) =>{
+        dispatch(fetchOrderResultDetailRequest())
+        API.post("/user/orderresultdetail", {    
+            user_id, 
+          })
+        .then((response) => {
+            configureAPI({ token: `Bearer ${response.data}` });
+            dispatch(fetchOrderResultDetailSuccess(response.data))
+        })
+        
+        .catch(error=> dispatch(fetchOrderResultDetailFailure(error)))
+    }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------카테고리 변경----------------------------------------------------------------------
+export const changeCategory = (item) => {
+  return {
+      type: ActionType.CHANGE_CATEGORY,
+      payload: item
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -372,6 +468,21 @@ const configureAPI = ({ token }) => {
   onSignup,
   emailCheck,
   onSignin,
+  loginStatus,
+  
+  fetchGetmenu,  
+  fetchMenulistSuccess,
+
+  fetchOrderSuccess,
+  getOrderresults,
+
+  changeCategory,
+  
+  getOrderresultsDetail,
+  fetchOrderResultDetailFailure,
+  fetchOrderResultDetailSuccess,
+  fetchOrderResultDetailRequest,
+
   addPayPalAddress,
   addUserAddress,
   changePayPalAddresses,

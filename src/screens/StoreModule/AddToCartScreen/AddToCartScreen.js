@@ -37,12 +37,14 @@ const AddToCartScreen = ({navigation, route}) => {
   const [counterValue, setCounterValue] = useState(1);
   const [totalValue, setTotalValue] = useState(0);
   const baseValue = 65.0;
+  let menudetail = route.params.menudetail
 
   //update according to counter value
   useEffect(() => {
     setTotalValue((baseValue * counterValue).toFixed(2));
   }, [counterValue]);
 
+  console.log("메뉴상세 설정 !! = " + JSON.stringify(route.params))
   //checkout screen with title
   const navigateToScreen = () => {
     if (route.params) {
@@ -74,7 +76,7 @@ const AddToCartScreen = ({navigation, route}) => {
               style={globalStyles.flex}
               source={{
                 uri:
-                  'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80',
+                menudetail.imageview,
               }}
             />
           </TouchableOpacity>
@@ -82,12 +84,12 @@ const AddToCartScreen = ({navigation, route}) => {
 
           <View style={styles.titleView}>
             {/*-Title Start--*/}
-            <Text style={styles.titleText}>{'Mac Free'}</Text>
+            <Text style={styles.titleText}>{menudetail.title}</Text>
             {/*-Title End--*/}
 
             {/*-Description Start--*/}
             <Text style={styles.titleDesc}>
-              {'White & Red Rouses bouquet in boxe. Lorem'}
+              {'메뉴설명!~~'}
             </Text>
             {/*-Description End--*/}
             <View style={styles.reviewView}>
@@ -138,7 +140,7 @@ const AddToCartScreen = ({navigation, route}) => {
             <Text style={styles.descriptionTitle}>{'What is?'}</Text>
             <Text style={styles.descriptionText}>
               {
-                'Curabitur sit amet massa nunc. Lusce iresticia magna. Fusce eget dapibus dui. Lorem ipsum curabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'
+                'hhbhbCurabitur sit amet massa nunc. Lusce iresticia magna. Fusce eget dapibus dui. Lorem ipsum curabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'
               }
             </Text>
           </View>
@@ -176,7 +178,7 @@ const AddToCartScreen = ({navigation, route}) => {
         closeModal={() => setImagePopUpShow(false)}
         showImage={isImagePopUpShow}
         imagePath={
-          'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+          menudetail.imageview
         }
       />
       {/*------ Image Popup Start -------*/}

@@ -72,6 +72,8 @@ const CheckOutScreen = ({ navigation, route }) => {
     updateItemList()
   }, [itemList])
 
+    
+
   //update the items and add up the new totals
   function updateItemList() {
     if (itemList.length > 0) {
@@ -111,7 +113,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                     }}
                 />
               }
-              description={'Curabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'}
+              description={'omoCurabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'}
               descriptionTopPadding={15}
           />
         </View>

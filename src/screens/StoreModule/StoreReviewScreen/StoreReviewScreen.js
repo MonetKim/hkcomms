@@ -121,7 +121,7 @@ const StoreReviewScreen = ({navigation}) => {
     <View style={globalStyles.marginTop30}>
       {noDataAvailable ? null : (
         <LongButton
-          title={'LOAD MORE'}
+          title={'LOAD MORE$#!@'}
           titleFontSize={18}
           titleFontColor={allColors.white}
           titleFontWeight={'400'}

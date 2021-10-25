@@ -36,7 +36,7 @@ import * as images from '../../../assets/images/map';
 import styles from './style';
 import Routes from '../../../navigation/Routes';
 import { allColors } from '../../../assets/styles/mainColors';
-import {horizontalScale, screenWidth, verticalScale} from '../../../utility/Scale';
+import { horizontalScale, screenWidth, verticalScale } from '../../../utility/Scale';
 import { navigate } from '../../../utility/NavigationService';
 import { returnDeliveryDate, returnDeliveryTime } from '../../../utility/Helper';
 
@@ -61,6 +61,10 @@ const InvoiceScreen = ({ navigation, route }) => {
     const [totalPriceWithTax, setTotalPriceWithTax] = useState(0)
     const [deliveryAddressData, setDeliveryAddressData] = useState([])
     let isCompleted = route.params.isCompleted;
+    let order_id = route.params.order_id;
+
+    const orderdetail = useSelector(state => state.orderdetail);
+
     //get the data in redux store and update
     useEffect(() => {
         storeInvoiceData()
@@ -131,11 +135,11 @@ const InvoiceScreen = ({ navigation, route }) => {
                     <Text style={styles.invoiceText}>{'30WT43GD54'}</Text>
                 </View>
                 <View style={[globalStyles.marginTop5]} >
-                    <Text style={styles.descriptionText} >{'Drive license number is needed if driver has registered a car. For bicycle it is not necessary. '}
+                    <Text style={styles.descriptionText} >{JSON.stringify(route.params)}
                         <Text style={styles.reviewText} onPress={() => navigate(Routes.ProductReviewScreen, { headerTitle: 'Restaurant Review' })} >{'Add Review'}<ChevronRightIcon /></Text>
                     </Text>
                 </View>
-                {!isCompleted && <View style={{position:'absolute',top:verticalScale(112)}}>
+                {!isCompleted && <View style={{ position: 'absolute', top: verticalScale(112) }}>
                     <DeclinedIcon />
                 </View>}
             </View>
@@ -186,7 +190,7 @@ const InvoiceScreen = ({ navigation, route }) => {
             <View style={[globalStyles.alignItemsFlexEnd, globalStyles.marginTop25]} >
                 <TouchableOpacity onPress={() => setShowMap(!showMap)} style={[globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]} >
                     {showMap ? <ActiveLocation /> : <Location />}
-                    <Text style={styles.trackingHistoryText} >{'Tracking History'}</Text>
+                    <Text style={styles.trackingHistoryText} >{'Tracking History' + order_id}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -214,31 +218,37 @@ const InvoiceScreen = ({ navigation, route }) => {
     }
 
     //render list of items that user ordered
-    const renderListRows = ({ item,index }) => {
-        return (
-            <FoodItem
-                key={'food_item_'+index}
-                title={item.title}
-                rating={item.rating}
-                description={item.description}
-                deliveryFee={'$' + item.itemPrice}
-                showImagePopup={false}
-                ratingNum={item.ratingNum}
-                topRightIconComponent={favoritedItems.indexOf(item.id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
-                onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.id))}
-                imageIconPath={item.imagePath}
-                imageIconComponent={item.imageComponent}
-                isActive={item.isActive}
-                isCounterVisible={true}
-                isAddToCartVisible={false}
-                counterStartingValue={item.itemNum}
-                isCounterDisabled={item.isCounterDisabled}
-                isRateVisible={true}
-                onCounterChange={(counter) => changeCounter(item, counter)}
-                onPressRate={() => navigate(Routes.ProductReviewScreen, { headerTitle: 'Product Review' })}
-                onPressReorder={() => navigate(Routes.AddToCartScreen)}
-            />
-        )
+    const renderListRows = ({ item }) => {
+        if (item.order_id === order_id) {
+            return (
+                <View>
+                    {
+
+                        <View style={styles.singleFood}>
+                            <View style={styles.multiMenu}>
+                                <View style={styles.imageviewst}>
+                                    <Image style={styles.OrderImages} source={{ uri: item.imageview }} />
+                                </View>
+                                <View>
+                                    <View style={styles.foodTitle}>
+                                        <Text>메뉴이름 : {item.menu_title}</Text>
+                                    </View>
+                                    <View style={styles.foodPrice}>
+                                        <View>
+                                            <Text>메뉴 가격 {item.menu_price}</Text>
+                                        </View>
+                                        <View>
+                                            <Text>메뉴 수량 {item.quantity}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+
+                    }
+                </View>
+            )
+        }
     }
 
     /*---------------------------------------- Invoice View Start -----------------------------------------*/
@@ -251,79 +261,13 @@ const InvoiceScreen = ({ navigation, route }) => {
                     //maxToRenderPerBatch={1} // Reduce number in each render batch
                     // windowSize={7} // Reduce the window size
                     showsVerticalScrollIndicator={false}
-                    data={invoiceItemList}
+                    data={orderdetail}
                     renderItem={renderListRows}
                     contentContainerStyle={[globalStyles.paddingTop10]}
-                    ItemSeparatorComponent={() => <View style={styles.gapView} />}
-                    keyExtractor={(_item, index) => 'invoice_item_id_' + _item.id} />
+                    keyExtractor={(item, index) => index.toString()} />
 
                 <View style={globalStyles.marginTop30} >
-                    {/*---------------- Delivery Information Start --------------------------*/}
-                    <View style={[globalStyles.flexDirectionRow, globalStyles.justifySpaceBetween]} >
-                        <Text style={styles.deliverTitle}  >{'Delivered To:'}</Text>
-                        <Text style={styles.deliverTitle}>{'$' + (tempInvoiceData && tempInvoiceData.deliveryFee)}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.deliverAddressText}>{tempInvoiceData && tempInvoiceData.deliveryAddress + ' ' + tempInvoiceData.deliveryCity}</Text>
-                        <TouchableOpacity onPress={() => navigate(Routes.SurrenderActScreen, { totalPrice: totalPriceWithTax.toFixed(2) })} style={[globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]} >
-                            <Text style={styles.surrenderText} >{'Surrender Act'}</Text>
-                            <Image style={styles.pdfImage} source={images.generalIcons.pdfIcon} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={globalStyles.marginTop30} >
-                        <Text style={styles.deliverTitle}  >{'Delivery Date & Time:'}</Text>
-                        <View style={globalStyles.flexDirectionRow} >
-                            <View style={[globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]} >
-                                <DateIcon />
-                                <Text style={[styles.deliverAddressText, { marginLeft: horizontalScale(5) }]}>{returnDeliveryDate(tempInvoiceData && tempInvoiceData.deliveryDate)}</Text>
-                            </View>
-                            <View style={[globalStyles.flexDirectionRow, globalStyles.marginLeft9, globalStyles.alignItemsCenter]} >
-                                <TimeIcon />
-                                <Text style={[styles.deliverAddressText, { marginLeft: horizontalScale(5) }]}> {returnDeliveryTime(tempInvoiceData && tempInvoiceData.deliveryDate)}</Text>
-                            </View>
-                        </View>
-                        <View>
 
-                        </View>
-                    </View>
-                    {/*---------------- Delivery Information End --------------------------*/}
-
-                    {/*--------------- Subtotal and Tax Information Start ---------------*/}
-                    <View style={[globalStyles.marginTop15, globalStyles.alignItemsFlexEnd]} >
-                        <View style={globalStyles.flexDirectionRow} >
-                            <Text style={styles.taxText} >{'Subtotal: '}</Text>
-                            <Text style={styles.priceText}>{'$' + totalPrice.toFixed(2)}</Text>
-                        </View>
-                        <View style={[globalStyles.flexDirectionRow, globalStyles.marginTop5]} >
-                            <Text style={styles.taxText}>{'Tax Vat'} </Text>
-                            <Text style={styles.taxText} >{tempInvoiceData && tempInvoiceData.taxValue + '%: '}</Text>
-                            <Text style={styles.priceText}>{'$' + taxPrice.toFixed(2)}</Text>
-                        </View>
-                    </View>
-                    {/*--------------- Subtotal and Tax Information End ---------------*/}
-
-                    {/*------ Divider Start -----------*/}
-                    <BorderDivider activeAreaAlignment={'right'} containerTopMargin={18} containerBottomMargin={17} activeAreaWidth={150} isActiveOnly={true} activeAreaHeight={1} activeAreaColor={isCompleted ? allColors.yellow : allColors.black}/>
-                    {/*------ Divider End -----------*/}
-
-                    {/*------ Grand Total Start -----------*/}
-                    <View style={globalStyles.alignItemsFlexEnd} >
-                        <View style={globalStyles.flexDirectionRow} >
-                            <Text style={styles.grandText} >{'Grand Total: '}</Text>
-                            <Text style={styles.grandPriceText}>{'$' + totalPriceWithTax.toFixed(2)}</Text>
-                        </View>
-                    </View>
-                    {/*------ Grand Total End -----------*/}
-
-                    {/*------ Is Confirmed Start -----------*/}
-                    {
-                        (tempInvoiceData && isCompleted) && <View style={styles.deliveredLogo} >
-                            <View style={globalStyles.alignItemsFlexEnd} >
-                                <DeliveredIcon />
-                            </View>
-                        </View>
-                    }
-                    {/*------ Is Confirmed End -----------*/}
                 </View>
             </View>
         )
@@ -344,7 +288,7 @@ const InvoiceScreen = ({ navigation, route }) => {
                         {/*------- Tracking Map Title To Toggle Map View End ------*/}
 
                         {/*------ Divider Start -----------*/}
-                        <BorderDivider activeAreaAlignment={'left'} containerTopMargin={0} containerBottomMargin={15} activeAreaWidth={79} isActiveOnly={true} activeAreaHeight={1}  activeAreaColor={isCompleted ? allColors.yellow : allColors.black} />
+                        <BorderDivider activeAreaAlignment={'left'} containerTopMargin={0} containerBottomMargin={15} activeAreaWidth={79} isActiveOnly={true} activeAreaHeight={1} activeAreaColor={isCompleted ? allColors.yellow : allColors.black} />
                         {/*------ Divider End -----------*/}
 
                         {/*-------  Map View or Invoice Information View ----*/}
@@ -357,13 +301,16 @@ const InvoiceScreen = ({ navigation, route }) => {
 }
 /*---- Default Props Start -------*/
 InvoiceScreen.defaultProps = {
-    isCompleted: true
+    isCompleted: true,
+    order_id: 0
+
 };
 /*---- Default Props End -------*/
 
 /*---- Prop Type Expectations Start -------*/
 InvoiceScreen.propTypes = {
     isCompleted: PropTypes.bool,
+    order_id: PropTypes.number,
 };
 /*---- Prop Type Expectations End -------*/
 export default InvoiceScreen;
