@@ -1,5 +1,6 @@
 const Routes = {
   //All Screens
+  Passwordfinder : 'Passwordfinder',
   AddCardDetails: 'AddCardDetails',
   AddNewPaypal: 'AddNewPaypal',
   AddToCartScreen: 'AddToCartScreen',
@@ -38,6 +39,7 @@ const Routes = {
   CartTabMenu: 'CartTabMenu',
   DiscoverTabMenu: 'DiscoverTabMenu',
   FavouriteTabMenu: 'FavouriteTabMenu',
+  
   HistoryTabMenu: 'HistoryTabMenu',
   ProfileTabMenu: 'ProfileTabMenu',
 

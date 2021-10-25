@@ -7,7 +7,6 @@ import {NetworkProvider} from './src/utility/NetworkProvider';
 import AppRootNavigation from './src/AppRootNavigation';
 import {allColors} from './src/assets/styles/mainColors';
 import {LogBox} from 'react-native';
-import {Context as UserContext , Provider as UserProvider } from './src/redux/dataStore/userAccessContext';
 
 export const PageContext = React.createContext();
 

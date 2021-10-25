@@ -4,6 +4,7 @@ import {SafeAreaView, View, ScrollView, Platform} from 'react-native';
 //Third Party
 import ActionSheet from 'react-native-action-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useDispatch,useSelector, shallowEqual  } from 'react-redux';
 
 //Components
 import GenericInputField from '../../../components/GenericInputField/GenericInputField';
@@ -39,10 +40,19 @@ import {
 import {screenHeight, screenWidth} from '../../../utility/Scale';
 
 const PersonalInformation = ({navigation}) => {
+
+  const dispatch = useDispatch();      
+
   const [mobileNumber, setMobileNumber] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
+  const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
+
+
+  console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation[0].name));
+
+  console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation));
   //Profile Picture Placeholder and Camera Icon Definition
   const ReturnCameraIcon = () => {
     return (
@@ -54,8 +64,7 @@ const PersonalInformation = ({navigation}) => {
       </View>
     );
   };
-
-  //Image Uploader Action Sheet Definition
+  //Image Uploader Action Sheet Definition    
   const btnPickImageClick = () => {
     ActionSheet.showActionSheetWithOptions(
       {
@@ -120,7 +129,7 @@ const PersonalInformation = ({navigation}) => {
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
       {/*------- Header Start -----*/}
       <Header
-        title={'Personal Information'}
+        title={'개인정보설정'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
@@ -137,9 +146,9 @@ const PersonalInformation = ({navigation}) => {
                 componentTopPadding={45}
                 imageComponent={<ReturnCameraIcon />}
                 titleTopPadding={15}
-                title={'Name, Last name'}
+                title={'안녕하세요 '+' '+loginInformation[0].name+ '' + '님'}
                 description={
-                  'Enter your new password and then click on the "Save" button below.'
+                  '오늘도 파란만잔한 하루 보내세요'
                 }
                 descriptionTopPadding={7}
                 componentBottomPadding={30}

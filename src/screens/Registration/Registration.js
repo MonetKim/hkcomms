@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text,Button, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 
 //Third Party
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {useDispatch,useSelector } from 'react-redux';
+import {useDispatch,useSelector, shallowEqual  } from 'react-redux';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 //import { onSignup, onSignin } from '../dataStore/';
-import { Context as UserContext } from '../../redux/dataStore/userAccessContext';
 //Components
 import EmailIcon from '../../components/icons/EmailIcon/EmailIcon';
+import EyeIcon from '../../components/icons/EyeIcon/EyeIcon';
 import FooterText from '../../components/FooterText/FooterText';
 import GenericInputField from '../../components/GenericInputField/GenericInputField';
 import LongButton from '../../components/LongButton/LongButton';
@@ -18,19 +18,13 @@ import PhoneNumber from '../../components/PhoneNumber/PhoneNumber';
 import TabBar from '../../components/TabBar/TabBar';
 import TitlePicture from '../../components/TitlePicture/TitlePicture';
 import UnderlineTextIcon from '../../components/UnderlineTextIcon/UnderlineTextIcon';
-
-//Publicly Available Icons that Can be Used for Commercial Purposes
 import LogoIcon from '../../components/icons/LogoIcon/LogoIcon';
-//import EmailIcon from '../../components/icons/EmailIcon/EmailIcon';
-//Utils
-//import action from '../../redux/action';
- 
-//import {loginStatus , onSignin,isLoggedIn} from '../../redux/action';
 import Action from '../../redux/action';
-
+import { isEmail, isName } from '../../utility/utils';
 import globalStyles from '../../assets/styles/globalStyles';
 import Routes from '../../navigation/Routes';
-import styles from './style';
+import styles from './style'; 
+//import Passwordfinder from '../screens/PassFinderModule/Passwordfinder';
 import {allColors} from '../../assets/styles/mainColors';
 import {
   BUTTON_TYPE,
@@ -39,24 +33,16 @@ import {
 } from '../../constants/constants';
 import {navigate} from '../../utility/NavigationService';
 
+
 const Tab = createMaterialTopTabNavigator();
 //const { state, onSignin, onDissmiss } = useContext(UserContext);
 /*------------------------------------------ Login Tab Content Start --------------------------------*/
 const LoginTab = (props) => {
 
   console.log(JSON.stringify(props)+'프롭');
-  const dispatch = useDispatch();    
-  
-  const testis = useSelector(state => state.testis);
-  //const {onSignin} = action.onSignin();
-  //const [mobileNumber, setMobileNumber] = useState('');
+  const dispatch = useDispatch();      
   const [email,setEmail] = useState("");
   const [password, setPassword] = useState('');
-
-
-  //function FinalInputs(email,password){
-    
-  //}
 
 
   return (
@@ -66,8 +52,8 @@ const LoginTab = (props) => {
       <GenericInputField
               placeholder="이메일"
               iconComponent={<EmailIcon height={15} width={11} />}
-          imageLeftPadding={20}
-          imageRightPadding={12}
+              imageLeftPadding={20}
+              imageRightPadding={12}
               //autoCapitalize={false}
               //autoCorrect={false}
               onChangeText={setEmail}
@@ -90,6 +76,7 @@ const LoginTab = (props) => {
       {/*---- Password Input End ------*/}
 
       {/*---- Login Button Start ------*/}
+      
       <View style={[globalStyles.marginTop20]}>
         <LongButton
           title={'로그인'}
@@ -99,12 +86,6 @@ const LoginTab = (props) => {
           titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
           //type={BUTTON_TYPE.SECONDARY}
           onPress={() => dispatch(Action.onSignin(email,password))}
-         // onPress={() => dispatch(onSignin(email,password))}
-//          onPress={() => console.log({email,password})}
- 
-          //onPress={() => alert('ㅇㅇ')}
-          
-          //dispatch(action.isLoggedIn(true))        
           buttonShadow={true}
           buttonShadowOpacity={0.5}
         />
@@ -118,8 +99,8 @@ const LoginTab = (props) => {
           globalStyles.alignItemsCenter,
           globalStyles.flex,
         ]}>
-        <TouchableOpacity onPress={() => alert('Forgot Password')}>
-          <Text style={styles.forgotPasswordText}>비밀번호을 잃어버리셨나요?</Text>
+        <TouchableOpacity onPress={() => navigate(Routes.Passwordfinder)}>
+          <Text style={styles.forgotPasswordText}>비밀번호를 잃어버리셨나요?</Text>
         </TouchableOpacity>
       </View>
       {/*---- Forgot Password End ------*/}
@@ -136,15 +117,26 @@ const LoginTab = (props) => {
 /*------------------------------------------ 로그인 탭 끝  --------------------------------*/
 
 /*------------------------------------------ 회원가입 시작 --------------------------------*/
-const SignUpTab = () => {
+const SignUpTab = (props) => {
+
+  const dispatch = useDispatch();      
+  
+
+  const emailCheckStatus = useSelector(state => state.isEmailCheck, shallowEqual );
+  const [nameValid, setnameValid] = useState(true);
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [name, setname] = useState("");
   const [password, setPassword] = useState('');
   const [cnfPassword, setcnfPassword] = useState('');
-  const [inviteCode, setInviteCode] = useState('');
+  //const [inviteCode, setInviteCode] = useState('');
   const [formattedNumber, setFormattedNumber] = useState('');
   const [disable, setDisable] = useState(true);
-
+  const [emailValid, setEmailValid] = useState('');
+  const [confirmValid, setconfirmValid] = useState('');
+  const [phoneValid, setphoneValid] = useState(true);
+  const [EmailStatus, setEmailStatusValid] = useState(true);
+  
   //determine if the button should be disabled or enabled according to users input
   useEffect(() => {
     if (password.trim().length > 0 && cnfPassword.trim().length > 0) {
@@ -157,6 +149,55 @@ const SignUpTab = () => {
       setDisable(true);
     }
   }, [password, cnfPassword]);
+
+  //이메일 최종 확인
+  const emailChangeHandler = (text) => {
+    if(!isEmail(text)){  
+      setEmailValid(false);     
+    } else { 
+      setEmailValid(true);
+    }    
+    setEmail(text); 
+  }
+   
+  const emailchecks = (email) =>{
+ 
+  if(email!=null && email != ''){  
+      dispatch(Action.emailCheck(email));
+      
+    } 
+  }
+
+  const onPressCheck = () => {
+    if(email !=null && email !='' && emailValid==true && password != '' && password != null && 
+    cnfPassword == password && formattedNumber != null && formattedNumber !='' && name != null && name != '') {      
+      
+      dispatch(Action.onSignup(email,formattedNumber,password,name));
+
+    } else {
+      alert('안내','정확히 입력해 주세요');
+    }
+  } 
+
+/*
+10-17 일 ToDo List
+1. 회원가입 하단 이름 넣기 
+2. DB 서버 수정 이름 포함해서
+3. (최종 화면 단)
+  - Discovery ---> 홈화면으로 대처 (광고)
+  - account 삭제 --> setting 으로 변경
+  - Favoirte 삭제 
+*/
+
+const nameChangeHandler = (text) =>{     
+  if(!isName(text)){  
+    setnameValid(false);     
+  } else { 
+    setnameValid(true);
+  }
+  setname(text);
+} 
+
 
   return (
     <View style={[globalStyles.flex, globalStyles.bgWhite]}>
@@ -173,16 +214,43 @@ const SignUpTab = () => {
         extraScrollHeight={20}>
         {/*---- Password Input Start ------*/}
         <View style={[globalStyles.marginTop10]}>
+       
           <GenericInputField
             iconComponent={<EmailIcon height={15} width={11} />}
             imageLeftPadding={20}
             imageRightPadding={12}
-            placeholder={'이메일'}
+            placeholder={'이메일'} 
             type={TEXTFIELD_TYPE.EMAIL}
             value={email}
-            onChange={text => setEmail(text)}
+            onChangeText={(text) => emailChangeHandler(text)}
           />
-        </View>
+
+        
+
+          {/*이메일 중복확인 만들기 !!!!*/} 
+          {email!='' && emailValid==true && confirmValid ==false &&
+          <Button  
+                  buttonStyle={Innerstyles.btnmove}     
+                  titleStyle={Innerstyles.buttons} title={"이메일 중복확인"}
+                  type="clear" 
+                  onPress={() =>  emailchecks(email)}                
+          />
+          }
+            <Text style={Innerstyles.innerText}>{emailCheckStatus}</Text>           
+          </View>  
+
+        <View style={[globalStyles.marginTop5]}>
+            <GenericInputField
+                iconComponent={<EyeIcon height={15} width={11} />}
+                imageLeftPadding={20}
+                imageRightPadding={12}                
+                placeholder={'닉네임'} 
+                type={TEXTFIELD_TYPE.EMAIL}
+                value={name}
+                onChangeText={(text) => nameChangeHandler(text)}
+              />                  
+        </View>  
+
         {/*---- Password Input End ------*/}
         {/*---- Phone Number Input Start ------*/}
         <View style={[globalStyles.marginTop13]}>
@@ -222,7 +290,7 @@ const SignUpTab = () => {
         </View>
         {/*---- Confirm Password Input End ------*/}
 
-        {/*---- Invitation Code Input Start ------*/}
+        {/*---- Invitation Code Input Start ------
         <View style={[globalStyles.marginTop10]}>
           <GenericInputField
             placeholder={'인증코드'}
@@ -231,6 +299,7 @@ const SignUpTab = () => {
             onChange={text => setInviteCode(text)}
           />
         </View>
+        */}
         {/*---- Invitation Code Input End ------*/}
 
         {/*---- Sign Up Button Start ------*/}
@@ -243,7 +312,7 @@ const SignUpTab = () => {
             titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
             type={disable ? BUTTON_TYPE.DISABLED : BUTTON_TYPE.SECONDARY}
             onPress={() =>
-              navigate(Routes.OTPVerification, {mobileNumber: formattedNumber})
+              onPressCheck()
             }
             buttonShadow={!disable}
             buttonShadowOpacity={0.5}
@@ -265,7 +334,7 @@ const SignUpTab = () => {
             </Text>
             <UnderlineTextIcon
               fontSize={13}
-              onPress={() => navigate('LOGIN')}
+              onPress={() => navigate('로그인')} 
               style={{marginTop: -2, marginLeft: 7}}
               isUnderlined={true}
               title={'로그인하러가기'}
@@ -330,6 +399,19 @@ const Registration = () => {
   );
 };
 
+const Innerstyles = StyleSheet.create({
+  btnmove:{
+    marginTop:0,
+    alignSelf: "flex-end",
+  },
+  buttons:{
+    fontSize: 15,
+    color: "black"
+  },
+  innerText:{
+    color: "red",
+  }
+})
 
 
 

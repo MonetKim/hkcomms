@@ -17,6 +17,10 @@ import ActionType from './action-type';
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
+  onSignup:[],
+  loginInfomations : [],
+  passwordFinder:[],
+  isEmailCheck: [],
   testis:[],
   authToken: null, 
   userInfo: null,
@@ -55,6 +59,10 @@ const reducerInitialState = {
 };
 
 const reducerLogoutState = {
+  onSignup:[],
+  loginInfomations : [],
+  passwordFinder: [],
+  isEmailCheck: [],
   testis:[],
   authToken: null,
   showActivityLoader: false,
@@ -91,21 +99,31 @@ const reducerLogoutState = {
 const reducer = (state = reducerInitialState, action) => {
   switch (action.type) {
     case ActionType.storeAuthToken:
-      console.log("지금타지는곳?  ")
+      //console.log("지금타지는곳?  ")
       return Object.assign({}, state, { authToken: action.data });
 
     case ActionType.loginStatus:
-      console.log("리듀스 갑변화는?  "+ JSON.stringify(state.isLoggedIn))
+      //console.log("리듀스 갑변화는?  "+ JSON.stringify(state.isLoggedIn))
       return {
         ...state,
         isLoggedIn: action.payload, 
       };
+      case ActionType.passwordFinder:
+        return{
+          ...state,
+          passwordFinder : action.data,
+        }
 
-    // case ActionType.onSignin:
-    //   return {
-    //     ...state,
-    //     token: action.payload
-    //   }
+    case ActionType.onSignup:
+      return {
+        ...state,
+        onSignup : action.data,
+      }
+    case ActionType.loginInfomation:
+      return {
+        ...state,
+        loginInfomation : action.data,
+      }  
    
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });
@@ -124,7 +142,12 @@ const reducer = (state = reducerInitialState, action) => {
 
     case ActionType.selectedLanguage:
       return Object.assign({}, state, { selectedLanguage: action.data });
-
+    
+    case ActionType.isEmailCheck:
+      return {
+        ...state,
+        isEmailCheck: action.data,
+      }  
     case ActionType.isLoggedIn:
       return Object.assign({}, state, { isLoggedIn: action.data });
       //return { ...state, msg:action.payload, token: action.payload };

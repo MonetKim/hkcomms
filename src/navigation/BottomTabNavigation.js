@@ -179,7 +179,8 @@ const OrderHistoryModuleStackNavigator = () => {
 const ProfileModule = createStackNavigator();
 const ProfileModuleStackNavigator = props => {
   return (
-    <ProfileModule.Navigator initialRouteName={props.subInitialRootName}>
+    <ProfileModule.Navigator initialRouteName={props.subInitialRootName}
+     >
       <ProfileModule.Screen
         name={Routes.ProfileHomeScreen}
         component={ProfileHomeScreen}
@@ -316,10 +317,10 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
       <Tab.Screen
         name={Routes.DiscoverTabMenu}
         options={{
-          tabBarLabel: 'Discovery',
+          tabBarLabel: '홈',
           activeTabBarIcon: (
-            <Image
-              source={require('../assets/placeholders/20x20.png')}
+            <Image 
+              source={require('../assets/placeholders/home.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -329,7 +330,7 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
           ),
           tabBarIcon: (
             <Image
-              source={require('../assets/placeholders/20x20.png')}
+              source={require('../assets/placeholders/home.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -343,10 +344,10 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
       <Tab.Screen
         name={Routes.HistoryTabMenu}
         options={{
-          tabBarLabel: 'History',
+          tabBarLabel: '주문 내역',
           activeTabBarIcon: (
             <Image
-              source={require('../assets/placeholders/20x20.png')}
+              source={require('../assets/placeholders/orderlist.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -356,7 +357,7 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
           ),
           tabBarIcon: (
             <Image
-              source={require('../assets/placeholders/20x20.png')}
+              source={require('../assets/placeholders/orderlist.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -367,13 +368,13 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
         }}
         component={OrderHistoryModuleStackNavigator}
       />
-      <Tab.Screen
-        name={Routes.ProfileTabMenu}
+       <Tab.Screen
+        name={Routes.CartTabMenu}
         options={{
-          tabBarLabel: 'Account',
+          tabBarLabel: '장바구니',
           activeTabBarIcon: (
             <Image
-              source={require('../assets/placeholders/20x20.png')}
+              source={require('../assets/placeholders/cart.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -383,7 +384,36 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
           ),
           tabBarIcon: (
             <Image
-              source={require('../assets/placeholders/20x20.png')}
+              source={require('../assets/placeholders/cart.png')}
+              style={{
+                height: 20,
+                width: 20,
+                borderRadius: 3,
+              }}
+            />
+          ),
+        }}
+        component={CartModuleStackNavigator}
+      />
+
+    
+      <Tab.Screen
+        name={Routes.ProfileTabMenu}
+        options={{
+          tabBarLabel: '설정',
+          activeTabBarIcon: (
+            <Image
+              source={require('../assets/placeholders/setting.png')}
+              style={{
+                height: 20,
+                width: 20,
+                borderRadius: 3,
+              }}
+            />
+          ),
+          tabBarIcon: (
+            <Image
+              source={require('../assets/placeholders/setting.png')}
               style={{
                 height: 20,
                 width: 20,
@@ -399,6 +429,7 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
           />
         )}
       </Tab.Screen>
+    {/*
       <Tab.Screen
         name={Routes.FavouriteTabMenu}
         options={{
@@ -426,33 +457,8 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
         }}
         component={FavoriteProductsModuleStackNavigator}
       />
-      <Tab.Screen
-        name={Routes.CartTabMenu}
-        options={{
-          tabBarLabel: 'Cart',
-          activeTabBarIcon: (
-            <Image
-              source={require('../assets/placeholders/20x20.png')}
-              style={{
-                height: 20,
-                width: 20,
-                borderRadius: 3,
-              }}
-            />
-          ),
-          tabBarIcon: (
-            <Image
-              source={require('../assets/placeholders/20x20.png')}
-              style={{
-                height: 20,
-                width: 20,
-                borderRadius: 3,
-              }}
-            />
-          ),
-        }}
-        component={CartModuleStackNavigator}
-      />
+      */}
+     
     </Tab.Navigator>
   );
 };

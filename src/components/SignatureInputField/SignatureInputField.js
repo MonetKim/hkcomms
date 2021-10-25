@@ -16,7 +16,7 @@ const SignatureInputField = () => {
   return (
     <View>
       <View style={styles.mainView}>
-        <Text style={styles.signatureText}>Signature</Text>
+        <Text style={styles.signatureText}>서명</Text>
         {/*--Signature Delete Start--*/}
         <TouchableOpacity onPress={() => signatureRef.current?.resetImage()}>
           <DeleteIcon />
@@ -35,7 +35,7 @@ const SignatureInputField = () => {
         />
       </View>
       {/*--Signature Container End--*/}
-      <Text style={styles.doNotText}>Do not Require</Text>
+      <Text style={styles.doNotText}>서명시 개인정보 약관에 동의됩니다.</Text>
     </View>
   );
 };

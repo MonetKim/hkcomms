@@ -35,9 +35,24 @@ import {REHYDRATE} from 'redux-persist/src/constants';
   data: false,
 });
 
+const isEmailChecks = isEmailCheck =>({
+  type: ActionType.isEmailCheck,
+  data : isEmailCheck,  
+})
+
  const isLoggedIn = isLoggedIn => ({
   type: ActionType.isLoggedIn,
   data: isLoggedIn,
+});
+
+const onSignups = onSignup => ({
+  type: ActionType.onSignup,
+  data: onSignup,
+});
+
+const passwordFinders = passwordFinder => ({
+  type : ActionType.passwordFinder,
+  data : passwordFinder,
 });
 
 
@@ -265,31 +280,61 @@ import {REHYDRATE} from 'redux-persist/src/constants';
   data: isConnected,
 });
 
+const loginInfomations = loginInfomation => ({
+  type : ActionType.loginInfomation,
+  data : loginInfomation,
+});
 
- const loginStatus = (comments) => {
-  console.log("에라이 집가 "+ comments);
-  return {
-      type: ActionType.loginStatus,
-      payload: comments
+
+
+const emailCheck = (email) => {
+  return async dispatch => { 
+    // dispatch(fetchCommentRequest())
+    // fetch("http://jsonplaceholder.typicode.com/comments")
+    //dispatch(fetchMenulistRequest())
+    API.post("user/emailcheck",{
+      email,
+    }) 
+          //.then(response => response.json())
+          .then((response) => {                       
+            dispatch(isEmailChecks(response.data));                         
+          })         
   }
-} 
+};
+
+const onSignup = (email,Phonenum,password,name) => {  
+  return async dispatch => {
+      API.post("user/signup",{
+        email,
+        Phonenum,
+        password,
+        name
+      }) 
+          //.then(response => response.json())
+      .then((response) => {                       
+          dispatch(onSignups(response.data)); 
+          dispatch(isLoggedIn(true));                
+          console.log('회원가입 성공이에요' + JSON.stringify(response.data));                   
+      })         
+    }
+  };
   
-//  const onSignin = (email, password) => {
-//   console.log('이메일' + email  + ' 페수워드      '  + password);
-//   return (dispatch) => {
-//       // dispatch(fetchCommentRequest())
-//       // fetch("http://jsonplaceholder.typicode.com/comments")
-//       //dispatch(fetchMenulistRequest())
-//       API.post("user/option",)
-//             //.then(response => response.json())
-//             .then((response) => {
-//               console.log('성공이에요');
-//                 configureAPI({ token: `Bearer ${response.data}` });
-//                 dispatch(loginStatus(response.data));
-//             })
-//             .catch(error => console.log(JSON.stringify(error)))
-//   }
-// }
+const passwordFinder = (email,Phonenum) => {  
+
+  console.log('찾는쪽'+ email  + ' ;;;;;;;;;;;;' + '휴대폰' + Phonenum);
+  return async dispatch => {
+      API.post("user/passfinder",{
+        email,
+        Phonenum,
+      })  
+      //.then(response => response.json())
+      .then((response) => {                       
+          dispatch(passwordFinders(response.data)); 
+          //dispatch(isLoggedIn(true));      
+          console.log('이메일찾기 성공이에요' + JSON.stringify(response.data));                   
+      })         
+    }
+  };
 
  const onSignin = (email, password) => {
   console.log('이메일' + email  + ' 페수워드      '  + password);
@@ -300,12 +345,12 @@ import {REHYDRATE} from 'redux-persist/src/constants';
       API.post("user/login",{
         email,
         password,
-      }
-      )
+      })
             //.then(response => response.json())
             .then((response) => {
               console.log('성공이에요' + JSON.stringify(response.data));
                 configureAPI({ token: `Bearer ${response.data}` });
+                dispatch(loginInfomations(response.data));
                 dispatch(isLoggedIn(true));
             })
             //.catch(error => console.log("오류는??      "  +JSON.stringify(error)))
@@ -316,37 +361,16 @@ import {REHYDRATE} from 'redux-persist/src/constants';
 }
 
 
-// const onSignin = (dispatch) => async ({ email, password }) => {
-//   console.log(JSON.stringify(dispatch));
-//   console.log('오냐1');
-//   API.post("user/login", {
-//     email,
-//     password,
-//   }) 
-//     .then((response) => {
-//       console.log('오냐2');
-      
-//       dispatch(loginStatus(response.data));       
-//      // navigate("MainHome");
-//     })
-//     .catch((err) => {
-//       dispatch({
-//         //type: aType.ERROR,
-//         //payload: "잘못된 비밀번호 혹은 존재하지 않은 ID입니다"+err,        
-//       });
-//       //alert("잘못된 비밀번호 혹은 존재하지 않은 ID입니다"); 
- 
-//     });
-// };
 
 
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
 };
-
-
   export default {
+  passwordFinder,
+  onSignup,
+  emailCheck,
   onSignin,
   addPayPalAddress,
   addUserAddress,

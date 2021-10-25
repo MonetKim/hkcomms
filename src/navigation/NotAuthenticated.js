@@ -16,8 +16,9 @@ import ChooseLanguage from '../screens/ChooseLanguage/ChooseLanguage';
 import CreateAccountSlideshow from '../screens/CreateAccountSlideshow/CreateAccountSlideshow';
 import OTPVerification from '../screens/OTPVerification/OTPVerification';
 import Registration from '../screens/Registration/Registration';
+import passScreen from '../screens/PassFinderModule/Passwordfinder';
 import Welcome from '../screens/Welcome/Welcome';
-
+//여기다다
 // Utility
 import globalStyles from '../assets/styles/globalStyles';
 import Routes from './Routes';
@@ -90,6 +91,15 @@ const NotAuthenticated = () => {
         options={headerWithFlagIcon}
       />
       {/* OTP Verification Screen End */}
+
+      {/* PasswordFinder Screen Starts */}
+
+        <Stack.Screen
+          name={Routes.Passwordfinder}
+          component={passScreen}
+          options={headerWithFlagIcon}        
+        />
+      {/* PasswordFinder Screen Ends */}
     </Stack.Navigator>
   );
 };
