@@ -12,7 +12,6 @@ import {scaleFontSize} from '../../utility/Scale';
 
 const LongButton = props => {
   //What should be the background color of the button
-  console.log('여기지');
   const returnBgColor = type => {
     switch (type) {
       case BUTTON_TYPE.PRIMARY:

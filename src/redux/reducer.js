@@ -18,6 +18,12 @@ import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
   testis:[],
+  menudata:[],
+  orderitem:[],
+  orderdetail:[],
+  optionitem:[],
+  category: 1,
+
   authToken: null, 
   userInfo: null,
   internetConnected: false,
@@ -56,6 +62,12 @@ const reducerInitialState = {
 
 const reducerLogoutState = {
   testis:[],
+  menudata:[],
+  orderitem:[],
+  orderdetail:[],
+  optionitem:[],
+  category: 1,
+
   authToken: null,
   showActivityLoader: false,
   autoLogout: false,
@@ -100,6 +112,44 @@ const reducer = (state = reducerInitialState, action) => {
         ...state,
         isLoggedIn: action.payload, 
       };
+//---------------------메뉴갖고오기
+case ActionType.getmenuitem:
+      return {
+        ...state,
+        menudata: action.payload, 
+      };
+//---------------------오더갖고오기
+case ActionType.getorderitem:
+      return {
+        ...state,
+        orderitem: action.payload, 
+      };      
+//------------------------------오더상세갖고오기
+case ActionType.GET_ORDERRESULTDETAIL_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+        case ActionType.GET_ORDERRESULTDETAIL_SUCCESS:
+            return {
+                ...state,
+                orderdetail: action.payload,
+                loading: false,
+            }
+        case ActionType.GET_ORDERRESULTDETAIL_FAILURE:
+            return {
+                ...state,
+                err: action.payload,
+                loading: false,
+            }
+//---------------------오더갖고오기
+case ActionType.CHANGE_CATEGORY:
+      let newCategory = state.category; //making a new array
+      newCategory = action.payload;//changing value in the new array
+      return {
+        ...state,
+        category: Number(newCategory),    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+      }    
 
     // case ActionType.onSignin:
     //   return {

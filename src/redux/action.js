@@ -265,7 +265,7 @@ import {REHYDRATE} from 'redux-persist/src/constants';
   data: isConnected,
 });
 
-
+//-------------------------------------유저정보----------------------------------------------------------------------
  const loginStatus = (comments) => {
   console.log("에라이 집가 "+ comments);
   return {
@@ -273,23 +273,6 @@ import {REHYDRATE} from 'redux-persist/src/constants';
       payload: comments
   }
 } 
-  
-//  const onSignin = (email, password) => {
-//   console.log('이메일' + email  + ' 페수워드      '  + password);
-//   return (dispatch) => {
-//       // dispatch(fetchCommentRequest())
-//       // fetch("http://jsonplaceholder.typicode.com/comments")
-//       //dispatch(fetchMenulistRequest())
-//       API.post("user/option",)
-//             //.then(response => response.json())
-//             .then((response) => {
-//               console.log('성공이에요');
-//                 configureAPI({ token: `Bearer ${response.data}` });
-//                 dispatch(loginStatus(response.data));
-//             })
-//             .catch(error => console.log(JSON.stringify(error)))
-//   }
-// }
 
  const onSignin = (email, password) => {
   console.log('이메일' + email  + ' 페수워드      '  + password);
@@ -314,32 +297,98 @@ import {REHYDRATE} from 'redux-persist/src/constants';
             //서버에서도 응답을 바로할수잇게 오류를 넘기지말고 리턴을 다른것으로 해주는게 좋을듯
   }
 }
+//-------------------------------------메뉴갖고오기----------------------------------------------------------------------
+const fetchMenulistSuccess = (item) => {
+  return {
+      type: ActionType.getmenuitem,
+      payload: item
+  }
+} 
 
 
-// const onSignin = (dispatch) => async ({ email, password }) => {
-//   console.log(JSON.stringify(dispatch));
-//   console.log('오냐1');
-//   API.post("user/login", {
-//     email,
-//     password,
-//   }) 
-//     .then((response) => {
-//       console.log('오냐2');
-      
-//       dispatch(loginStatus(response.data));       
-//      // navigate("MainHome");
-//     })
-//     .catch((err) => {
-//       dispatch({
-//         //type: aType.ERROR,
-//         //payload: "잘못된 비밀번호 혹은 존재하지 않은 ID입니다"+err,        
-//       });
-//       //alert("잘못된 비밀번호 혹은 존재하지 않은 ID입니다"); 
- 
-//     });
-// };
+const fetchGetmenu = () => {
+  return (dispatch) => {
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      //dispatch(fetchMenulistRequest())
+      API.post("user/menu",)
+            //.then(response => response.json())
+            .then((response) => {
+                configureAPI({ token: `Bearer ${response.data}` });
+                dispatch(fetchMenulistSuccess(response.data));
+            })
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------오더갖고오기----------------------------------------------------------------------
+const fetchOrderSuccess = (item) => {
+  console.log("오더아이템 "+ JSON.stringify(item) );
+  return {
+      type: ActionType.getorderitem,
+      payload: item
+  }
+} 
 
 
+export const getOrderresults =(user_id) =>{
+  return (dispatch) => {
+      API.post("user/orderresult",{    
+        user_id, 
+      })
+            .then((response) => {
+                configureAPI({ token: `Bearer ${response.data}` });
+                dispatch(fetchOrderSuccess(response.data));
+            })
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------상세 오더갖고오기----------------------------------------------------------------------
+const fetchOrderResultDetailRequest  =() =>{
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_REQUEST
+  }
+}
+const fetchOrderResultDetailSuccess  =(item) =>{
+  
+  console.log("상세오더아이템 "+ JSON.stringify(item) );
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_SUCCESS,
+      payload :item
+  }
+}
+const fetchOrderResultDetailFailure  =() =>{
+  return {
+      type: ActionType.GET_ORDERRESULTDETAIL_FAILURE
+  }
+}
+
+
+const getOrderresultsDetail =(user_id) =>{
+    return (dispatch) =>{
+        dispatch(fetchOrderResultDetailRequest())
+        API.post("/user/orderresultdetail", {    
+            user_id, 
+          })
+        .then((response) => {
+            configureAPI({ token: `Bearer ${response.data}` });
+            dispatch(fetchOrderResultDetailSuccess(response.data))
+        })
+        
+        .catch(error=> dispatch(fetchOrderResultDetailFailure(error)))
+    }
+}
+//------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------카테고리 변경----------------------------------------------------------------------
+export const changeCategory = (item) => {
+  return {
+      type: ActionType.CHANGE_CATEGORY,
+      payload: item
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -348,6 +397,21 @@ const configureAPI = ({ token }) => {
 
   export default {
   onSignin,
+  loginStatus,
+  
+  fetchGetmenu,  
+  fetchMenulistSuccess,
+
+  fetchOrderSuccess,
+  getOrderresults,
+
+  changeCategory,
+  
+  getOrderresultsDetail,
+  fetchOrderResultDetailFailure,
+  fetchOrderResultDetailSuccess,
+  fetchOrderResultDetailRequest,
+
   addPayPalAddress,
   addUserAddress,
   changePayPalAddresses,

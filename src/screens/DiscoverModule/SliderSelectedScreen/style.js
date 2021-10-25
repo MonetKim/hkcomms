@@ -24,6 +24,37 @@ const styles = StyleSheet.create({
     marginLeft: horizontalScale(5),
     alignSelf: 'center',
   },
+  navs : {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    marginBottom: 5,
+    marginTop: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  navs_link : {
+    backgroundColor : "#bdc3c7",
+    height : 40,
+    paddingHorizontal : 15,
+    paddingVertical : 8,
+    borderRadius : 30,
+    width : 110, 
+    marginRight : 5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+navs_link__active : {
+    backgroundColor : allColors.darkYellow,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  navs_link__text : {
+    color : 'white',
+    alignSelf : "center",
+    fontSize : 13,
+  },
 });
 
 export default styles;

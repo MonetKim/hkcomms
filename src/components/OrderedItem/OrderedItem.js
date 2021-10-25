@@ -26,16 +26,16 @@ const OrderedItem = props => {
       ]}>
       {/*--Order Image Start--*/}
       <View style={styles.profileView}>
-        {props.restaurantIconPath.length > 0 && (
+        {/*props.restaurantIconPath.length > 0 && (
           <CachableImage
             style={styles.imageView}
             source={{uri: props.restaurantIconPath}}
           />
-        )}
-        {props.restaurantIconPath.length === 0 &&
+        )*/}
+        {/*props.restaurantIconPath.length === 0 &&
           props.restaurantIconComponent && (
             <View>{props.restaurantIconComponent}</View>
-          )}
+          )*/}
       </View>
       {/*--Order Image End--*/}
 
@@ -51,7 +51,7 @@ const OrderedItem = props => {
               globalStyles.flexDirectionRow,
               globalStyles.alignItemsCenter,
             ]}>
-            <Text style={styles.inviteCodeTitle}>{'Invoice: '}</Text>
+            <Text style={styles.inviteCodeTitle}>{'주문번호: '}</Text>
 
             <Text style={styles.inviteCodeText}>{props.invoiceNumber}</Text>
           </View>
@@ -59,15 +59,13 @@ const OrderedItem = props => {
         {/*-Invoice Information End--*/}
 
         {/*--Description Start--*/}
-        {props.description && (
-          <Text style={styles.descriptionText}>{props.description}</Text>
-        )}
+        
         {/*--Description End--*/}
       </View>
       <View style={styles.priceView}>
         {/*-Amount Paid Start--*/}
         <Text style={styles.amountToPayText}>
-          {'$' + props.amountPaid.toFixed(2)}
+          {props.amountPaid}
         </Text>
         {/*-Amount Paid End--*/}
 
@@ -88,7 +86,7 @@ OrderedItem.defaultProps = {
   amountPaid: 0,
   date: '',
   description: '',
-  invoiceNumber: '',
+  invoiceNumber: 0,
   isCompleted: false,
   name: '',
   restaurantIconPath: '',
@@ -101,7 +99,7 @@ OrderedItem.propTypes = {
   amountPaid: PropTypes.number,
   date: PropTypes.string,
   description: PropTypes.string,
-  invoiceNumber: PropTypes.string,
+  invoiceNumber: PropTypes.number,
   isCompleted: PropTypes.bool,
   name: PropTypes.string,
   onPress: PropTypes.func,

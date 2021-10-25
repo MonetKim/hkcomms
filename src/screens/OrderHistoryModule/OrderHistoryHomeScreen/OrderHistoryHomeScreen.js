@@ -55,6 +55,18 @@ const OrderHistoryHomeScreen = ({navigation}) => {
     storeSharedData();
   }, []);
 
+  //오더 아이템 갖고오기
+  useEffect(() => {
+    dispatch(Action.getOrderresults(22));
+    console.log("지금여기 타고잇냐?22222"+JSON.stringify(orderitem));
+  }, []);
+  const orderitem = useSelector(state => state.orderitem);
+
+  //오더상세 아이템 갖고오기
+  useEffect(() => {
+    dispatch(Action.getOrderresultsDetail(22));
+  }, []);
+
   //pagination
   useEffect(() => {
     pagination(sharedList, 2, offset);
@@ -99,15 +111,16 @@ const OrderHistoryHomeScreen = ({navigation}) => {
     return (
       <OrderedItem
         key={'ordered_item' + index}
-        name={item.restaurant}
-        invoiceNumber={item.invoiceNumber}
-        description={item.description}
-        amountPaid={item.amountPaid}
-        isCompleted={item.isCompleted}
-        restaurantIconPath={item.restaurantIconPath}
-        restaurantIconComponent={item.restaurantIconComponent}
-        date={item.date}
-        onPress={() => navigate(Routes.InvoiceScreen,{isCompleted: item.isCompleted})}
+        name={item.store_name}
+        invoiceNumber={item.order_id}
+        //description={item.description}
+        amountPaid={item.total_price}
+        isCompleted={item.ischeck}
+        //restaurantIconPath={item.order_image}
+        //restaurantIconComponent={item.restaurantIconComponent}
+        date={item.orderdate}
+        onPress={() => navigate(Routes.InvoiceScreen,{isCompleted: item.ischeck, 
+                                                      order_id: item.order_id })}
       />
     );
   };
@@ -117,7 +130,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
     <View style={globalStyles.marginTop20}>
       {noDataAvailable ? null : (
         <LongButton
-          title={'LOAD MORE'}
+          title={'LOAD MORE###'}
           titleFontSize={18}
           titleFontColor={allColors.white}
           titleFontWeight={'400'}
@@ -196,7 +209,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
                 //maxToRenderPerBatch={1} // Reduce number in each render batch
                 // windowSize={7} // Reduce the window size
                 showsVerticalScrollIndicator={false}
-                data={itemList}
+                data={orderitem}
                 renderItem={renderListRows}
                 // getItemLayout={getOrderHistoryItemLayout}
                 keyExtractor={(item, index) => index.toString()}

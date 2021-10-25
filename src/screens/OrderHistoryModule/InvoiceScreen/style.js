@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet,Dimensions} from 'react-native';
 import {allColors} from '../../../assets/styles/mainColors';
 import {FONT_FAMILY} from '../../../constants/constants';
 import {
@@ -6,6 +6,8 @@ import {
   scaleFontSize,
   verticalScale,
 } from '../../../utility/Scale';
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   deliverAddressText: {
@@ -131,6 +133,185 @@ const styles = StyleSheet.create({
     color: allColors.black,
     marginLeft: horizontalScale(5),
   },
+  flex: {
+      flex: 1
+  },
+  container: {
+      flex: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      marginBottom: 0
+  },
+  headerTitle: {
+      marginBottom: 20
+  },
+  singleOrderItem: {
+      marginHorizontal: 20,
+      marginVertical: 20,
+      borderBottomWidth: 1,
+      paddingBottom: 20,
+      borderBottomColor: '#ddd',
+      width: width,
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1
+  },
+  StoreImage: {
+      width: width - 50,
+      height: height - 350,
+      //borderRadius: 50
+  },
+  OrderImages: {
+      width: 80,
+      height: 80,
+      borderRadius: 50,
+      justifyContent: 'flex-start',
+  },
+  flexstart: {
+      justifyContent: 'flex-start',
+  },
+  singleOrder: {
+      backgroundColor: '#fff',
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+      //flexDirection: 'row',
+      justifyContent: 'space-between',
+      //alignItems: 'center'
+  },
+  multiMenu: {
+      backgroundColor: '#fff',
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+  },
+  flexDirection: {
+      flexDirection: 'row',
+      marginBottom: 5
+  },
+  orderPrice: {
+      marginTop: 7
+  },
+  imageviewst: {
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  cartRightSection: {
+      flexDirection: 'row',
+      marginTop: 3,
+      justifyContent: 'space-between'
+  },
+  qualityCart: {
+      flexDirection: 'row',
+      alignItems: 'center'
+  },
+  viewOrderBtn: {
+      backgroundColor: '#fff',
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+      borderRadius: 5,
+  },
+  mainContainer: {
+      flex: 1,
+      justifyContent: 'flex-end',
+  },
+  //------------------
+  flex: {
+    flex: 1
+},
+container: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginBottom: 0
+},
+headerTitle: {
+    marginBottom: 20
+},
+singleOrderItem: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+    borderBottomColor: '#ddd',
+    width: width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1
+},
+StoreImage: {
+    width: width - 50,
+    height: height - 350,
+    //borderRadius: 50
+},
+OrderImages: {
+    width: 80,
+    height: 80,
+    borderRadius: 50,
+    justifyContent: 'flex-start',
+},
+flexstart: {
+    justifyContent: 'flex-start',
+},
+singleOrder: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    //flexDirection: 'row',
+    justifyContent: 'space-between',
+    //alignItems: 'center'
+},
+multiMenu: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+},
+flexDirection: {
+    flexDirection: 'row',
+    marginBottom: 5
+},
+orderPrice: {
+    marginTop: 7
+},
+imageviewst: {
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+cartRightSection: {
+    flexDirection: 'row',
+    marginTop: 3,
+    justifyContent: 'space-between'
+},
+qualityCart: {
+    flexDirection: 'row',
+    alignItems: 'center'
+},
+viewOrderBtn: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 5,
+},
+mainContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+}
+
+
+
 });
 
 export default styles;
+

@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 //Third Party
@@ -151,6 +152,43 @@ const TabMenuView = () => {
 };
 /* --- End Tab Menu --- */
 
+/* --- Start Tab Menu --- */
+const CategoryView = () => {
+  const dispatch = useDispatch();
+  const category = useSelector(state => state.category, [category]);
+  return (
+    <View style={styles.navs}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(1))} style={[styles.navs_link, category==1 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>AMERICANO</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(2))} style={[styles.navs_link, category==2 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>COFFEE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(3))} style={[styles.navs_link, category==3 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>NON-COFFEE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(4))} style={[styles.navs_link, category==4 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>ESPRESSO</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(5))} style={[styles.navs_link, category==5 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>BAKERY</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(6))} style={[styles.navs_link, category==6 ? styles.navs_link__active : ""]}>
+            <Text style={styles.navs_link__text}>MD</Text>
+          </TouchableOpacity>
+          </ScrollView>
+        </View>
+  );
+};
+/* --- End Tab Menu --- */
+
+
+
+
+
+
+
 /* --- Start Best Dish Menu --- */
 const ListingView = () => {
   const dispatch = useDispatch();
@@ -167,11 +205,27 @@ const ListingView = () => {
     [dispatch],
   );
   const subItems = useSelector(state => state.subItems, []);
-  const favoritedItems = useSelector(state => state.favoritedItems, [])
+  const favoritedItems = useSelector(state => state.favoritedItems, []);
+  
+ 
+  
   //update after store update
   useEffect(() => {
     storeSubItemList();
   }, []);
+
+  //매뉴 아이템 갖고오기
+  useEffect(() => {
+    dispatch(Action.fetchGetmenu());
+    console.log("지금여기 타고잇냐?");
+  }, []);
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const menudata = useSelector(state => state.menudata);
+  
+//이부분 usecallback 사용할지 정해서 잘사욧ㅇ하기
+
+
+const category = useSelector(state => state.category, [category]);
 
   //pagination for items being viewed
   useEffect(() => {
@@ -216,13 +270,13 @@ const ListingView = () => {
     <View style={globalStyles.marginTop30}>
       {noDataAvailable ? null : (
         <LongButton
-          title={'LOAD MORE'}
+          title={'LOAD MORE 999'}
           titleFontSize={18}
           titleFontColor={allColors.black}
           titleFontWeight={'300'}
           titleFontFamily={FONT_FAMILY.RobotoCondensedLight}
           type={BUTTON_TYPE.LIGHT}
-          onPress={() => setOffset(offset => offset + 1)}
+          onPress={() => console.log(JSON.stringify(isLoggedIn)+"  메뉴데이터 콘솔 찍어보기!!    "+JSON.stringify(menudata))}
         />
       )}
     </View>
@@ -250,23 +304,26 @@ const ListingView = () => {
 
   //renders rows of two items in the same row
   const renderBlockRows = ({item, index}) => {
-    return (
-      <SingleFoodItemInfo
-        key={'block_row_' + index}
-        index={index}
-        title={item.title}
-        rating={item.rating}
-        deliveryTime={item.deliveryTime}
-        description={item.description}
-        deliveryFee={'$' + item.deliveryFee}
-        showCartIcon={true}
-        isAddToCartVisible={true}
-        topRightIconComponent={favoritedItems.indexOf(item.id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
-        onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.id))}
-        addToCartOnPress={() => navigate(Routes.AddToCartScreen)}
-        imageIconPath={item.imageIconPath}
-      />
-    );
+    if(category == item.category){
+      return (
+        <SingleFoodItemInfo
+          key={'block_row_' + index}
+          index={index}
+          title={item.title}
+          //rating={item.rating}
+          //deliveryTime={item.deliveryTime}
+          //description={item.description}
+          deliveryFee={'$' + item.price}
+          showCartIcon={true}
+          isAddToCartVisible={true}
+          topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
+          onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.menu_id))}
+          addToCartOnPress={() => navigate(Routes.AddToCartScreen,{menudetail: item})}
+          imageIconPath={item.imageview}
+        />
+      );
+    }
+    return <View></View>
   };
 
   return (
@@ -364,23 +421,11 @@ const ListingView = () => {
             style={[globalStyles.horizontalGeneralPadding, globalStyles.flex]}>
             {blockView ? (
               <FlatList
-                //performance settings
-                //initialNumToRender={1} // Reduce initial render amount
-                //maxToRenderPerBatch={1} // Reduce number in each render batch
-                // windowSize={7} // Reduce the window size
-                key={'1'}
-                showsVerticalScrollIndicator={false}
-                data={itemList}
-                numColumns={2}
-                renderItem={renderBlockRows}
-                contentContainerStyle={[
-                  globalStyles.paddingTop10,
-                  globalStyles.commonScrollViewPadding,
-                ]}
-                ItemSeparatorComponent={() => <View style={{height: 27}} />}
-                keyExtractor={(item, index) => index.toString()}
-                ListFooterComponent={() => <LoadMoreButton />}
-              />
+              data={menudata}
+              numColumns={2}
+              renderItem={renderBlockRows}
+              keyExtractor={(item, index) => index.toString()}
+            />
             ) : (
               <FlatList
                 //performance settings
@@ -430,11 +475,10 @@ const SliderSelectedScreen = ({navigation, route}) => {
       {/*---- Title with top icon view End----*/}
 
       {/*----- Top Categories Menu Start-----*/}
-      <TopCategoriesMenu />
       {/*----- Top Categories Menu End-----*/}
 
       {/*----- Tab filters view start -----*/}
-      <TabMenuView />
+      <CategoryView />
       {/*----- Tab filters view end -----*/}
 
       {/*---- Food Item List View Start (see definition above) -----*/}
