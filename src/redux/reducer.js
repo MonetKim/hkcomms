@@ -155,7 +155,7 @@ case ActionType.GET_ORDERRESULTDETAIL_REQUEST:
                 err: action.payload,
                 loading: false,
             }
-//---------------------오더갖고오기
+//---------------------카테고리 바꾸기
 case ActionType.CHANGE_CATEGORY:
       let newCategory = state.category; //making a new array
       newCategory = action.payload;//changing value in the new array
@@ -163,7 +163,7 @@ case ActionType.CHANGE_CATEGORY:
         ...state,
         category: Number(newCategory),    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }    
-
+////////////////////////////////////////////////////////
     case ActionType.onSignup:
       return {
         ...state,
@@ -174,6 +174,28 @@ case ActionType.CHANGE_CATEGORY:
         ...state,
         loginInfomation : action.data,
       }  
+
+//////////////////////////////////////////////
+    //-----------------옵션 데이터갖고오기 DB
+    case ActionType.FETCH_OPTION_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ActionType.FETCH_OPTION_SUCCESS:
+      return {
+        ...state,
+        optionitem: action.payload,
+        loading: false,
+      }
+    case ActionType.FETCH_OPTION_FAILURE:
+      return {
+        ...state,
+        err: action.payload,
+        loading: false,
+      }
+///////////////////////////////////////////////
+
    
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });

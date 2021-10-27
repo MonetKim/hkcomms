@@ -451,6 +451,44 @@ const getOrderresultsDetail =(user_id) =>{
 }
 //------------------------------------------------------------------------------------------------------------------
 
+//-------------------------------------옵션 데이터갖고오기----------------------------------------------------------------------
+const fetchOptionSuccess = (comments) => {
+  return {
+      type: ActionType.FETCH_OPTION_SUCCESS,
+      payload: comments
+  }
+}
+const fetchOptionRequest = () => {
+  return {
+      type: ActionType.FETCH_OPTION_REQUEST,
+
+  }
+}
+const fetchOptionFailure = (error) => {
+  return {
+      type: ActionType.FETCH_OPTION_FAILURE,
+      payload: error
+  }
+}
+
+
+//옵션 갖고오기
+const fetchGetOption = () => {
+  return (dispatch) => {
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      dispatch(fetchOptionRequest())
+      API.post("user/option",)
+          //.then(response => response.json())
+          .then((response) => {
+              configureAPI({ token: `Bearer ${response.data}` });
+              dispatch(fetchOptionSuccess(response.data));
+          })
+          .catch(error => dispatch(fetchOptionFailure(error)))
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
 //-------------------------------------카테고리 변경----------------------------------------------------------------------
 export const changeCategory = (item) => {
   return {
@@ -482,6 +520,13 @@ const configureAPI = ({ token }) => {
   fetchOrderResultDetailFailure,
   fetchOrderResultDetailSuccess,
   fetchOrderResultDetailRequest,
+
+  fetchGetOption,
+  fetchOptionSuccess,
+  fetchOptionRequest,
+  fetchOptionFailure,
+
+
 
   addPayPalAddress,
   addUserAddress,

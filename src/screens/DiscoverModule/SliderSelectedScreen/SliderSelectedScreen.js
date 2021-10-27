@@ -219,6 +219,11 @@ const ListingView = () => {
     dispatch(Action.fetchGetmenu());
     console.log("지금여기 타고잇냐?");
   }, []);
+  useEffect(() => {
+    dispatch(Action.fetchGetOption());
+    console.log("옵션데이터 서버에서 갖고오기");
+  }, []);
+
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const menudata = useSelector(state => state.menudata);
   
