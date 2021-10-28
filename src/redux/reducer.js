@@ -26,6 +26,7 @@ const reducerInitialState = {
   orderitem:[],
   orderdetail:[],
   optionitem:[],
+  cartitem:[],
   category: 1,
 
   authToken: null, 
@@ -74,6 +75,7 @@ const reducerLogoutState = {
   orderitem:[],
   orderdetail:[],
   optionitem:[],
+  cartitem:[],
   category: 1,
 
   authToken: null,
@@ -195,7 +197,22 @@ case ActionType.CHANGE_CATEGORY:
         loading: false,
       }
 ///////////////////////////////////////////////
+////////////////////////////////////--카트에 아이템 넣기
+case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
+      return {
+        ...state,
+        cartitem: [...state.cartitem, action.payload]
+      }
 
+      case ActionType.CHANGE_CART_NUM:   //수량추가
+      const newArrayCartNum = [...state.cartitem]; //making a new array
+      newArrayCartNum[action.payload].quantity = newArrayCartNum[action.payload].quantity + action.num;//changing value in the new array
+
+      return {
+        ...state,
+        cartitem: newArrayCartNum,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+      }
+      //////////////////////////////////////
    
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });

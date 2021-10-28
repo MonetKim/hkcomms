@@ -57,6 +57,8 @@ const CheckOutScreen = ({ navigation, route }) => {
   const [taxPrice, setTaxPrice] = useState(0)
   const [totalPriceWithTax, setTotalPriceWithTax] = useState(0)
 
+
+  const cartitem = useSelector(state => state.cartitem, [])
   //after redux update, update thte screen
   useEffect(() => {
     storeCheckoutItemList()
@@ -138,19 +140,19 @@ const CheckOutScreen = ({ navigation, route }) => {
         <FoodItem
             key={'food_item_checkout'+item.id}
             title={item.title}
-            rating={item.rating}
-            description={item.description}
-            deliveryFee={'$' + item.deliveryFee}
-            ratingNum={item.review}
-            isRateVisible={false}
+            //rating={item.rating}
+            //description={item.description}
+            deliveryFee={'$' + item.price}
+            //ratingNum={item.review}
+            //isRateVisible={false}
             topRightIconComponent={<DeleteCross />}
             onTopRightIconPress={() => deleteItem(item)}
             isCounterVisible={true}
             isAddToCartVisible={false}
-            imageIconPath={item.imageIconPath}
-            counterStartingValue={item.itemPurchased}
-            onCounterChange={(counter) => changeCounter(item, counter)}
-            onItemPress={() => navigate(Routes.AddToCartScreen)}
+            imageIconPath={item.imageview}
+            counterStartingValue={item.quantity}
+            //onCounterChange={(counter) => changeCounter(item, counter)}
+            //onItemPress={() => navigate(Routes.AddToCartScreen)}
         />
     )
   }
@@ -171,7 +173,7 @@ const CheckOutScreen = ({ navigation, route }) => {
             {/*------ Divider End -----------*/}
 
             {
-              itemList.length > 0 ?
+              cartitem.length > 0 ?
                   <FlatList
                       //performance settings
                       //initialNumToRender={1} // Reduce initial render amount
@@ -179,14 +181,14 @@ const CheckOutScreen = ({ navigation, route }) => {
                       //maxToRenderPerBatch={1} // Reduce number in each render batch
                       // windowSize={7} // Reduce the window size
                       showsVerticalScrollIndicator={false}
-                      data={itemList}
+                      data={cartitem}
                       renderItem={renderFoodItemRows}
                       contentContainerStyle={[globalStyles.paddingTop20]}
                       ItemSeparatorComponent={() => <View style={styles.gapView} />}
                       keyExtractor={(_item, index) => index.toString()} />
                   : <NoInformationText />
             }
-            {itemList.length > 0 && <View>
+            {cartitem.length > 0 && <View>
               {/*------ Delivery Costs Start -----------*/}
               <View style={globalStyles.marginTop20}>
                 <View style={[globalStyles.flexDirectionRow, globalStyles.justifySpaceBetween]}>
