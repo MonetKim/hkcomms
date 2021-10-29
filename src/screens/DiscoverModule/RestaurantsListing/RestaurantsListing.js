@@ -51,10 +51,20 @@ const RestaurantListView = React.memo(({route}) => {
   const [offset, setOffset] = useState(1);
   const [noDataAvailable, setNoDataAvailable] = useState(false);
 
-  //updates after redux store update
+  
+
+  //updates after redux store update   왜 이렇게 하는지 알필요가잇어요~~
   useEffect(() => {
     storeRestaurantList();
   }, []);
+
+  useEffect(() => {
+    dispatch(Action.fetchStores());
+    console.log("스토어 서버에서 인포갖고옴");
+  }, []);
+
+  
+
 
   //get other pages
   useEffect(() => {
@@ -255,6 +265,9 @@ const RestaurantsListing = ({navigation, route}) => {
   /* ---- Start map view component ----*/
   const ShowMapView = () => {
     const currentAddress = useSelector(state => state.currentAddress);
+    const storeinfo  = useSelector(state => state.storeinfo);
+    console.log("구글맵은 "+JSON.stringify(storeinfo ));
+
     return (
       <View style={[globalStyles.flex, globalStyles.horizontalGeneralPadding]}>
         <LookingByMapScreen
@@ -272,6 +285,7 @@ const RestaurantsListing = ({navigation, route}) => {
               longitude: -71.05910008814041,
             },
           ]}
+          storeinfo = {storeinfo}
         />
       </View>
     );

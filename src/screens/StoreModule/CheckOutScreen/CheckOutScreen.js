@@ -21,6 +21,7 @@ import TitlePicture from '../../../components/TitlePicture/TitlePicture';
 import UnderlineTextIcon from '../../../components/UnderlineTextIcon/UnderlineTextIcon';
 import BorderDivider from '../../../components/BorderDivider/BorderDivider';
 import FoodItem from '../../../components/FoodItem/FoodItem';
+import CartItem from '../../../components/CartItem/CartItem';
 import LongButton from '../../../components/LongButton/LongButton';
 import NoInformationText from '../../../components/NoInformationText/NoInformationText';
 
@@ -57,6 +58,8 @@ const CheckOutScreen = ({ navigation, route }) => {
   const [taxPrice, setTaxPrice] = useState(0)
   const [totalPriceWithTax, setTotalPriceWithTax] = useState(0)
 
+  const current_store_id = useSelector(state => state.current_store_id, []);
+  const current_store_name = useSelector(state => state.current_store_name, []);
 
   const cartitem = useSelector(state => state.cartitem, [])
   //after redux update, update thte screen
@@ -115,7 +118,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                     }}
                 />
               }
-              description={'omoCurabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'}
+              description={current_store_name}
               descriptionTopPadding={15}
           />
         </View>
@@ -137,8 +140,9 @@ const CheckOutScreen = ({ navigation, route }) => {
   //render the list of food items
   const renderFoodItemRows = ({ item }) => {
     return (
-        <FoodItem
+        <CartItem
             key={'food_item_checkout'+item.id}
+            item ={item}
             title={item.title}
             //rating={item.rating}
             //description={item.description}

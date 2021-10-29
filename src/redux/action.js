@@ -489,10 +489,11 @@ const fetchGetOption = () => {
 }
 //------------------------------------------------------------------------------------------------------------------
 //----------------------카트에 아이템 추가
-const insertCart = (item) => {
+const insertCart = (item,num) => {
   return {
       type: ActionType.INSERT_CART,
-      payload: item
+      payload: item,
+      num: num,
   }
 }
 //------------------------------------------------------------------------------------------------------------------
@@ -505,15 +506,89 @@ const changeCartNum = (item, num) => {
   }
 }
 //------------------------------------------------------------------------------------------------------------------
+//----------------------임시카트 초기값
+const showMenuDetail = (item) => {
+  return {
+      type: ActionType.SHOW_MENUDETAIL,
+      payload: item
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//----------------------임시카트 설정하기
+const setDataCart = (item, kind) => {
+  return {
+      type: ActionType.SET_DATACART,
+      payload: item,
+      kind: kind,
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
 
 //-------------------------------------카테고리 변경----------------------------------------------------------------------
-export const changeCategory = (item) => {
+const changeCategory = (item) => {
   return {
       type: ActionType.CHANGE_CATEGORY,
       payload: item
   }
 }
 //------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------스토어 인포 변경----------------------------------------------------------------------
+
+const fetchStoreSuccess = (stores) =>{
+  return {
+      type: ActionType.FETCH_STORES_SUCCESS,
+      payload: stores
+  }
+}
+const fetchStoreRequest = () =>{
+  return {
+      type: ActionType.FETCH_STORES_REQUEST,
+
+  }
+}
+const fetchStoreFailure = (error) =>{
+  return {
+      type: ActionType.FETCH_STORES_FAILURE,
+      payload: error
+  }
+}
+
+
+const fetchStores =() =>{
+  return (dispatch) =>{
+      
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      dispatch(fetchStoreRequest())
+      API.post("/user/store", {
+          
+        })
+      //.then(response => response.json())
+      .then((response) => {
+          configureAPI({ token: `Bearer ${response.data}` });
+          dispatch(fetchStoreSuccess(response.data))
+      })
+      
+      .catch(error=> dispatch(fetchStoreFailure(error)))
+  }
+}
+//스토어 선택 저장
+const SetCurStoreInfo = (item ,name) =>{ 
+  return {
+      type: ActionType.SET_CUR_STORE_INFO,
+      payload: item,
+      name: name,
+  }
+}
+
+//------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -534,8 +609,18 @@ const configureAPI = ({ token }) => {
   insertCart,
   changeCartNum,
 
+  showMenuDetail,
+  setDataCart,
+
   changeCategory,
   
+  fetchStoreSuccess,
+  fetchStoreRequest,
+  fetchStoreFailure,
+  fetchStores,
+  SetCurStoreInfo,
+
+
   getOrderresultsDetail,
   fetchOrderResultDetailFailure,
   fetchOrderResultDetailSuccess,

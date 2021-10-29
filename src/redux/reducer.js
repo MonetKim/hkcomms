@@ -17,19 +17,23 @@ import ActionType from './action-type';
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
-  onSignup:[],
-  loginInfomations : [],
-  passwordFinder:[],
+  onSignup: [],
+  loginInfomations: [],
+  passwordFinder: [],
   isEmailCheck: [],
-  testis:[],
-  menudata:[],
-  orderitem:[],
-  orderdetail:[],
-  optionitem:[],
-  cartitem:[],
+  testis: [],
+  menudata: [],
+  orderitem: [],
+  orderdetail: [],
+  optionitem: [],
+  cartitem: [],
+  carttemp: [],
   category: 1,
+  storeinfo: [],
+  current_store_id: null,
+  current_store_name: null,
 
-  authToken: null, 
+  authToken: null,
   userInfo: null,
   internetConnected: false,
   showActivityLoader: false,
@@ -66,17 +70,21 @@ const reducerInitialState = {
 };
 
 const reducerLogoutState = {
-  onSignup:[],
-  loginInfomations : [],
+  onSignup: [],
+  loginInfomations: [],
   passwordFinder: [],
   isEmailCheck: [],
-  testis:[],
-  menudata:[],
-  orderitem:[],
-  orderdetail:[],
-  optionitem:[],
-  cartitem:[],
+  testis: [],
+  menudata: [],
+  orderitem: [],
+  orderdetail: [],
+  optionitem: [],
+  cartitem: [],
+  carttemp: [],
   category: 1,
+  storeinfo: [],
+  current_store_id: null,
+  current_store_name: null,
 
   authToken: null,
   showActivityLoader: false,
@@ -120,64 +128,64 @@ const reducer = (state = reducerInitialState, action) => {
       //console.log("리듀스 갑변화는?  "+ JSON.stringify(state.isLoggedIn))
       return {
         ...state,
-        isLoggedIn: action.payload, 
+        isLoggedIn: action.payload,
       };
-      case ActionType.passwordFinder:
-        return{
-          ...state,
-          passwordFinder : action.data,
-        }
-//---------------------메뉴갖고오기
-case ActionType.getmenuitem:
+    case ActionType.passwordFinder:
       return {
         ...state,
-        menudata: action.payload, 
-      };
-//---------------------오더갖고오기
-case ActionType.getorderitem:
+        passwordFinder: action.data,
+      }
+    //---------------------메뉴갖고오기
+    case ActionType.getmenuitem:
       return {
         ...state,
-        orderitem: action.payload, 
-      };      
-//------------------------------오더상세갖고오기
-case ActionType.GET_ORDERRESULTDETAIL_REQUEST:
-            return {
-                ...state,
-                loading: true,
-            }
-        case ActionType.GET_ORDERRESULTDETAIL_SUCCESS:
-            return {
-                ...state,
-                orderdetail: action.payload,
-                loading: false,
-            }
-        case ActionType.GET_ORDERRESULTDETAIL_FAILURE:
-            return {
-                ...state,
-                err: action.payload,
-                loading: false,
-            }
-//---------------------카테고리 바꾸기
-case ActionType.CHANGE_CATEGORY:
+        menudata: action.payload,
+      };
+    //---------------------오더갖고오기
+    case ActionType.getorderitem:
+      return {
+        ...state,
+        orderitem: action.payload,
+      };
+    //------------------------------오더상세갖고오기
+    case ActionType.GET_ORDERRESULTDETAIL_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ActionType.GET_ORDERRESULTDETAIL_SUCCESS:
+      return {
+        ...state,
+        orderdetail: action.payload,
+        loading: false,
+      }
+    case ActionType.GET_ORDERRESULTDETAIL_FAILURE:
+      return {
+        ...state,
+        err: action.payload,
+        loading: false,
+      }
+    //---------------------카테고리 바꾸기
+    case ActionType.CHANGE_CATEGORY:
       let newCategory = state.category; //making a new array
       newCategory = action.payload;//changing value in the new array
       return {
         ...state,
         category: Number(newCategory),    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
-      }    
-////////////////////////////////////////////////////////
+      }
+    ////////////////////////////////////////////////////////
     case ActionType.onSignup:
       return {
         ...state,
-        onSignup : action.data,
+        onSignup: action.data,
       }
     case ActionType.loginInfomation:
       return {
         ...state,
-        loginInfomation : action.data,
-      }  
+        loginInfomation: action.data,
+      }
 
-//////////////////////////////////////////////
+    //////////////////////////////////////////////
     //-----------------옵션 데이터갖고오기 DB
     case ActionType.FETCH_OPTION_REQUEST:
       return {
@@ -196,15 +204,83 @@ case ActionType.CHANGE_CATEGORY:
         err: action.payload,
         loading: false,
       }
-///////////////////////////////////////////////
-////////////////////////////////////--카트에 아이템 넣기
-case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
+    ///////////////////////////////////////////////
+    //임시 카트 초기값설정
+    case ActionType.SHOW_MENUDETAIL:   //상세메뉴보여주기
+      const indexshow = state.menudata.findIndex(menudata => menudata.menu_id == action.payload); //인덱스찾기..
+      const newArrayshow = [...state.menudata]; //making a new array
+      console.log("리덕스 카트 임시는 " + JSON.stringify(indexshow))
       return {
         ...state,
-        cartitem: [...state.cartitem, action.payload]
+        carttemp: newArrayshow[indexshow],    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }
 
-      case ActionType.CHANGE_CART_NUM:   //수량추가
+    //------------------------------------
+    //----------------------------------------------
+    case ActionType.SET_DATACART:   //임시 카트 아이템
+      //const indexDataCart = state.dataMenudetail.findIndex(dataMenudetail => dataMenudetail.menu_id == action.find_menu); //인덱스찾기..
+      //const newArrayDataCart = [state.dataMenudetail]; 왜 이건안돼고 밑에것만되는거지?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      console.log("누가먼저 되니1@@");
+      const newArrayDataCart = JSON.parse(JSON.stringify(state.carttemp)); //making a new array
+      if (action.kind == 1) {
+        newArrayDataCart.quantity = action.payload;
+      }
+      else if (action.kind == 2) {
+        newArrayDataCart.menu_option_insert = action.payload;
+      }
+      else if (action.kind == 3) {
+        newArrayDataCart.taste_option_insert = action.payload;
+      }
+      else if (action.kind == 4) {
+        newArrayDataCart.add_option_insert = action.payload;
+      }
+
+      return {
+        ...state,
+        carttemp: newArrayDataCart,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+      }
+
+    //-----------------------------------------
+
+    //////////--------------------------------스토어인포
+    case ActionType.FETCH_STORES_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ActionType.FETCH_STORES_SUCCESS:
+      return {
+        ...state,
+        storeinfo: action.payload,
+        loading: false,
+      }
+    case ActionType.FETCH_STORES_FAILURE:
+      return {
+        ...state,
+        err: action.payload,
+        loading: false,
+      }
+      case ActionType.SET_CUR_STORE_INFO:
+            var storeinfo_id = Number(action.payload);
+            var storeinfo_name = action.name;
+            return {
+                ...state,
+                current_store_id: storeinfo_id,
+                current_store_name: storeinfo_name,
+            }
+    ////////----------------------------------------
+
+    ////////////////////////////////////--카트에 아이템 넣기
+    case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
+      console.log("누가먼저 되니2##");
+      // const newArrayCartItem = JSON.parse(JSON.stringify(state.carttemp));
+      // newArrayCartItem.quantity = action.num;
+      return {
+        ...state,
+        cartitem: [...state.cartitem, state.carttemp]
+      }
+
+    case ActionType.CHANGE_CART_NUM:   //수량추가
       const newArrayCartNum = [...state.cartitem]; //making a new array
       newArrayCartNum[action.payload].quantity = newArrayCartNum[action.payload].quantity + action.num;//changing value in the new array
 
@@ -212,8 +288,8 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
         ...state,
         cartitem: newArrayCartNum,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }
-      //////////////////////////////////////
-   
+    //////////////////////////////////////
+
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });
 
@@ -231,15 +307,15 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
 
     case ActionType.selectedLanguage:
       return Object.assign({}, state, { selectedLanguage: action.data });
-    
+
     case ActionType.isEmailCheck:
       return {
         ...state,
         isEmailCheck: action.data,
-      }  
+      }
     case ActionType.isLoggedIn:
       return Object.assign({}, state, { isLoggedIn: action.data });
-      //return { ...state, msg:action.payload, token: action.payload };
+    //return { ...state, msg:action.payload, token: action.payload };
     case ActionType.updateAppFirstLaunchToFalse:
       return Object.assign({}, state, { appFirstLaunch: false });
 
@@ -269,8 +345,8 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
     case ActionType.addPayPalAddress:
       let newAddress = action.data;
       let payPalAddresses = state.payPalAddresses;
-      payPalAddresses.map((value)=>value.isActive = false)
-      payPalAddresses.push( {
+      payPalAddresses.map((value) => value.isActive = false)
+      payPalAddresses.push({
         "id": 0,
         "isActive": true,
         "email": newAddress,
@@ -339,7 +415,7 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
       let userAddressValue = action.data;
       let addressList = state.userAddressList;
       addressList.push({
-        id: addressList[addressList.length-1].id + 1,
+        id: addressList[addressList.length - 1].id + 1,
         isActive: false,
         address: userAddressValue,
         component: <Text style={globalStyles.commonAddressText} >{userAddressValue}</Text>
@@ -419,10 +495,10 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
     case ActionType.toggleFavoriteItem:
       let favoritedItems = state.favoritedItems;
       let index = favoritedItems.indexOf(action.data);
-      if(index < 0) {
+      if (index < 0) {
         favoritedItems.push(action.data);
       }
-      else{
+      else {
         favoritedItems.splice(index, 1);
       }
       return Object.assign({}, state, { favoritedItems: favoritedItems });
@@ -466,8 +542,8 @@ case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
 
     case ActionType.updateDeliveryItemStatus:
       let object = {};
-      object[action.data] = {isActive:true}
-      return Object.assign({},state, {deliveryItem: {...state.deliveryItem, ...object}})
+      object[action.data] = { isActive: true }
+      return Object.assign({}, state, { deliveryItem: { ...state.deliveryItem, ...object } })
 
     case REHYDRATE:
       return { ...state, ...reducerLogoutState };

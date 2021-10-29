@@ -214,7 +214,7 @@ const ListingView = () => {
     storeSubItemList();
   }, []);
 
-  //매뉴 아이템 갖고오기
+  //매뉴 아이템 갖고오기 이부분 이전에 갖고오는걸로하자.
   useEffect(() => {
     dispatch(Action.fetchGetmenu());
     console.log("지금여기 타고잇냐?");
@@ -307,6 +307,12 @@ const category = useSelector(state => state.category, [category]);
     );
   };
 
+  function onClickShowMenu(menu_id, item) {
+    dispatch(Action.showMenuDetail(menu_id))
+    //props.fetchGetRoasting(props.current_store_info,menu_id);
+    navigate(Routes.AddToCartScreen,{menudetail: item});
+  } 
+
   //renders rows of two items in the same row
   const renderBlockRows = ({item, index}) => {
     if(category == item.category){
@@ -323,7 +329,7 @@ const category = useSelector(state => state.category, [category]);
           isAddToCartVisible={true}
           topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
           onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.menu_id))}
-          addToCartOnPress={() => navigate(Routes.AddToCartScreen,{menudetail: item})}
+          addToCartOnPress={() => onClickShowMenu(item.menu_id,item)}
           imageIconPath={item.imageview}
         />
       );

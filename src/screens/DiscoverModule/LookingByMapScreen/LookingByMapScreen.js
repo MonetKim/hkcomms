@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View ,Alert } from 'react-native';
 
 //Third Party
-import MapView, {Marker, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import PropTypes from 'prop-types';
 
@@ -10,23 +10,27 @@ import PropTypes from 'prop-types';
 import GoogleInfoPin from '../../../components/GoogleInfoPin/GoogleInfoPin';
 
 //Utils
+import Action from '../../../redux/action';
 import globalStyles from '../../../assets/styles/globalStyles';
-import {allColors} from '../../../assets/styles/mainColors';
+import { allColors } from '../../../assets/styles/mainColors';
+import {useDispatch, useSelector} from 'react-redux';
 
 const tempMarkers = [
   {
     id: 0,
-    coordinate: {latitude: 42.36652518703266, longitude: -71.05495023721711},
+    coordinate: { latitude: 42.36652518703266, longitude: -71.05495023721711 },
   },
   {
     id: 1,
-    coordinate: {latitude: 42.364749515843414, longitude: -71.05464982981947},
+    coordinate: { latitude: 42.364749515843414, longitude: -71.05464982981947 },
   },
 ];
 
 const LookingByMapScreen = props => {
   const [markers, setMarkers] = useState([]);
   const [polylineData, setPolylineData] = useState([]);
+
+  const dispatch = useDispatch();
 
   //set temporary marker data
   useEffect(() => {
@@ -38,26 +42,50 @@ const LookingByMapScreen = props => {
     if (props.showRoute) {
       let tempRoute = [];
       props.googleMarker.map(item => {
-        tempRoute.push({latitude: item.latitude, longitude: item.longitude});
+        tempRoute.push({ latitude: item.latitude, longitude: item.longitude });
       });
       setPolylineData(tempRoute);
     }
   }, [props.googleMarker, props.showRoute]);
+
+
+  function saveStore(storeid, storename) {
+    Alert.alert(
+      String(storename),
+      "선택하신 매장이 맞습니까? " + Number(storeid),
+      [
+        //{ text: '확인', onPress: _gomenu.bind(this) },
+        { text: '확인', onPress: () => _gomenu(storeid,storename) },
+        { text: '취소', onPress: () => null },
+      ],
+      { cancelable: true }
+
+    )
+  }
+
+  function _gomenu(storeid,storename) {
+    //스토어 아이디 테이블에 저장해야함... db유저테이블에 스토어컬럼 추가해~
+    dispatch(Action.SetCurStoreInfo(storeid,storename));
+    //navigate("MenuScreen");
+  }
+
 
   return (
     <View
       style={[
         globalStyles.marginBottom11,
         globalStyles.flex,
-        {borderRadius: 5},
+        { borderRadius: 5 },
       ]}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={globalStyles.flex}
         showsScale={true}
-        region={{
-          latitude: props.googleMarker[0].latitude,
-          longitude: props.googleMarker[0].longitude,
+        region={{ //시작부분
+          // latitude: props.googleMarker[0].latitude,
+          // longitude: props.googleMarker[0].longitude,
+          latitude: 37.532600,
+          longitude: 127.024612,
           latitudeDelta: 0.005,
           longitudeDelta: 0.03,
         }}>
@@ -66,7 +94,7 @@ const LookingByMapScreen = props => {
           return (
             <Marker
               key={'marker_' + index}
-              coordinate={{latitude: item.latitude, longitude: item.longitude}}>
+              coordinate={{ latitude: item.latitude, longitude: item.longitude }}>
               {item.homeIcon}
               <Callout>
                 <GoogleInfoPin
@@ -92,7 +120,7 @@ const LookingByMapScreen = props => {
             }
             destination={polylineData[polylineData.length - 2]}
             apikey={'AIzaSyANG0-LliP9w-QPFBo1Oz7WyYoXgra2Tcc'}
-            strokeWidth={2}
+            strokeWidth={5}
             strokeColor={'rgb(214,50,41)'}
             optimizeWaypoints={true}
             lineDashPattern={[35, 35]}
@@ -117,11 +145,17 @@ const LookingByMapScreen = props => {
         {/*------ Route Render End ------*/}
 
         {/*------ Temporary Markers Render Start ------*/}
-        {markers.map(marker => (
+        {props.storeinfo.map(marker => (
           <Marker
-            key={'marker_temp_' + marker.id}
-            coordinate={marker.coordinate}
+            key={'marker_temp_' + marker.store_id}
+            coordinate={{
+              latitude: Number(marker.store_lat),
+              longitude: Number(marker.store_lon),
+            }}
+            title={marker.store_name}
+            description={marker.store_state}
             pinColor={'red'}
+            onPress={() => saveStore(marker.store_id, marker.store_name)}
           />
         ))}
         {/*------ Temporary Markers Render End ------*/}
@@ -133,6 +167,7 @@ const LookingByMapScreen = props => {
 /*---- Default Props Start -------*/
 LookingByMapScreen.defaultProps = {
   googleMarker: [],
+  storeinfo: [],
   markerBackgroundColor: allColors.white,
   showRoute: false,
   tempMarkers: true,
@@ -142,6 +177,7 @@ LookingByMapScreen.defaultProps = {
 /*---- Prop Type Expectations Start -------*/
 LookingByMapScreen.propTypes = {
   googleMarker: PropTypes.array,
+  storeinfo: PropTypes.array,
   markerBackgroundColor: PropTypes.string,
   showRoute: PropTypes.bool,
   tempMarkers: PropTypes.bool,
