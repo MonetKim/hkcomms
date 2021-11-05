@@ -65,7 +65,8 @@ const InvoiceScreen = ({ navigation, route }) => {
 
     const orderdetail = useSelector(state => state.orderdetail);
     const optionitem = useSelector(state => state.optionitem);
-
+    const currentAddress = useSelector(state => state.currentAddress, []);
+    
     //get the data in redux store and update
     useEffect(() => {
         storeInvoiceData()
