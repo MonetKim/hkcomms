@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 //Component
 import CachableImage from '../CachableImage/CachableImage';
@@ -13,11 +13,52 @@ import PropTypes from 'prop-types';
 //Utils
 import globalStyles from '../../assets/styles/globalStyles';
 import styles from './style';
-import {horizontalScale, verticalScale} from '../../utility/Scale';
+import { horizontalScale, verticalScale } from '../../utility/Scale';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CartItem = props => {
   //Image Popup set
   const [isImagePopUpShow, setImagePopUpShow] = useState(false);
+  const optionitem = useSelector(state => state.optionitem);
+
+
+  function total() { //데이터카트에 닮긴 옵션가격도 추가해주자. //여기선 각자 해야함...
+    var total = 0;
+    const cart = props.item;
+    console.log("총가격구하기" + JSON.stringify(cart))
+    total = total + ((cart.price
+      + findOptionPrice(cart.menu_option_insert)
+      + findOptionPrice(cart.taste_option_insert)
+      + findOptionPrice(cart.add_option_insert)         // 체크박스로 변경될시 여러개들어올것 체크 가격부분 저장 콤마로 나누기등등 다 고려해야함
+    )
+      * cart.quantity);
+
+    var total_price = total;
+    return total_price;
+  }
+
+  //옵션 이름찾기
+  function findOptionName(option_num) {
+    if (option_num === null) {
+      return 0;
+    }
+    for (var i = 0; i < optionitem.length; i++) {
+      if (optionitem[i].option_id == option_num)
+        return optionitem[i].option_name;
+    }
+  }
+  //옵션 가격찾기
+  function findOptionPrice(option_num) {
+    if (option_num === null) {
+      return 0;
+    }
+    for (var i = 0; i < optionitem.length; i++) {
+      if (optionitem[i].option_id == option_num)
+        return optionitem[i].option_price;
+    }
+  }
+
+
 
   return (
     <View>
@@ -77,7 +118,7 @@ const CartItem = props => {
             style={styles.imageContainer}>
             {props.imageIconPath.length > 0 && (
               <CachableImage
-                source={{uri: props.imageIconPath}}
+                source={{ uri: props.imageIconPath }}
                 style={styles.imageIcon}
               />
             )}
@@ -96,6 +137,9 @@ const CartItem = props => {
                   {props.title}
                 </Text>
               </View>
+              <Text numberOfLines={1} style={styles.title}>
+                {props.item.price}
+              </Text>
             </View>
             {/*-- Food Item Title End --*/}
 
@@ -108,66 +152,65 @@ const CartItem = props => {
             {/*-- Food Item Description End --*/}
 
             {/*-- Food Item Rating Start--*/}
-            <View
-              style={[
-                globalStyles.flexDirectionRow,
-                globalStyles.flex,
-                globalStyles.alignItemsCenter,
-              ]}>
-              {/*--Review Start--*/}
-              <View style={[globalStyles.flex, globalStyles.justifyFlexEnd]}>
-                <ReviewDisplay
-                  rating={props.rating}
-                  ratingNum={props.ratingNum}
-                  isDescriptionShown={true}
-                />
-              </View>
-              {/*--Review End--*/}
+            <View style={styles.cartRightSection}>
+              {
+                findOptionName(props.item.menu_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionName(props.item.menu_option_insert)}</Text>
+              }
+              {
+                findOptionPrice(props.item.menu_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(props.item.menu_option_insert)}</Text>
+              }
+            </View>
+            <View style={styles.cartRightSection}>
+              {
+                findOptionName(props.item.taste_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionName(props.item.taste_option_insert)}</Text>
+              }
+              {
+                findOptionPrice(props.item.taste_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(props.item.taste_option_insert)}</Text>
+              }
+            </View>
+            <View style={styles.cartRightSection}>
+              {
+                findOptionName(props.item.add_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionName(props.item.add_option_insert)}</Text>
+              }
+              {
+                findOptionPrice(props.item.add_option_insert) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(props.item.add_option_insert)}</Text>
+              }
             </View>
             {/*-- Food Item Rating End--*/}
-          </View>
 
-          {/*-- Food Item Total Count/Add To Cart/Counter Start--*/}
-          <View style={styles.spaceBetween}>
-            {/*--Delivery Fee Start--*/}
-            {!props.showTotalCount && (
-              <Text style={styles.deliveryFee}>{JSON.stringify(Number(props.item.quantity) * Number(props.item.price))}</Text>
-            )}
+            {/*-- Food Item Total Count/Add To Cart/Counter Start--*/}
+
             {/*--Delivery Fee End--*/}
+            <View style={styles.cartRightSection}>
+              {/*--Counter Start--*/}
+                <Text >수량</Text>
+                  <Counter
+                    isDisabled={props.isCounterDisabled}
+                    onChange={number =>
+                      props.onCounterChange && props.onCounterChange(number)
+                    }
+                    initialValue={props.counterStartingValue}
+                  />
+                  
+              {/*--Counter End--*/}
+            </View>
+            <View style={styles.cartRightSection}>
+              {/*--Delivery Fee Start--*/}
+              {!props.showTotalCount && (
+                <Text style={styles.deliveryFee}>{total()}</Text>
+              )}
+            </View>
 
-            {/*--Add to Cart Icon Start--*/}
-            {props.isAddToCartVisible && (
-              <TouchableOpacity
-                onPress={() =>
-                  props.addToCartOnPress && props.addToCartOnPress()
-                }
-                style={globalStyles.marginLeft15}>
-                <Image
-                  style={{
-                    width: horizontalScale(20),
-                    height: verticalScale(20),
-                    borderRadius: 3,
-                  }}
-                  source={require('../../assets/placeholders/20x20.png')}
-                />
-              </TouchableOpacity>
-            )}
-            {/*--Add to Cart Icon End--*/}
 
-            {/*--Counter Start--*/}
-            {props.isCounterVisible && (
-              <View style={globalStyles.marginLeft15}>
-                <Counter
-                  isDisabled={props.isCounterDisabled}
-                  onChange={number =>
-                    props.onCounterChange && props.onCounterChange(number)
-                  }
-                  initialValue={props.counterStartingValue}
-                />
-              </View>
-            )}
-            {/*--Counter End--*/}
           </View>
+
+
         </View>
         {/*-- Food Item Total Count/Add To Cart/Counter End--*/}
       </TouchableOpacity>
@@ -206,7 +249,7 @@ const CartItem = props => {
 
 /*---- Default Props Start -------*/
 CartItem.defaultProps = {
-  item:[],
+  item: [],
   counterStartingValue: 1,
   deliveryFee: '$0',
   description: '',

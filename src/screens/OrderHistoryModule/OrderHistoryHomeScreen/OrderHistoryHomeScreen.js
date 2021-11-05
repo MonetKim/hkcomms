@@ -57,7 +57,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
 
   //오더 아이템 갖고오기
   useEffect(() => {
-    dispatch(Action.getOrderresults(22));
+    dispatch(Action.getOrderresults(22)); // 이부분 아이디값 갖고와서 넣어주기
     console.log("지금여기 타고잇냐?22222"+JSON.stringify(orderitem));
   }, []);
   const orderitem = useSelector(state => state.orderitem);
@@ -66,6 +66,12 @@ const OrderHistoryHomeScreen = ({navigation}) => {
   useEffect(() => {
     dispatch(Action.getOrderresultsDetail(22));
   }, []);
+
+  useEffect(() => {
+    dispatch(Action.fetchGetOption());
+    console.log("옵션데이터 서버에서 갖고오기");
+  }, []);
+
 
   //pagination
   useEffect(() => {
@@ -213,7 +219,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
                 renderItem={renderListRows}
                 // getItemLayout={getOrderHistoryItemLayout}
                 keyExtractor={(item, index) => index.toString()}
-                ListFooterComponent={() => <LoadMoreButton />}
+                //ListFooterComponent={() => <LoadMoreButton />}
                 ItemSeparatorComponent={() => <SeparatorComponent />}
               />
             </View>

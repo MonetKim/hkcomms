@@ -118,19 +118,16 @@ const AddToCartScreen = ({ navigation, route }) => {
   }
 
   function save_option(option_num, kind_num) {
-    // 이부분 리덕스안통하고 그냥바로 메뉴디테일 값바꺼서 넣ㄱ고 해도 괜찮다고 ????????????????
     console.log(kind_num+" 세이브 라디오버튼이  "+option_num);
     if (kind_num == 1) {
       dispatch(Action.setDataCart(option_num, 2));
-      console.log(" 라디오버튼이후 변화된 "+JSON.stringify(carttemp) +"   토탈1 값  ");
+      //console.log(" 라디오버튼이후 변화된 "+JSON.stringify(carttemp) +"   토탈1 값  ");
     }
     else if (kind_num == 2) {
       dispatch(Action.setDataCart(option_num, 3));
-      console.log(" 라디오버튼이후 변화된 "+JSON.stringify(carttemp) +"   토탈2 값  ");
     }
     else if (kind_num == 3) {  //@@@@@@@@ 체크박스로 교체될시   값 저장을 바꾸는게아니라 체크박스 리스트 읽고 트루인것들만 바꺼야한다
       dispatch(Action.setDataCart(option_num, 4));
-      console.log(" 라디오버튼이후 변화된 "+JSON.stringify(carttemp) +"   토탈3 값  ");
     }
     
   }
@@ -252,7 +249,7 @@ const AddToCartScreen = ({ navigation, route }) => {
 
             {/*-Description Start--*/}
             <Text style={styles.titleDesc}>
-              {'메뉴설명!~~'}
+              {menudetail.price}
             </Text>
             {/*-Description End--*/}
             <View style={styles.reviewView}>

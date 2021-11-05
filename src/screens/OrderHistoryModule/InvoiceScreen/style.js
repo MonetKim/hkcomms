@@ -307,7 +307,12 @@ viewOrderBtn: {
 mainContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-}
+},
+cartRightSection: {
+  flexDirection: 'row',
+  marginTop: 3,
+  justifyContent: 'space-between'
+},
 
 
 

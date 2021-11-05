@@ -324,12 +324,13 @@ const category = useSelector(state => state.category, [category]);
           //rating={item.rating}
           //deliveryTime={item.deliveryTime}
           //description={item.description}
+          onPress={() => onClickShowMenu(item.menu_id,item)}
           deliveryFee={'$' + item.price}
           showCartIcon={true}
-          isAddToCartVisible={true}
+          isAddToCartVisible={false}
           topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
           onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.menu_id))}
-          addToCartOnPress={() => onClickShowMenu(item.menu_id,item)}
+          //addToCartOnPress={() => onClickShowMenu(item.menu_id,item)}
           imageIconPath={item.imageview}
         />
       );
@@ -479,7 +480,8 @@ const SliderSelectedScreen = ({navigation, route}) => {
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
       {/*---- Title with top icon view Start (see definition above) ----*/}
       <TitleWithTopIconView
-        topTitle={route.params.topTitle}
+        //topTitle={route.params.topTitle}
+        topTitle={'MENU'}
         route={route}
         navigation={navigation}
       />

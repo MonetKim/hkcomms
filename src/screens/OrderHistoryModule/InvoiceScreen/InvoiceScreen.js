@@ -64,6 +64,7 @@ const InvoiceScreen = ({ navigation, route }) => {
     let order_id = route.params.order_id;
 
     const orderdetail = useSelector(state => state.orderdetail);
+    const optionitem = useSelector(state => state.optionitem);
 
     //get the data in redux store and update
     useEffect(() => {
@@ -217,6 +218,44 @@ const InvoiceScreen = ({ navigation, route }) => {
         updateItemList()
     }
 
+    function total(item) { //데이터카트에 닮긴 옵션가격도 추가해주자. //여기선 각자 해야함...
+        var total = 0;
+        console.log(JSON.stringify(optionitem)+" 옵션 가격갖고오기   "+JSON.stringify(item))
+        const cart = item;
+        total = total + ((cart.menu_price
+          + findOptionPrice(cart.menu_option)
+          + findOptionPrice(cart.taste_option)
+          + findOptionPrice(cart.add_option)         // 체크박스로 변경될시 여러개들어올것 체크 가격부분 저장 콤마로 나누기등등 다 고려해야함
+        )
+          * cart.quantity);
+    
+        var total_price = total;
+        return total_price;
+      }
+
+      
+  //옵션 이름찾기
+  function findOptionName(option_num) {
+    if (option_num === null) {
+      return 0;
+    }
+    for (var i = 0; i < optionitem.length; i++) {
+      if (optionitem[i].option_id == option_num)
+        return optionitem[i].option_name;
+    }
+  }
+  //옵션 가격찾기
+  function findOptionPrice(option_num) {
+    if (option_num === null) {
+      return 0;
+    }
+    for (var i = 0; i < optionitem.length; i++) {
+      if (optionitem[i].option_id == option_num)
+        return optionitem[i].option_price;
+    }
+  }
+
+
     //render list of items that user ordered
     const renderListRows = ({ item }) => {
         if (item.order_id === order_id) {
@@ -239,6 +278,42 @@ const InvoiceScreen = ({ navigation, route }) => {
                                         </View>
                                         <View>
                                             <Text>메뉴 수량 {item.quantity}</Text>
+                                        </View>
+                                        
+                                        <View style={styles.cartRightSection}>
+              {
+                findOptionName(item.menu_option) == 0 ? <View></View> :
+                  <Text> {findOptionName(item.menu_option)}</Text>
+              }
+              {
+                findOptionPrice(item.menu_option) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(item.menu_option)}</Text>
+              }
+            </View>
+            <View style={styles.cartRightSection}>
+              {
+                findOptionName(item.taste_option) == 0 ? <View></View> :
+                  <Text> {findOptionName(item.taste_option)}</Text>
+              }
+              {
+                findOptionPrice(item.taste_option) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(item.taste_option)}</Text>
+              }
+            </View>
+            <View style={styles.cartRightSection}>
+              {
+                findOptionName(item.add_option) == 0 ? <View></View> :
+                  <Text> {findOptionName(item.add_option)}</Text>
+              }
+              {
+                findOptionPrice(item.add_option) == 0 ? <View></View> :
+                  <Text> {findOptionPrice(item.add_option)}</Text>
+              }
+            </View>
+
+
+                                        <View>
+                                            <Text>합 : {total(item)}</Text>
                                         </View>
                                     </View>
                                 </View>

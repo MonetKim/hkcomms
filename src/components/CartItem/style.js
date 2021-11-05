@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet,Dimensions} from 'react-native';
 import {FONT_FAMILY} from '../../constants/constants';
 import {
   scaleFontSize,
@@ -7,9 +7,11 @@ import {
 } from '../../utility/Scale';
 import {allColors} from '../../assets/styles/mainColors';
 
+
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    height: 85,
+    //height: 85,
     borderWidth: 0.3,
     width: '100%',
     borderColor: allColors.borderBlack,
@@ -105,6 +107,22 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     fontSize: scaleFontSize(12),
     color: allColors.black,
+  },
+  cartRightSection: {
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-between'
+  },
+  singleCartItem: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+    borderBottomColor: '#ddd',
+    width: width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1
   },
 });
 
