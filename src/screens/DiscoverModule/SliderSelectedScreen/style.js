@@ -55,6 +55,11 @@ navs_link__active : {
     alignSelf : "center",
     fontSize : 13,
   },
+  gostore: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });
 
 export default styles;

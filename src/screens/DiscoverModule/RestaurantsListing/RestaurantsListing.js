@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {SafeAreaView, FlatList, Text, View, ScrollView, Image} from 'react-native';
+import {SafeAreaView, FlatList, Text, View, ScrollView, Image,Platform, PermissionsAndroid} from 'react-native';
 
 //Third Party
 import {useDispatch, useSelector} from 'react-redux';
@@ -30,6 +30,7 @@ import {allColors} from '../../../assets/styles/mainColors';
 import {loadPagination} from '../../../utility/Helper';
 import {horizontalScale, verticalScale} from '../../../utility/Scale';
 import {navigate} from '../../../utility/NavigationService';
+import Geolocation from '@react-native-community/geolocation';
 
 //Dummy Data
 import RestaurantListDummy from '../../../DummyData/RestaurantListDummyData.json';
@@ -51,7 +52,71 @@ const RestaurantListView = React.memo(({route}) => {
   const [offset, setOffset] = useState(1);
   const [noDataAvailable, setNoDataAvailable] = useState(false);
 
+  const storedist = useSelector(state => state.storedist, []);
+    //현재 위치 갖고오기 테스트
+     async function requestLocationPermission() 
+{
   
+  
+  //이부분 테스트해봐야함 아이폰일때~~~
+  if (Platform.OS === 'ios') {
+    Geolocation.requestAuthorization();
+    Geolocation.setRNConfiguration({
+      skipPermissionRequests: false,
+     authorizationLevel: 'whenInUse',
+   });
+  }
+
+
+
+
+  if (Platform.OS === 'android') {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        'title': 'Example App',
+        'message': 'Example App access to your location '
+      }
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {//여기서 기본값으로 세팅하자..
+
+      console.log("You can use the location     ")
+      alert("You can use the location   " +Platform.OS+' '+ granted);
+      geoLocation();
+    } else {
+      console.log("location permission denied     ")
+      alert("Locationㄴㄴ permission denied  " +Platform.OS+' '+ granted);
+      //여기서 기본값으로 세팅하자..
+
+    }
+  }
+}
+    
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLogitude] = useState(null);
+
+    
+    const geoLocation = () => {
+        Geolocation.getCurrentPosition(
+            position => {
+                const lat = JSON.stringify(position.coords.latitude);
+                const lon = JSON.stringify(position.coords.longitude);
+                console.log(lon + ' 위경도전시 ' +lat)
+                setLatitude(lat);
+                setLogitude(lon);
+                dispatch(Action.SetCurLocation(position.coords));
+                dispatch(Action.SetCurDistance(position.coords));
+                
+               
+                //console.log("거리계산 리스트는 " + JSON.stringify(storedist));
+            },
+            error => { console.log(error.code, error.message); },
+            {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
+        )
+    }
+
+
+
 
   //updates after redux store update   왜 이렇게 하는지 알필요가잇어요~~
   useEffect(() => {
@@ -60,7 +125,9 @@ const RestaurantListView = React.memo(({route}) => {
 
   useEffect(() => {
     dispatch(Action.fetchStores());
-    console.log("스토어 서버에서 인포갖고옴");
+    requestLocationPermission();
+    //geoLocation();
+    console.log(latitude+"스토어 서버에서 인포갖고옴"+longitude);
   }, []);
 
   
@@ -115,13 +182,13 @@ const RestaurantListView = React.memo(({route}) => {
       <View style={globalStyles.marginTop30}>
         {noDataAvailable ? null : (
           <LongButton
-            title={'LOAD MORE^^'}
+            title={latitude+'LOAD MORE^^'+longitude}
             titleFontSize={18}
             titleFontColor={allColors.black}
             titleFontWeight={'300'}
             titleFontFamily={FONT_FAMILY.RobotoCondensedLight}
             type={BUTTON_TYPE.LIGHT}
-            onPress={() => setOffset(offset => offset + 1)}
+            onPress={() => geoLocation()}
           />
         )}
       </View>
@@ -266,6 +333,8 @@ const RestaurantsListing = ({navigation, route}) => {
   const ShowMapView = () => {
     const currentAddress = useSelector(state => state.currentAddress);
     const storeinfo  = useSelector(state => state.storeinfo);
+    const start_lat = useSelector(state => state.start_lat);//즉각반영 가능하도록
+    const start_lon = useSelector(state => state.start_lon);
     console.log("구글맵은 "+JSON.stringify(storeinfo ));
 
     return (
@@ -281,8 +350,10 @@ const RestaurantsListing = ({navigation, route}) => {
               rating: 4,
               ratingNum: 4,
               homeIcon: <HomeLocation height={80} width={80} />,
-              latitude: 42.35433012130913,
-              longitude: -71.05910008814041,
+              // latitude: 42.35433012130913,
+              // longitude: -71.05910008814041,
+              latitude: start_lat,
+              longitude: start_lon,
             },
           ]}
           storeinfo = {storeinfo}

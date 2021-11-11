@@ -13,6 +13,7 @@ import PayPal from '../assets/images/paypalSVG.svg';
 
 //Utils
 import ActionType from './action-type';
+import haversine from 'haversine';
 
 import globalStyles from '../assets/styles/globalStyles';
 
@@ -32,6 +33,10 @@ const reducerInitialState = {
   storeinfo: [],
   current_store_id: null,
   current_store_name: null,
+  start_lat:  37.532600,
+  start_lon: 127.024612,
+  storedist: [],
+
 
   authToken: null,
   userInfo: null,
@@ -85,6 +90,9 @@ const reducerLogoutState = {
   storeinfo: [],
   current_store_id: null,
   current_store_name: null,
+  start_lat:  37.532600,
+  start_lon: 127.024612,
+  storedist: [],
 
   authToken: null,
   showActivityLoader: false,
@@ -289,6 +297,47 @@ const reducer = (state = reducerInitialState, action) => {
         cartitem: newArrayCartNum,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }
     //////////////////////////////////////
+
+  ////////////////////////////////////--현재위치저장하기
+    case ActionType.SET_CUR_LOCATION:
+      var curlat = Number(action.payload.latitude);
+      var curlon = Number(action.payload.longitude);
+      console.log("리덕스 위치 전시하기 "+JSON.stringify(action.payload) );
+      return {
+          ...state,
+          start_lat: curlat,
+          start_lon: curlon,
+      }
+  //////////////////////////////////////
+
+////////////////////////////////////--스토어에서 현재위치 거리 계산
+  case ActionType.SET_GET_DISTANCE:
+    //const index = state.dataFood.findIndex(dataFood => dataFood.menu_id == action.payload); //인덱스찾기..
+    const newArray = [...state.storeinfo]; //making a new array
+    //newArray[index].iscart = true;//changing value in the new array
+    //newArray[index].quantity = newArray[index].quantity + 1;  //수량증가
+    for (var i = 0; i < newArray.length; i++) {
+
+
+        let a = { latitude: Number(newArray[i].store_lat), longitude: Number(newArray[i].store_lon) }
+        let b = { latitude: Number(action.payload.latitude), longitude: Number(action.payload.longitude) }
+
+
+        newArray[i].store_dist = haversine(a, b).toFixed(2);
+        //newArray[i].store_dist = action.payload.coords.latitude;
+
+    }
+    console.log("기존스토어 데이터가"+JSON.stringify(state.storeinfo) );
+
+    console.log("스토어위치 재전시하기 "+JSON.stringify(newArray) );
+    return {
+        ...state,
+        storedist: newArray,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+    }
+//////////////////////////////////////
+
+
+
 
     case ActionType.storeUserInfo:
       return Object.assign({}, state, { userInfo: action.data });

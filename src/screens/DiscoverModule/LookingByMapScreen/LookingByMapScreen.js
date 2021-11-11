@@ -55,7 +55,7 @@ const LookingByMapScreen = props => {
       "선택하신 매장이 맞습니까? " + Number(storeid),
       [
         //{ text: '확인', onPress: _gomenu.bind(this) },
-        { text: '확인', onPress: () => _gomenu(storeid,storename) },
+        { text: '확인', onPress: () => _gomenu(storeid,storename) }, // 스토어저장하고 화면이동
         { text: '취소', onPress: () => null },
       ],
       { cancelable: true }
@@ -65,10 +65,11 @@ const LookingByMapScreen = props => {
 
   function _gomenu(storeid,storename) {
     //스토어 아이디 테이블에 저장해야함... db유저테이블에 스토어컬럼 추가해~
-    dispatch(Action.SetCurStoreInfo(storeid,storename));
+    dispatch(Action.SetCurStoreInfo(storeid,storename)); 
+    //여기서 데이터카트 아이 초기화 기능 만들어야함
     //navigate("MenuScreen");
   }
-
+  console.log("이시 다 " +JSON.stringify(props.googleMarker[0].latitude) )
 
   return (
     <View
@@ -82,10 +83,10 @@ const LookingByMapScreen = props => {
         style={globalStyles.flex}
         showsScale={true}
         region={{ //시작부분
-          // latitude: props.googleMarker[0].latitude,
-          // longitude: props.googleMarker[0].longitude,
-          latitude: 37.532600,
-          longitude: 127.024612,
+          latitude: props.googleMarker[0].latitude,
+          longitude: props.googleMarker[0].longitude,
+          // latitude: 37.532600,
+          // longitude: 127.024612,
           latitudeDelta: 0.005,
           longitudeDelta: 0.03,
         }}>
@@ -99,7 +100,7 @@ const LookingByMapScreen = props => {
               <Callout>
                 <GoogleInfoPin
                   imagePath={item.profilePicturePath}
-                  title={item.name}
+                  title={JSON.stringify(props.googleMarker[0].longitude)}
                   address={item.address}
                   showRatingView={item.showRatingView}
                   rating={item.rating}
