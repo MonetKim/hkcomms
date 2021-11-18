@@ -326,10 +326,10 @@ const category = useSelector(state => state.category, [category]);
           //deliveryTime={item.deliveryTime}
           //description={item.description}
           onPress={() => onClickShowMenu(item.menu_id,item)}
-          deliveryFee={'$' + item.price}
+          price={item.price}
           showCartIcon={true}
           isAddToCartVisible={false}
-          topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
+          //topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
           onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.menu_id))}
           //addToCartOnPress={() => onClickShowMenu(item.menu_id,item)}
           imageIconPath={item.imageview}

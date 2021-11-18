@@ -322,7 +322,7 @@ const TopCategoriesScreen = ({navigation, route}) => {
         key={'large_restaurant_dobule_dish_' + index}
         title={item.title}
         rating={item.rating}
-        deliveryTime={item.deliveryTime}
+        //deliveryTime={item.deliveryTime}
         description={item.description}
         deliveryFee={item.deliveryFee}
         onPress={() =>
@@ -365,10 +365,10 @@ const TopCategoriesScreen = ({navigation, route}) => {
           globalStyles.alignContentCenter,
           globalStyles.marginTop10,
         ]}>
-        <SliderWithNoSides
+        {/* <SliderWithNoSides
           informationArray={sliderDataFoodItems}
           title={'BestDishes'}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -417,7 +417,7 @@ const TopCategoriesScreen = ({navigation, route}) => {
         key={'large_restaurant_new_seller_' + index}
         title={item.title}
         rating={item.rating}
-        deliveryTime={item.deliveryTime}
+        //deliveryTime={item.deliveryTime}
         description={item.description}
         deliveryFee={item.deliveryFee}
         onPress={() => navigateToSliderSelectedScreen('New Seller', item.title)}
@@ -458,10 +458,10 @@ const TopCategoriesScreen = ({navigation, route}) => {
           globalStyles.alignContentCenter,
           globalStyles.marginTop10,
         ]}>
-        <SliderWithNoSides
+        {/* <SliderWithNoSides
           informationArray={sliderDataFoodItems}
           title={'Bakery'}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -508,7 +508,7 @@ const TopCategoriesScreen = ({navigation, route}) => {
         key={'large_restaurant_most_popular_' + index}
         title={item.title}
         rating={item.rating}
-        deliveryTime={item.deliveryTime}
+        //deliveryTime={item.deliveryTime}
         description={item.description}
         deliveryFee={item.deliveryFee}
         onPress={() =>

@@ -1,5 +1,5 @@
-import React, {PureComponent} from 'react';
-import {Text, TouchableOpacity, Image, View} from 'react-native';
+import React, { PureComponent } from 'react';
+import { Text, TouchableOpacity, Image, View } from 'react-native';
 
 //Third Party
 import PropTypes from 'prop-types';
@@ -12,8 +12,8 @@ import globalStyles from '../../assets/styles/globalStyles';
 import styles from './style';
 import * as images from '../../assets/images/map';
 
-class LargeRestaurantInfo extends PureComponent {
-  render() {
+class LargeRestaurantInfo extends PureComponent { 
+  render() {console.log("프롭스   "+ JSON.stringify(this.props))
     return (
       <TouchableOpacity
         onPress={() => this.props.onPress()}
@@ -21,8 +21,8 @@ class LargeRestaurantInfo extends PureComponent {
         {/*--Restaurant Image Start--*/}
         <View style={styles.imageView}>
           <CachableImage
-            source={{uri: this.props.imageIconPath}}
-            style={[globalStyles.flex, {borderRadius: 5}]}
+            source={{ uri: this.props.imageIconPath }}
+            style={[globalStyles.flex, { borderRadius: 5 }]}
             resizeMode={'stretch'}
           />
         </View>
@@ -42,21 +42,25 @@ class LargeRestaurantInfo extends PureComponent {
             ]}>
             {/*--Title Start--*/}
             <Text style={styles.titleStyle}>
-              {this.props.title + ' / ' + this.props.rating}
+              {this.props.title}
             </Text>
             {/*--Title End--*/}
 
             {/*--Star Icon Start--*/}
-            <Image
+            {/* <Image
               source={images.generalIcons.starIcon}
               style={styles.starIcon}
               resizeMode={'contain'}
-            />
+            /> */}
             {/*--Star Icon End--*/}
           </View>
 
           {/*--Delivery Time Start--*/}
-          <Text style={styles.deliveryTimeText}>{this.props.deliveryTime}</Text>
+          {
+            this.props.store_dist >= 1
+              ? <Text style={styles.deliveryTimeText}>거리  {this.props.store_dist}KM</Text>
+              : <Text style={styles.deliveryTimeText}>거리  {Number(this.props.store_dist) * 1000}M</Text>
+          }
           {/*--Delivery Time End Start--*/}
         </View>
         <View
@@ -72,7 +76,7 @@ class LargeRestaurantInfo extends PureComponent {
 
           {/*--Delivery Fee Start--*/}
           <View style={globalStyles.flexDirectionRow}>
-            <Text style={styles.descriptionText}>{'Delivery:'}</Text>
+            <Text style={styles.descriptionText}>{'Tel:'}</Text>
             <Text style={styles.deliveryFee}>{this.props.deliveryFee}</Text>
           </View>
           {/*--Delivery Fee End--*/}
@@ -85,7 +89,7 @@ class LargeRestaurantInfo extends PureComponent {
 /*---- Default Props Start -------*/
 LargeRestaurantInfo.defaultProps = {
   deliveryFee: '0',
-  deliveryTime: '',
+  store_dist: 0,
   description: '',
   imageIconPath: '',
   rating: 0,
@@ -96,7 +100,7 @@ LargeRestaurantInfo.defaultProps = {
 /*---- Prop Type Expectations Start -------*/
 LargeRestaurantInfo.propTypes = {
   deliveryFee: PropTypes.string,
-  deliveryTime: PropTypes.string,
+  store_dist: PropTypes.number,
   description: PropTypes.string,
   imageIconPath: PropTypes.string,
   onPress: PropTypes.func,
