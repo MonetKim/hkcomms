@@ -73,7 +73,7 @@ const SingleFoodItemInfo = props => {
             {/*--Title End--*/}
 
             {/*--Delivery Fee Start--*/}
-            <Text style={styles.deliveryFee}>{props.deliveryFee}</Text>
+            <Text style={styles.deliveryFee}>{props.price}</Text>
             {/*--Delivery Fee End--*/}
           </View>
         </View>
@@ -86,19 +86,19 @@ const SingleFoodItemInfo = props => {
           <View style={globalStyles.flexDirectionRow}>
             <Text style={styles.deliveryTimeText}>{props.deliveryTime}</Text>
             {/*--Delivery Description Start--*/}
-            <Text style={styles.descriptionText}>{' - Delivery / '}</Text>
+            {/* <Text style={styles.descriptionText}>{' - Delivery / '}</Text> */}
             {/*--Delivery Description End--*/}
 
             {/*--Rating Start--*/}
-            <Text style={styles.descriptionText}>{props.rating}</Text>
+            {/* <Text style={styles.descriptionText}>{props.rating}</Text> */}
             {/*--Rating End--*/}
-
+            
             {/*--Star Icon Start--*/}
-            <Image
+            {/* <Image
               source={images.generalIcons.starIcon}
               style={styles.starIcon}
               resizeMode={'contain'}
-            />
+            /> */}
             {/*--Star Icon End Start--*/}
           </View>
         </View>
@@ -109,7 +109,7 @@ const SingleFoodItemInfo = props => {
 
 /*---- Default Props Start -------*/
 SingleFoodItemInfo.defaultProps = {
-  deliveryFee: '0',
+  price: '0',
   deliveryTime: '',
   description: '',
   imageIconPath: '',
@@ -123,7 +123,7 @@ SingleFoodItemInfo.defaultProps = {
 /*---- Prop Type Expectations Start -------*/
 SingleFoodItemInfo.propTypes = {
   addToCartOnPress: PropTypes.func,
-  deliveryFee: PropTypes.string,
+  price: PropTypes.string,
   deliveryTime: PropTypes.string,
   description: PropTypes.string,
   imageIconPath: PropTypes.string,

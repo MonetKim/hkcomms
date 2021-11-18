@@ -617,6 +617,15 @@ const configureAPI = ({ token }) => {
   fetchOrderResultDetailSuccess,
   fetchOrderResultDetailRequest,
 
+  fetchGetOption,// 옵션 데이터 갖고오기
+  fetchOptionSuccess,
+  fetchOptionRequest,
+  fetchOptionFailure,
+
+  SetCurLocation,
+  SetCurDistance,
+
+
   addPayPalAddress,
   addUserAddress,
   changePayPalAddresses,

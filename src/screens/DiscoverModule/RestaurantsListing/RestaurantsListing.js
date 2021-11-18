@@ -203,25 +203,27 @@ const RestaurantListView = React.memo(({route}) => {
   });
 
   //restaurant list row item
-  const renderRestaurantListRows = ({item, index}) => {
+  const renderRestaurantListRows = ({item, index}) => { console.log("스토어 거리확인 전시 " + JSON.stringify(item));
     return (
       <LargeRestaurantInfo
         key={'large_restaurant_info_' +index}
-        title={item.title}
-        rating={item.rating}
-        deliveryTime={item.deliveryTime}
-        description={item.description}
-        deliveryFee={'$' + item.deliveryFee}
+        title={item.store_name}
+        //rating={item.rating}
+        store_dist={Number(item.store_dist)}
+        description={item.store_address}
+        deliveryFee={ item.store_tel}
         onPress={() =>
           navigate(Routes.SliderSelectedScreen, {
             headerTitle: route.params.headerTitle,
             topTitle: route.params.topTitle,
           })
         }
-        imageIconPath={item.imageIconPath}
+        imageIconPath={item.store_imageview}
       />
     );
   };
+
+  const store_list = useSelector(state => state.storeinfo);
 
   return (
     <View style={[globalStyles.flex, globalStyles.justifyCenter]}>
@@ -233,7 +235,9 @@ const RestaurantListView = React.memo(({route}) => {
           // maxToRenderPerBatch={1} // Reduce number in each render batch
           // windowSize={7} // Reduce the window size
           showsVerticalScrollIndicator={false}
-          data={restaurantList}
+          //data={store_list}
+          data={ store_list.sort((a, b) => (String(Number(a.store_dist / 1000))).localeCompare(String(Number(b.store_dist / 1000)))) }
+          //data={store_list.sort((a, b) => (String(a.store_name)).localeCompare(String(b.store_name)))}
           // getItemLayout={getRestaurantListItemLayout}
           renderItem={renderRestaurantListRows}
           contentContainerStyle={[
@@ -242,7 +246,9 @@ const RestaurantListView = React.memo(({route}) => {
           ]}
           ItemSeparatorComponent={SeparatorComponent}
           ListFooterComponent={LoadMoreButton}
-          keyExtractor={(_item, index) => _item.title.split(' ').join('')+index}
+          //keyExtractor={(_item, index) => _item.title.split(' ').join('')+index}
+          
+          keyExtractor={(_item, index) => index.toString()}
         />
       ) : (
         <NoInformationText />
