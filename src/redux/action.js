@@ -663,6 +663,77 @@ export const changeCategory = (item) => {
 }
 //------------------------------------------------------------------------------------------------------------------
 
+//-------------------------------------스토어 인포 변경----------------------------------------------------------------------
+
+const fetchStoreSuccess = (stores) =>{
+  return {
+      type: ActionType.FETCH_STORES_SUCCESS,
+      payload: stores
+  }
+}
+const fetchStoreRequest = () =>{
+  return {
+      type: ActionType.FETCH_STORES_REQUEST,
+
+  }
+}
+const fetchStoreFailure = (error) =>{
+  return {
+      type: ActionType.FETCH_STORES_FAILURE,
+      payload: error
+  }
+}
+
+
+const fetchStores =() =>{
+  return (dispatch) =>{
+      
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      dispatch(fetchStoreRequest())
+      API.post("/user/store", {
+          
+        })
+      //.then(response => response.json())
+      .then((response) => {
+          configureAPI({ token: `Bearer ${response.data}` });
+          dispatch(fetchStoreSuccess(response.data))
+      })
+      
+      .catch(error=> dispatch(fetchStoreFailure(error)))
+  }
+}
+//스토어 선택 저장
+const SetCurStoreInfo = (item ,name) =>{ 
+  return {
+      type: ActionType.SET_CUR_STORE_INFO,
+      payload: item,
+      name: name,
+  }
+}
+
+//------------------------------------------------------------------------------------------------------------------
+
+//-----------------------------------------------현재 위치 좌표 설정s--------------------------------------------------
+const SetCurLocation = (loca) =>{
+  return {
+      type: ActionType.SET_CUR_LOCATION,
+      payload: loca, 
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//---------------------------스토어 거리 계산하기-s-----------------------------------------------------------
+const SetCurDistance = (dist) =>{
+  return {
+      type: ActionType.SET_GET_DISTANCE,
+      payload: dist, 
+  }
+}
+//-----------------------------------------------------------------------------------------------------------
+
+
+
+
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
 };
