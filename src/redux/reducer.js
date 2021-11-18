@@ -18,7 +18,6 @@ import haversine from 'haversine';
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
-<<<<<<< HEAD
   personalInfo : [],
   onSignup:[],
   caseInsert : [],
@@ -34,7 +33,6 @@ const reducerInitialState = {
   category: 1,
   passUpdate : [],
   authToken: null, 
-=======
   onSignup: [],
   loginInfomations: [],
   passwordFinder: [],
@@ -56,7 +54,6 @@ const reducerInitialState = {
 
 
   authToken: null,
->>>>>>> 0ae05ed1cf6b5e077f2e0cf65908c1f12a5822b3
   userInfo: null,
   internetConnected: false,
   showActivityLoader: false,
