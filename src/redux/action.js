@@ -471,7 +471,7 @@ const fetchOptionFailure = (error) => {
   }
 }
 
-
+//ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
 //옵션 갖고오기
 const fetchGetOption = () => {
   return (dispatch) => {
