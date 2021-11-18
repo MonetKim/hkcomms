@@ -21,6 +21,7 @@ import TitlePicture from '../../../components/TitlePicture/TitlePicture';
 import UnderlineTextIcon from '../../../components/UnderlineTextIcon/UnderlineTextIcon';
 import BorderDivider from '../../../components/BorderDivider/BorderDivider';
 import FoodItem from '../../../components/FoodItem/FoodItem';
+import CartItem from '../../../components/CartItem/CartItem';
 import LongButton from '../../../components/LongButton/LongButton';
 import NoInformationText from '../../../components/NoInformationText/NoInformationText';
 
@@ -51,12 +52,17 @@ const CheckOutScreen = ({ navigation, route }) => {
   //checkout list to redux store
   const storeCheckoutItemList = useCallback(() => dispatch(Action.storeCheckoutList(SubItemsDummy.data)), [dispatch])
   const checkoutList = useSelector(state => state.checkoutList, [])
-  const currentAddress = useSelector(state => state.currentAddress, [])
+  const currentAddress = useSelector(state => state.currentAddress, []);
 
   const [totalPrice, setTotalPrice] = useState(0)
   const [taxPrice, setTaxPrice] = useState(0)
   const [totalPriceWithTax, setTotalPriceWithTax] = useState(0)
 
+  const current_store_id = useSelector(state => state.current_store_id, []);
+  const current_store_name = useSelector(state => state.current_store_name, []);
+
+  const cartitem = useSelector(state => state.cartitem, [])
+  const optionitem = useSelector(state => state.optionitem);
   //after redux update, update thte screen
   useEffect(() => {
     storeCheckoutItemList()
@@ -72,7 +78,37 @@ const CheckOutScreen = ({ navigation, route }) => {
     updateItemList()
   }, [itemList])
 
-    
+   
+  
+
+
+  function total() { //데이터카트에 닮긴 옵션가격도 추가해주자.
+    var total = 0;
+    for (var i = 0; i < cartitem.length; i++) {
+      total = total + ((cartitem[i].price
+        + findOptionPrice(cartitem[i].menu_option_insert)
+        + findOptionPrice(cartitem[i].taste_option_insert)
+        + findOptionPrice(cartitem[i].add_option_insert)         // 체크박스로 변경될시 여러개들어올것 체크 가격부분 저장 콤마로 나누기등등 다 고려해야함
+      )
+        * cartitem[i].quantity);
+    }
+    var total_price = total;
+    return total_price;
+  }
+
+  //옵션 가격찾기
+  function findOptionPrice(option_num) {
+    if (option_num === null) {
+      return 0;
+    }
+    for (var i = 0; i < optionitem.length; i++) {
+      if (optionitem[i].option_id == option_num)
+        return optionitem[i].option_price;
+    }
+  }
+
+
+
 
   //update the items and add up the new totals
   function updateItemList() {
@@ -113,7 +149,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                     }}
                 />
               }
-              description={'omoCurabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'}
+              description={current_store_name}
               descriptionTopPadding={15}
           />
         </View>
@@ -135,22 +171,23 @@ const CheckOutScreen = ({ navigation, route }) => {
   //render the list of food items
   const renderFoodItemRows = ({ item }) => {
     return (
-        <FoodItem
+        <CartItem
             key={'food_item_checkout'+item.id}
+            item ={item}
             title={item.title}
-            rating={item.rating}
-            description={item.description}
-            deliveryFee={'$' + item.deliveryFee}
-            ratingNum={item.review}
-            isRateVisible={false}
+            //rating={item.rating}
+            //description={item.description}
+            deliveryFee={'$' + item.price}
+            //ratingNum={item.review}
+            //isRateVisible={false}
             topRightIconComponent={<DeleteCross />}
             onTopRightIconPress={() => deleteItem(item)}
             isCounterVisible={true}
             isAddToCartVisible={false}
-            imageIconPath={item.imageIconPath}
-            counterStartingValue={item.itemPurchased}
-            onCounterChange={(counter) => changeCounter(item, counter)}
-            onItemPress={() => navigate(Routes.AddToCartScreen)}
+            imageIconPath={item.imageview}
+            counterStartingValue={item.quantity}
+            //onCounterChange={(counter) => changeCounter(item, counter)}
+            //onItemPress={() => navigate(Routes.AddToCartScreen)}
         />
     )
   }
@@ -171,7 +208,7 @@ const CheckOutScreen = ({ navigation, route }) => {
             {/*------ Divider End -----------*/}
 
             {
-              itemList.length > 0 ?
+              cartitem.length > 0 ?
                   <FlatList
                       //performance settings
                       //initialNumToRender={1} // Reduce initial render amount
@@ -179,19 +216,19 @@ const CheckOutScreen = ({ navigation, route }) => {
                       //maxToRenderPerBatch={1} // Reduce number in each render batch
                       // windowSize={7} // Reduce the window size
                       showsVerticalScrollIndicator={false}
-                      data={itemList}
+                      data={cartitem}
                       renderItem={renderFoodItemRows}
                       contentContainerStyle={[globalStyles.paddingTop20]}
                       ItemSeparatorComponent={() => <View style={styles.gapView} />}
                       keyExtractor={(_item, index) => index.toString()} />
                   : <NoInformationText />
             }
-            {itemList.length > 0 && <View>
+            {cartitem.length > 0 && <View>
               {/*------ Delivery Costs Start -----------*/}
               <View style={globalStyles.marginTop20}>
                 <View style={[globalStyles.flexDirectionRow, globalStyles.justifySpaceBetween]}>
-                  <Text style={styles.deliverTitle}>Deliver To:</Text>
-                  <Text style={styles.deliverPriceText}>{'$3.95'}</Text>
+                  <Text style={styles.deliverTitle}>총 가격 :</Text>
+                  <Text style={styles.deliverPriceText}>{total()}원</Text>
                 </View>
                 <View>
                   <Text style={styles.deliverAddressText}>{currentAddress}
@@ -216,7 +253,7 @@ const CheckOutScreen = ({ navigation, route }) => {
               {/*------ Delivery Information Start -----------*/}
               <View>
                 <View>
-                  <Text style={styles.deliverTitle}>{'Delivery Date & Time:'}</Text>
+                  <Text style={styles.deliverTitle}>{'Delivery ㄴDate & Time:'}</Text>
                 </View>
                 <View style={[globalStyles.flexDirectionRow, globalStyles.marginTop5]}>
                   <View style={[globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]}>
@@ -244,7 +281,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                       selectionColor={allColors.black}
                       placeholderTextColor={allColors.placeholderColor}
                       autoCorrect={false}
-                      placeholder={'Promo code or coupon'}
+                      placeholder={'Promo code orㄴ coupon'}
                       value={couponCode}
                       onChangeText={(text) => setCouponCode(text)}
                   />
@@ -268,7 +305,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                 </View>
                 <View style={[globalStyles.flexDirectionRow, globalStyles.marginTop5]}>
                   <Text style={styles.totalText}>{'Total: '}</Text>
-                  <Text style={styles.totalPriceText}>{'$' + totalPriceWithTax.toFixed(2)}</Text>
+                  <Text style={styles.totalPriceText}>{total()} 원</Text>
                 </View>
               </View>
               {/*------ Calculated Prices End -----------*/}

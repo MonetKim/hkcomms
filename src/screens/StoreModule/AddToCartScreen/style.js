@@ -41,6 +41,11 @@ const styles = StyleSheet.create({
   gapView: {
     marginVertical: horizontalScale(10),
   },
+  rowdisplay: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
   imageView: {
     height: screenHeight * 0.21,
     width: screenWidth * 0.5,

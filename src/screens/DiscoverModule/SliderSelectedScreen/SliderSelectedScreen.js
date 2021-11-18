@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 //Third Party
@@ -214,11 +215,16 @@ const ListingView = () => {
     storeSubItemList();
   }, []);
 
-  //매뉴 아이템 갖고오기
+  //매뉴 아이템 갖고오기 이부분 이전에 갖고오는걸로하자.
   useEffect(() => {
     dispatch(Action.fetchGetmenu());
     console.log("지금여기 타고잇냐?");
   }, []);
+  useEffect(() => {
+    dispatch(Action.fetchGetOption());
+    console.log("옵션데이터 서버에서 갖고오기");
+  }, []);
+
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const menudata = useSelector(state => state.menudata);
   
@@ -302,6 +308,12 @@ const category = useSelector(state => state.category, [category]);
     );
   };
 
+  function onClickShowMenu(menu_id, item) {
+    dispatch(Action.showMenuDetail(menu_id))
+    //props.fetchGetRoasting(props.current_store_info,menu_id);
+    navigate(Routes.AddToCartScreen,{menudetail: item});
+  } 
+
   //renders rows of two items in the same row
   const renderBlockRows = ({item, index}) => {
     if(category == item.category){
@@ -313,18 +325,23 @@ const category = useSelector(state => state.category, [category]);
           //rating={item.rating}
           //deliveryTime={item.deliveryTime}
           //description={item.description}
+          onPress={() => onClickShowMenu(item.menu_id,item)}
           deliveryFee={'$' + item.price}
           showCartIcon={true}
-          isAddToCartVisible={true}
+          isAddToCartVisible={false}
           topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
           onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.menu_id))}
-          addToCartOnPress={() => navigate(Routes.AddToCartScreen,{menudetail: item})}
+          //addToCartOnPress={() => onClickShowMenu(item.menu_id,item)}
           imageIconPath={item.imageview}
         />
       );
     }
     return <View></View>
   };
+//스토어 저장위치 전시하기
+
+
+
 
   return (
     <View
@@ -464,11 +481,51 @@ const SliderSelectedScreen = ({navigation, route}) => {
   );
   /* --- End Top Category Menu --- */
 
+  const current_store_name = useSelector(state => state.current_store_name, []);
+
+    /*  매장이 선택되어 있지 않을 시 매장선택화면으로 이동 전 데이터설정 */
+  /*  매장이 선택되어 있지 않을 시 매장선택화면으로 이동 s */
+  function _gostore() {
+
+    // let location = 
+    //   {
+    //     coords: {
+    //       latitude: props.start_lat, //기본값 서울 중앙
+    //       longitude: props.start_lon
+    //     }
+    //   }
+    
+    // console.log("로케이션 위치 알림 " + JSON.stringify(location));
+    // props.fetchStores();
+    // props.getdist(location);
+    Alert.alert(
+      "매장이 선택되어있지 않습니다",
+      `매장을 먼전 선택하세요`,
+      [
+
+        { text: "확인", onPress: () => navigate(Routes.RestaurantsListing) }
+      ],
+      { cancelable: false }
+    );
+  }
+
+  if (current_store_name === null) {
+    return (
+      <View style={styles.gostore}>
+        <Text style={{ fontSize: 23, color: '#333' }}> {current_store_name} 매장을 먼저 선택해 주세요</Text>
+        <TouchableOpacity onPress={() => _gostore()}>
+          <Text style={{ fontSize: 20, color: '#333' }}> 매장 찾기</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+else{
   return (
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
       {/*---- Title with top icon view Start (see definition above) ----*/}
       <TitleWithTopIconView
-        topTitle={route.params.topTitle}
+        //topTitle={route.params.topTitle}
+        topTitle={'MENU'}
         route={route}
         navigation={navigation}
       />
@@ -486,6 +543,7 @@ const SliderSelectedScreen = ({navigation, route}) => {
       {/*---- Food Item List View End (see definition above) -----*/}
     </SafeAreaView>
   );
+}
 };
 
 export default SliderSelectedScreen;
