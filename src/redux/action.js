@@ -581,6 +581,79 @@ const getOrderresultsDetail =(user_id) =>{
 }
 //------------------------------------------------------------------------------------------------------------------
 
+//-------------------------------------옵션 데이터갖고오기----------------------------------------------------------------------
+const fetchOptionSuccess = (comments) => {
+  return {
+      type: ActionType.FETCH_OPTION_SUCCESS,
+      payload: comments
+  }
+}
+const fetchOptionRequest = () => {
+  return {
+      type: ActionType.FETCH_OPTION_REQUEST,
+
+  }
+}
+const fetchOptionFailure = (error) => {
+  return {
+      type: ActionType.FETCH_OPTION_FAILURE,
+      payload: error
+  }
+}
+
+//ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+//옵션 갖고오기
+const fetchGetOption = () => {
+  return (dispatch) => {
+      // dispatch(fetchCommentRequest())
+      // fetch("http://jsonplaceholder.typicode.com/comments")
+      dispatch(fetchOptionRequest())
+      API.post("user/option",)
+          //.then(response => response.json())
+          .then((response) => {
+              configureAPI({ token: `Bearer ${response.data}` });
+              dispatch(fetchOptionSuccess(response.data));
+          })
+          .catch(error => dispatch(fetchOptionFailure(error)))
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//----------------------카트에 아이템 추가
+const insertCart = (item,num) => {
+  return {
+      type: ActionType.INSERT_CART,
+      payload: item,
+      num: num,
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//----------------------카트 중복 개수 바꾸기
+const changeCartNum = (item, num) => {
+  return {
+      type: ActionType.CHANGE_CART_NUM,
+      payload: item,
+      num: num,
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//----------------------임시카트 초기값
+const showMenuDetail = (item) => {
+  return {
+      type: ActionType.SHOW_MENUDETAIL,
+      payload: item
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+//----------------------임시카트 설정하기
+const setDataCart = (item, kind) => {
+  return {
+      type: ActionType.SET_DATACART,
+      payload: item,
+      kind: kind,
+  }
+}
+//------------------------------------------------------------------------------------------------------------------
+
 //-------------------------------------카테고리 변경----------------------------------------------------------------------
 export const changeCategory = (item) => {
   return {
