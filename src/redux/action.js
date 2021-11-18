@@ -107,7 +107,7 @@ const performAutoLogout = () => ({
   data: items,
 });
 
- const storeDeliveryAddressData = item => ({
+const storeDeliveryAddressData = item => ({
   type: ActionType.storeDeliveryAddressData,
   data: item,
 });
@@ -581,158 +581,14 @@ const getOrderresultsDetail =(user_id) =>{
 }
 //------------------------------------------------------------------------------------------------------------------
 
-//-------------------------------------옵션 데이터갖고오기----------------------------------------------------------------------
-const fetchOptionSuccess = (comments) => {
-  return {
-      type: ActionType.FETCH_OPTION_SUCCESS,
-      payload: comments
-  }
-}
-const fetchOptionRequest = () => {
-  return {
-      type: ActionType.FETCH_OPTION_REQUEST,
-
-  }
-}
-const fetchOptionFailure = (error) => {
-  return {
-      type: ActionType.FETCH_OPTION_FAILURE,
-      payload: error
-  }
-}
-
-
-//옵션 갖고오기
-const fetchGetOption = () => {
-  return (dispatch) => {
-      // dispatch(fetchCommentRequest())
-      // fetch("http://jsonplaceholder.typicode.com/comments")
-      dispatch(fetchOptionRequest())
-      API.post("user/option",)
-          //.then(response => response.json())
-          .then((response) => {
-              configureAPI({ token: `Bearer ${response.data}` });
-              dispatch(fetchOptionSuccess(response.data));
-          })
-          .catch(error => dispatch(fetchOptionFailure(error)))
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-//----------------------카트에 아이템 추가
-const insertCart = (item,num) => {
-  return {
-      type: ActionType.INSERT_CART,
-      payload: item,
-      num: num,
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-//----------------------카트 중복 개수 바꾸기
-const changeCartNum = (item, num) => {
-  return {
-      type: ActionType.CHANGE_CART_NUM,
-      payload: item,
-      num: num,
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-//----------------------임시카트 초기값
-const showMenuDetail = (item) => {
-  return {
-      type: ActionType.SHOW_MENUDETAIL,
-      payload: item
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-//----------------------임시카트 설정하기
-const setDataCart = (item, kind) => {
-  return {
-      type: ActionType.SET_DATACART,
-      payload: item,
-      kind: kind,
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-
 //-------------------------------------카테고리 변경----------------------------------------------------------------------
-const changeCategory = (item) => {
+export const changeCategory = (item) => {
   return {
       type: ActionType.CHANGE_CATEGORY,
       payload: item
   }
 }
 //------------------------------------------------------------------------------------------------------------------
-
-//-------------------------------------스토어 인포 변경----------------------------------------------------------------------
-
-const fetchStoreSuccess = (stores) =>{
-  return {
-      type: ActionType.FETCH_STORES_SUCCESS,
-      payload: stores
-  }
-}
-const fetchStoreRequest = () =>{
-  return {
-      type: ActionType.FETCH_STORES_REQUEST,
-
-  }
-}
-const fetchStoreFailure = (error) =>{
-  return {
-      type: ActionType.FETCH_STORES_FAILURE,
-      payload: error
-  }
-}
-
-
-const fetchStores =() =>{
-  return (dispatch) =>{
-      
-      // dispatch(fetchCommentRequest())
-      // fetch("http://jsonplaceholder.typicode.com/comments")
-      dispatch(fetchStoreRequest())
-      API.post("/user/store", {
-          
-        })
-      //.then(response => response.json())
-      .then((response) => {
-          configureAPI({ token: `Bearer ${response.data}` });
-          dispatch(fetchStoreSuccess(response.data))
-      })
-      
-      .catch(error=> dispatch(fetchStoreFailure(error)))
-  }
-}
-//스토어 선택 저장
-const SetCurStoreInfo = (item ,name) =>{ 
-  return {
-      type: ActionType.SET_CUR_STORE_INFO,
-      payload: item,
-      name: name,
-  }
-}
-
-//------------------------------------------------------------------------------------------------------------------
-
-//-----------------------------------------------현재 위치 좌표 설정--------------------------------------------------
-const SetCurLocation = (loca) =>{
-  return {
-      type: ActionType.SET_CUR_LOCATION,
-      payload: loca, 
-  }
-}
-//------------------------------------------------------------------------------------------------------------------
-//---------------------------스토어 거리 계산하기------------------------------------------------------------
-const SetCurDistance = (dist) =>{
-  return {
-      type: ActionType.SET_GET_DISTANCE,
-      payload: dist, 
-  }
-}
-//-----------------------------------------------------------------------------------------------------------
-
-
-
 
 const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -753,40 +609,13 @@ const configureAPI = ({ token }) => {
   getOrderresults,
   caseInsert,
 
-<<<<<<< HEAD
   caseResult,
 
   changeCategory,  
-=======
-  insertCart,
-  changeCartNum,
-
-  showMenuDetail,
-  setDataCart,
-
-  changeCategory,
-  
-  fetchStoreSuccess,
-  fetchStoreRequest,
-  fetchStoreFailure,
-  fetchStores,
-  SetCurStoreInfo,
-
-
->>>>>>> 0ae05ed1cf6b5e077f2e0cf65908c1f12a5822b3
   getOrderresultsDetail,
   fetchOrderResultDetailFailure,
   fetchOrderResultDetailSuccess,
   fetchOrderResultDetailRequest,
-
-  fetchGetOption,
-  fetchOptionSuccess,
-  fetchOptionRequest,
-  fetchOptionFailure,
-
-  SetCurLocation,
-  SetCurDistance,
-
 
   addPayPalAddress,
   addUserAddress,

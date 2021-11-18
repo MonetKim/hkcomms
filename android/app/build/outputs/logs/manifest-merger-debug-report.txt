@@ -12,6 +12,7 @@ MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\USER\.gradle\caches\tran
 MERGED from [:react-native-maps] D:\paranmanjan\hkcomms\node_modules\react-native-maps\lib\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-12:12
 MERGED from [:react-native-async-storage_async-storage] D:\paranmanjan\hkcomms\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-community_clipboard] D:\paranmanjan\hkcomms\node_modules\@react-native-community\clipboard\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-community_geolocation] D:\paranmanjan\hkcomms\node_modules\@react-native-community\geolocation\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-community_masked-view] D:\paranmanjan\hkcomms\node_modules\@react-native-community\masked-view\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-community_netinfo] D:\paranmanjan\hkcomms\node_modules\@react-native-community\netinfo\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-12:12
 MERGED from [:react-native-action-sheet] D:\paranmanjan\hkcomms\node_modules\react-native-action-sheet\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-11:12
@@ -255,6 +256,8 @@ MERGED from [:react-native-async-storage_async-storage] D:\paranmanjan\hkcomms\n
 MERGED from [:react-native-async-storage_async-storage] D:\paranmanjan\hkcomms\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_clipboard] D:\paranmanjan\hkcomms\node_modules\@react-native-community\clipboard\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_clipboard] D:\paranmanjan\hkcomms\node_modules\@react-native-community\clipboard\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-community_geolocation] D:\paranmanjan\hkcomms\node_modules\@react-native-community\geolocation\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-community_geolocation] D:\paranmanjan\hkcomms\node_modules\@react-native-community\geolocation\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_masked-view] D:\paranmanjan\hkcomms\node_modules\@react-native-community\masked-view\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_masked-view] D:\paranmanjan\hkcomms\node_modules\@react-native-community\masked-view\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_netinfo] D:\paranmanjan\hkcomms\node_modules\@react-native-community\netinfo\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
