@@ -1,5 +1,11 @@
 const ActionType = {
   onSignup : 'onSignup',
+  caseResult : 'caseResult',
+  passChange : 'passChange',
+  cardUpdate : 'cardUpdate',
+  passUpdate : 'passUpdate',
+  personalInfo : 'personalInfo',
+  caseInsert : 'caseInsert',
   loginInfomation : 'loginInfomation',
   passwordFinder : 'passwordFinder',
   loginStatus : 'LOGINSTATUS',

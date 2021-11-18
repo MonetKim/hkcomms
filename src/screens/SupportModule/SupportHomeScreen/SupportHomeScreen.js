@@ -26,7 +26,11 @@ import Action from '../../../redux/action';
 import FAQData from '../../../DummyData/FAQDummyData';
 
 const SupportHomeScreen = ({navigation}) => {
+
   const dispatch = useDispatch();
+
+  
+
   //store faq information
   const storeFAQs = useCallback(
     () => dispatch(Action.storeFAQs(FAQData.data)),
@@ -40,60 +44,45 @@ const SupportHomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
-      {/*------- Header Start -----*/}
       <Header
-        title={'Support'}
+        title={'고객센터'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
-      {/*------- Header End -----*/}
       <View style={globalStyles.flex}>
         <View style={globalStyles.horizontalGeneralPadding}>
-          {/*---- Page Title and Picture Container Start ------*/}
           <View>
             <TitlePicture
-              componentTopPadding={40}
-              imageComponent={
-                  <Image
-                  source={require('../../../assets/placeholders/105x104.png')}
-                  style={{height: horizontalScale(104), width: verticalScale(105), borderRadius: 3}}
-                  />
-              }
+              componentTopPadding={10}              
               titleTopPadding={23}
-              title={'Support 24/7'}
+              title={'고객센터 문의하기'}
               description={
-                'Lorem ipsum dolor sit amet, consectetur non adipiscing elit. Eitam ac tempor leo.'
+                '담당자 확인 후 빠르게 답변 드리겠습니다.'
               }
               descriptionTopPadding={10}
               componentBottomPadding={23}
             />
           </View>
-          {/*---- Page Title and Picture Container End ------*/}
           <View>
-            {/*---- Online Support Page Start ------*/}
             <SquareListIcon
               showBorder={true}
               onPress={() => navigate(Routes.OnlineSupport)}
               leftIconComponent={<OnlineSupportIcon />}
-              title={'Online Support'}
+              title={'문의하기'}
               leftIconRightPadding={19}
               leftIconLeftPadding={21}
               rightIconComponent={<ArrowRightLongIcon />}
             />
-            {/*---- Online Support Page End------*/}
-
-            {/*---- FAQ Screen Button Start -----*/}
             <SquareListIcon
               containerTopPadding={10}
               showBorder={true}
               onPress={() => navigate(Routes.FAQScreen)}
-              leftIconComponent={<FaqIcon />}
-              title={'FAQ'}
+              leftIconComponent={<FaqIcon/>}
+              title={'이전문의보기'}
               leftIconRightPadding={19}
               leftIconLeftPadding={21}
               rightIconComponent={<ArrowRightLongIcon />}
             />
-            {/*---- FAQ Screen Button End -----*/}
           </View>
         </View>
       </View>

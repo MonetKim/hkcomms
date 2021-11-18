@@ -1,5 +1,4 @@
 import React from 'react';
-//Publicly Available Icons that Can be Used for Commercial Purposes
 import Email from '../../../assets/icons/generalIcons/emailSVG.svg';
 
 const EmailIcon = () => {

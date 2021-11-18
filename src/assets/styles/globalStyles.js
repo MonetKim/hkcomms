@@ -19,7 +19,7 @@ const globalStyles = StyleSheet.create({
     flexGrow: 1,
   },
 
-  horizontalGeneralPadding: {
+  horizontalGeneralPadding: {    
     paddingHorizontal: horizontalScale(37),
   },
 

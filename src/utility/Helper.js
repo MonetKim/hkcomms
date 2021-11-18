@@ -118,6 +118,8 @@ const AnimatedHeader = {
 };
 
 const cc_format = value => {
+  
+
   let v = value
     .toString()
     .replace(/\s+/g, '')
@@ -131,7 +133,7 @@ const cc_format = value => {
   }
 
   if (parts.length) {
-    return parts.join(' ');
+    return parts.join('-');
   } else {
     return value;
   }

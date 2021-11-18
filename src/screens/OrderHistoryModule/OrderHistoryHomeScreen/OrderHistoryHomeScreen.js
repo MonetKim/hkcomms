@@ -40,6 +40,7 @@ import {loadPagination} from '../../../utility/Helper';
 const OrderHistoryHomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const sharedList = useSelector(state => state.orderHistoryList, []);
+  
   //get order history data in redux store
   const storeSharedData = useCallback(
     () => dispatch(Action.storeOrderHistoryList(OrderHistoryData.data)),
@@ -58,7 +59,6 @@ const OrderHistoryHomeScreen = ({navigation}) => {
   //오더 아이템 갖고오기
   useEffect(() => {
     dispatch(Action.getOrderresults(22));
-    console.log("지금여기 타고잇냐?22222"+JSON.stringify(orderitem));
   }, []);
   const orderitem = useSelector(state => state.orderitem);
 
@@ -106,7 +106,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
     }
   }
 
-  //render list items
+  //render list items  
   const renderListRows = ({item, index}) => {
     return (
       <OrderedItem

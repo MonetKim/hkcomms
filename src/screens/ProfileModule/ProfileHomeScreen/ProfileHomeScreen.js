@@ -22,6 +22,7 @@ import Routes from '../../../navigation/Routes';
 import {navigate} from '../../../utility/NavigationService';
 import {screenHeight, screenWidth} from '../../../utility/Scale';
 
+
 const ProfileHomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
@@ -57,33 +58,13 @@ const ProfileHomeScreen = ({navigation}) => {
             {/*---- Page Title and Picture Container End ------*/}
 
             {/*---- 프로필 셋팅부분 ------*/}
-            <View>
-              <SquareListIcon
-                showBorder={true}
-                onPress={() => navigate(Routes.AddressSetting)}
-                leftIconComponent={<AddressIcon />}
-                title={'내 위치 변경하기'}
-                leftIconRightPadding={19}
-                leftIconLeftPadding={21}
-                rightIconComponent={<ArrowRightLongIcon />}
-              />
+            <View>       
               <SquareListIcon
                 containerTopPadding={10}
                 showBorder={true}
                 onPress={() => navigate(Routes.PersonalInformation)}
                 leftIconComponent={<PersonalInfoIcon />}
                 title={'개인정보 변경'}
-                leftIconRightPadding={19}
-                leftIconLeftPadding={21}
-                rightIconComponent={<ArrowRightLongIcon />}
-              />
-
-              <SquareListIcon
-                containerTopPadding={10}
-                showBorder={true}
-                onPress={() => navigate(Routes.PersonalInformation)}
-                leftIconComponent={<PersonalInfoIcon />}
-                title={'위치 정보 서비스 이용약관 동의'}
                 leftIconRightPadding={19}
                 leftIconLeftPadding={21}
                 rightIconComponent={<ArrowRightLongIcon />}
@@ -99,6 +80,31 @@ const ProfileHomeScreen = ({navigation}) => {
                 leftIconLeftPadding={21}
                 rightIconComponent={<ArrowRightLongIcon />}
               />
+
+              <SquareListIcon
+                containerTopPadding={10}
+                showBorder={true}
+                onPress={() => navigate(Routes.PrivacyPolicy)}
+                leftIconComponent={<PersonalInfoIcon />}
+                title={'파란만잔 이용약관 동의'}
+                leftIconRightPadding={19}
+                leftIconLeftPadding={21}
+                rightIconComponent={<ArrowRightLongIcon />}
+              />
+
+
+              <SquareListIcon
+                containerTopPadding={10}
+                showBorder={true}
+                onPress={() => navigate(Routes.Settings)}
+                leftIconComponent={<PersonalInfoIcon />}
+                title={'권한 설정'}
+                leftIconRightPadding={19}
+                leftIconLeftPadding={21}
+                rightIconComponent={<ArrowRightLongIcon />}
+              />
+
+              
             </View>
             {/*---- Profile Settings End ------*/}
           </View>

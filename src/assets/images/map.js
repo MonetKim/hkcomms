@@ -1,19 +1,19 @@
-//Publicly Available Icons that Can be Used for Commercial Purposes
+
 export const drawerMenuIcons = {
-  discoverIcon: require('../placeholders/20x20.png'),
-  profileIcon: require('../placeholders/20x20.png'),
+  
+  //Home 아이콘
+  discoverIcon: require('../drawerIcon/home.png'),
+  profileIcon: require('../drawerIcon/profile.png'),
   couponIcon: require('../placeholders/20x20.png'),
-  orderHistoryIcon: require('../placeholders/20x20.png'),
-  paymentMethodsIcon: require('../placeholders/20x20.png'),
+  orderHistoryIcon: require('../drawerIcon/orderlist.png'),
+  paymentMethodsIcon: require('../drawerIcon/inputCard.png'),
   featuredProductsIcon: require('../placeholders/20x20.png'),
-  settingIcon: require('../placeholders/20x20.png'),
+  settingIcon: require('../drawerIcon/setting.png'),
   shareEarnIcon: require('../placeholders/20x20.png'),
-  supportIcon: require('../placeholders/20x20.png'),
-  //Publicly Available Icons that Can be Used for Commercial Purposes
+  supportIcon: require('../drawerIcon/cs.png'),
   logoutIcon: require('../icons/sidebarMenuIcons/logout.png'),
 };
 
-//Publicly Available Icons that Can be Used for Commercial Purposes
 export const countryFlags = {
   USAFlag: require('./usa-flag.png'),
   RussianFlag: require('./russia-flag.png'),
@@ -21,14 +21,12 @@ export const countryFlags = {
   TurkishFlag: require('./turkeyflag.png'),
 };
 
-//Publicly Available Icons that Can be Used for Commercial Purposes
 export const discoverModule = {
   closeIcon: require('../icons/discoverMenuIcons/close.png'),
 };
 
 export const generalIcons = {
   driverLocationIcon: require('../icons/generalIcons/locationIcons/driver_location.png'),
-  //Publicly Available Icons that Can be Used for Commercial Purposes
   profileIcon: require('../icons/generalIcons/profile.png'),
   starIcon: require('../icons/generalIcons/stars.png'),
   shareCodeIcon: require('../icons/generalIcons/share.png'),

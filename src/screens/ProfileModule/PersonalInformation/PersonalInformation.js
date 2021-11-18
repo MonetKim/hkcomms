@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {SafeAreaView, View, ScrollView, Platform} from 'react-native';
 
 //Third Party
+
 import ActionSheet from 'react-native-action-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch,useSelector, shallowEqual  } from 'react-redux';
@@ -11,21 +12,27 @@ import GenericInputField from '../../../components/GenericInputField/GenericInpu
 import Header from '../../../components/Header/Header';
 import LongButton from '../../../components/LongButton/LongButton';
 import PhoneNumber from '../../../components/PhoneNumber/PhoneNumber';
+import PasswordIcon from '../../../components/icons/PasswordIcon/PasswordIcon';
+import CallIcon from '../../../components/icons/CallIcon/CallIcon';
+
 import SignatureInputField from '../../../components/SignatureInputField/SignatureInputField';
 import TitlePicture from '../../../components/TitlePicture/TitlePicture';
-
 //Publicly Available Icons that Can be Used for Commercial Purposes
 import AvtarIcon from '../../../assets/images/profile_imageSVG.svg';
+import Action from '../../../redux/action';
 import CameraIcon from '../../../assets/images/cameraUploadSVG.svg';
 import EmailIcon from '../../../assets/images/emailSVG.svg';
 import PersonalInfoIcon from '../../../assets/images/personalInformationSVG.svg';
 import SaveIcon from '../../../assets/images/saveWhiteSVG.svg';
+import EyeIcon from '../../../components/icons/EyeIcon/EyeIcon';
+import { isEmail, isName } from '../../../utility/utils';
 
 //Utils
 import globalStyles from '../../../assets/styles/globalStyles';
 import Routes from '../../../navigation/Routes';
 import {allColors} from '../../../assets/styles/mainColors';
 import {ButtonIOS, ButtonAndroid} from '../../../constants/constants';
+
 import {
   BUTTON_TYPE,
   FONT_FAMILY,
@@ -42,17 +49,15 @@ import {screenHeight, screenWidth} from '../../../utility/Scale';
 const PersonalInformation = ({navigation}) => {
 
   const dispatch = useDispatch();      
-
-  const [mobileNumber, setMobileNumber] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-
+  const [password, setPassword] = useState('');
+  const [emailValid, setEmailValid] = useState('');
   const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
 
 
-  console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation[0].name));
+  //console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation[0].name));
 
-  console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation));
   //Profile Picture Placeholder and Camera Icon Definition
   const ReturnCameraIcon = () => {
     return (
@@ -64,6 +69,7 @@ const PersonalInformation = ({navigation}) => {
       </View>
     );
   };
+
   //Image Uploader Action Sheet Definition    
   const btnPickImageClick = () => {
     ActionSheet.showActionSheetWithOptions(
@@ -75,6 +81,57 @@ const PersonalInformation = ({navigation}) => {
       openPickerForProfileImage,
     );
   };
+
+  const emailChangeHandler = (text) => {
+    if(!isEmail(text)){  
+      setEmailValid(false);     
+    } else { 
+      setEmailValid(true);
+    }    
+    setEmail(text); 
+  }
+
+  const onPressCheck = () => {
+
+    if(!password.trim()){
+      alert('비밀번호를 입력하셔야 닉네임이 변경됩니다.');
+      return;
+    }
+
+    let arr1 = {
+      email : loginInformation[0].email,
+      password : loginInformation[0].password,
+      formattedNumber : loginInformation[0].phone
+    };
+    let arr2 = {
+      email : loginInformation[0].email,
+      password : password,
+      formattedNumber : loginInformation[0].phone
+    }      
+
+    if(arr1 === arr2) {            
+      return;       
+    } else if (password==loginInformation[0].password && name != null){ 
+      dispatch(Action.personalInfoChange(loginInformation[0].email,password,name));
+      navigation.navigate(Routes.ProfileHomeScreen);        
+    } else {
+      alert('입력하신 비밀번호가 정확하지 않습니다');
+    }
+    
+  } 
+  const nameChangeHandler = (text) =>{    
+    
+
+    setName(text);
+  } 
+
+
+  const passChangeHandler = (text) =>{              
+      setPassword(text);    
+  } 
+
+
+
 
   //handle image picker on press
   const openPickerForProfileImage = pickerType => {
@@ -146,7 +203,7 @@ const PersonalInformation = ({navigation}) => {
                 componentTopPadding={45}
                 imageComponent={<ReturnCameraIcon />}
                 titleTopPadding={15}
-                title={'안녕하세요 '+' '+loginInformation[0].name+ '' + '님'}
+                title={'안녕하세요 '+' '+loginInformation[0].name+ '' + ' 님'}
                 description={
                   '오늘도 파란만잔한 하루 보내세요'
                 }
@@ -158,55 +215,73 @@ const PersonalInformation = ({navigation}) => {
             </View>
             {/*---- Page Title and Picture Container End ------*/}
 
+             {/*---- Email Input Start ------*/}
+             <View style={[globalStyles.marginTop10]}>
+              <GenericInputField
+                  iconComponent={<EmailIcon height={20} width={15} />}
+                  imageLeftPadding={20}
+                  imageRightPadding={12}
+                  placeholder={'이메일'} 
+                  type={TEXTFIELD_TYPE.EMAIL}
+                  value={loginInformation[0].email}
+                  editable={false}  
+              />
+            </View>
+            {/*---- Email Input End ------*/}      
             {/*---- Phone Number Input Start ------*/}
             <View>
-              <PhoneNumber
-                value={mobileNumber}
-                onChangeText={number => setMobileNumber(number)}
-                onChangeFormattedText={number => {}}
+            <GenericInputField
+                  iconComponent={<CallIcon height={20} width={15} />}
+                  imageLeftPadding={20}
+                  imageRightPadding={12}
+                  placeholder={'전화번호'} 
+                  type={TEXTFIELD_TYPE.EMAIL}
+                  value={loginInformation[0].phone}
+                  editable={false}  
               />
             </View>
             {/*---- Phone Number Input End ------*/}
 
             {/*---- Name Input Start ------*/}
             <View style={[globalStyles.marginTop10]}>
-              <GenericInputField
-                iconComponent={<PersonalInfoIcon />}
+             <GenericInputField
+                iconComponent={<EyeIcon height={20} width={15} />}
                 imageLeftPadding={20}
-                imageRightPadding={12}
-                placeholder={'Name,Last name'}
+                imageRightPadding={12}                
+                placeholder={'닉네임'} 
                 type={TEXTFIELD_TYPE.NORMAL}
                 value={name}
-                onChange={text => setName(text)}
+                onChangeText={(text) => nameChangeHandler(text)}
+              />      
+            </View>
+   
+            <View  style={[globalStyles.marginTop10]}>
+            <GenericInputField
+                iconComponent={<PasswordIcon height={20} width={15} />}
+                imageLeftPadding={20}
+                imageRightPadding={12}                                
+                placeholder={'비밀번호'}
+                type={TEXTFIELD_TYPE.PASSWORD}
+                value={password}                
+                onChangeText={(text) => passChangeHandler(text)}
               />
             </View>
             {/*---- Name Input End ------*/}
 
-            {/*---- Email Input Start ------*/}
-            <View style={[globalStyles.marginTop10]}>
-              <GenericInputField
-                iconComponent={<EmailIcon />}
-                imageLeftPadding={20}
-                imageRightPadding={12}
-                placeholder={'Email'}
-                type={TEXTFIELD_TYPE.EMAIL}
-                value={email}
-                onChange={text => setEmail(text)}
-              />
-            </View>
-            {/*---- Email Input End ------*/}
+           
 
-            {/*---- Signature Input Start ------*/}
+            {/*---- Signature Input Start ------
             <View style={[globalStyles.marginTop15]}>
               <SignatureInputField />
             </View>
+            */}
             {/*---- Signature Input End ------*/}
 
             {/*---- Save Information Start ------*/}
             <View style={[globalStyles.marginTop20]}>
               <LongButton
-                title={'SAVE'}
-                titleFontColor={allColors.white}
+                title={'저장'}
+                titleFontColor={allColors.black}
                 titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
                 titleFontSize={18}
                 titleFontWeight={'400'}
@@ -214,7 +289,7 @@ const PersonalInformation = ({navigation}) => {
                 tailingIconPaddingLeft={0}
                 tailingIconComponent={<SaveIcon />}
                 type={BUTTON_TYPE.SECONDARY}
-                onPress={() => navigation.navigate(Routes.ProfileHomeScreen)}
+                onPress={() => onPressCheck()}
                 buttonShadow={true}
               />
             </View>

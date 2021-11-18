@@ -55,10 +55,14 @@ const passwordFinders = passwordFinder => ({
   data : passwordFinder,
 });
 
+const passChanges = passChange => ({
+  type: ActionType.passChange,
+  data : passChange,
+})
 
- const logout = () => ({type: REHYDRATE, payload: reducerInitialState});
+const logout = () => ({type: REHYDRATE, payload: reducerInitialState});
 
- const performAutoLogout = () => ({
+const performAutoLogout = () => ({
   type: ActionType.performAutoLogout,
   data: true,
 });
@@ -285,7 +289,115 @@ const loginInfomations = loginInfomation => ({
   data : loginInfomation,
 });
 
+const passUpdateInfo = passUpdate => ({
 
+  type : ActionType.passUpdate,
+  data : passUpdate,
+
+})
+
+const insertCaseInfo = caseInsert => ({
+    type : ActionType.caseInsert,
+    data : caseInsert
+})
+
+const caseResults = caseResult =>({
+    type : ActionType.caseResult,
+    data : caseResult
+
+})
+
+
+const caseResult = (index_id)=>{
+  return (dispatch) => {
+    // dispatch(fetchCommentRequest())
+    // fetch("http://jsonplaceholder.typicode.com/comments")
+    //dispatch(fetchMenulistRequest())
+    API.post("user/getCases",{
+      index_id
+    })
+          //.then(response => response.json())
+          .then((response) => {                      
+              dispatch(caseResults(response.data));                                        
+          })    
+  }
+}
+
+
+//비밀번호 수령 후 업데이트
+const passUpdates = (token,password,index_id) => {
+  return (dispatch) => {
+    // dispatch(fetchCommentRequest())
+    // fetch("http://jsonplaceholder.typicode.com/comments")
+    //dispatch(fetchMenulistRequest())
+    API.post("user/passwordChange",{
+      token,
+      password,
+      index_id
+    })
+          //.then(response => response.json())
+          .then((response) => {        
+
+            if(response.data === 'success'){
+              alert('비밀번호 재설정에 성공하였습니다. 어플을 재시작 합니다.');
+              dispatch(passUpdateInfo(response.data));
+              dispatch(logout);
+              dispatch(isLoggedIn(false));
+            }              
+          })    
+  }
+}
+
+
+const cardUpdate = (cardNumber, expirationMonth, expirationYear, lastname, index_id) => {
+  return (dispatch) => {    
+    API.post("user/cardUpdate",{
+      cardNumber,
+      expirationMonth,
+      expirationYear,
+      lastname,
+      index_id,
+    })
+    //.then(response => response.json())
+    .then((response) => {
+      console.log(' 카드 등록 성공이에요' + JSON.stringify(response.data));
+      dispatch(loginInfomations(response.data));  
+    })
+  }
+}
+
+
+const caseInsert = (index_id,supportTitle,supportText) => {
+  return async dispatch => {
+    API.post("user/caseInsert",{
+      index_id,
+      supportTitle,
+      supportText,
+    })
+      .then((response) => {
+            console.log(JSON.stringify(response.data)+'인서트 케이스');
+            dispatch(insertCaseInfo(response.data));  
+      })
+    }
+}
+
+//개인정보 변경
+const personalInfoChange = (email,password,name) => {
+
+  return async dispatch => { 
+    API.post("user/InfoChange",{
+      email,
+      password,
+      name
+    })  
+          //.then(response => response.json())
+          .then((response) => {             
+            //console.log(JSON.stringify(response.data)+'리스폰스@@tt');      
+            dispatch(loginInfomations(response.data));
+            //dispatch(loginInfomations(response.data));                                    
+          })         
+  }
+}
 
 const emailCheck = (email) => {
   return async dispatch => { 
@@ -338,11 +450,29 @@ const passwordFinder = (email,Phonenum) => {
 //-------------------------------------유저정보----------------------------------------------------------------------
  const loginStatus = (comments) => {
   console.log("에라이 집가 "+ comments);
-  return {
+    return {
       type: ActionType.loginStatus,
       payload: comments
+      }
   }
-} 
+  
+  
+const passChange = (index_id) => {
+  
+  console.log('인덱스 아이디 >>>>' +index_id);
+  return (dispatch) =>{
+    API.post("user/passChange",{
+      index_id
+    })
+          //.then(response => response.json())
+          .then((response) => {
+            console.log('성공이에요' + JSON.stringify(response.data));
+              dispatch(passChanges(response.data));
+          })
+
+  }
+}
+
 
  const onSignin = (email, password) => {
   console.log('이메일' + email  + ' 페수워드      '  + password);
@@ -464,20 +594,24 @@ const configureAPI = ({ token }) => {
   API.defaults.headers.common["Authorization"] = token;
 };
   export default {
+  passUpdates,
   passwordFinder,
+  cardUpdate,  
   onSignup,
   emailCheck,
   onSignin,
   loginStatus,
-  
+  personalInfoChange,
+  passChange,
   fetchGetmenu,  
   fetchMenulistSuccess,
-
   fetchOrderSuccess,
   getOrderresults,
+  caseInsert,
 
-  changeCategory,
-  
+  caseResult,
+
+  changeCategory,  
   getOrderresultsDetail,
   fetchOrderResultDetailFailure,
   fetchOrderResultDetailSuccess,

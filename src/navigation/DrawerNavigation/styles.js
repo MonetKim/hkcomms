@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
     color: allColors.black,
     fontFamily: FONT_FAMILY.RobotoCondensedLight,
     fontWeight: '300',
-    fontSize: scaleFontSize(16),
+    fontSize: scaleFontSize(16),   
     marginLeft: horizontalScale(12),
   },
   drawerStyles: {flex: 1, width: '60%', backgroundColor: allColors.transparent},
   drawerView: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center',    
     height: verticalPercentageScale(5.89),
   },
   iconStyle: {

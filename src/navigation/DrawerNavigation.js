@@ -17,7 +17,7 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -35,12 +35,6 @@ import {allColors} from '../assets/styles/mainColors';
 import {horizontalScale, screenWidth} from '../utility/Scale';
 import * as images from '../assets/images/map';
 import styles from './DrawerNavigation/styles';
-import {
-  ENGLISH_LANGUAGE,
-  GEORGIAN_LANGUAGE,
-  RUSSIAN_LANGUAGE,
-  TURKISH_LANGUAGE,
-} from '../constants/constants';
 import {pushScreen} from '../utility/NavigationService';
 
 //Navigators
@@ -65,91 +59,73 @@ const Screens = ({style}) => {
       {/*-----Close Icon For the Menu Start----*/}
       <View style={styles.closeIcon}>
         <CloseIcon height={18} width={18} />
-        <Text style={styles.closeText}>Close</Text>
+        <Text style={styles.closeText}>닫기</Text>
       </View>
       {/*-----Close Icon For the Menu End----*/}
 
       <Animated.View style={StyleSheet.flatten([styles.stack, style])}>
         <Stack.Navigator>
-          {/* Discover Menu and Screens Start -- See Component For Sub Menu Items */}
+
           <Stack.Screen
             name={Routes.DiscoverModuleMenu}
             component={DiscoverModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Discover Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Profile Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.ProfileModuleMenu}
             component={ProfileModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Profile Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Coupon Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.CouponModuleMenu}
             component={CouponModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Profile Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Order History Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.OrderHistoryModuleMenu}
             component={OrderHistoryModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Order History Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Favorite Products Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.FavoriteProductsModuleMenu}
             component={FavoriteProductsModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Favorite Products Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Payment Methods Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.PaymentMethodModuleMenu}
             component={PaymentMethodModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Payment Methods Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Settings Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.ShareEarnModuleMenu}
             component={ShareEarnModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Settings Menu and Screens End -- See Component For Sub Menu Items */}
-
-          {/* Settings Menu and Screens Start -- See Component For Sub Menu Items */}
+          
           <Stack.Screen
             name={Routes.OtherModuleMenu}
             component={OtherModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Settings Menu and Screens End -- See Component For Sub Menu Items */}
-
-          {/* Settings Menu and Screens Start -- See Component For Sub Menu Items */}
+          
           <Stack.Screen
             name={Routes.SettingModuleMenu}
             component={SettingModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Settings Menu and Screens End -- See Component For Sub Menu Items */}
 
-          {/* Support Menu and Screens Start -- See Component For Sub Menu Items */}
           <Stack.Screen
             name={Routes.SupportModuleMenu}
             component={SupportModuleMenu}
             options={{headerShown: false}}
           />
-          {/* Support Menu and Screens End -- See Component For Sub Menu Items */}
+
         </Stack.Navigator>
       </Animated.View>
     </View>
@@ -158,99 +134,84 @@ const Screens = ({style}) => {
 
 const DrawerContent = props => {
   const dispatch = useDispatch();
-
-  /*------ Menu Items Present in the Main Menu of Authenticated User Start ------- */
   const DrawerArray = [
     {
-      title: 'Discover',
+      title: '홈 >',
       iconPath: images.drawerMenuIcons.discoverIcon,
       routeName: Routes.DiscoverModuleMenu,
       screen: Routes.FoodDiscover,
     },
     {
-      title: 'Profile',
+      title: '프로필 >',
       iconPath: images.drawerMenuIcons.profileIcon,
       routeName: Routes.ProfileModuleMenu,
       screen: Routes.ProfileHomeScreen,
     },
     {
-      title: 'Coupon',
+      title: '쿠폰 >',
       iconPath: images.drawerMenuIcons.couponIcon,
       routeName: Routes.CouponModuleMenu,
       screen: Routes.CouponHomeScreen,
     },
+
+    /*
     {
       title: 'Share & Earn',
       iconPath: images.drawerMenuIcons.shareEarnIcon,
       routeName: Routes.ShareEarnModuleMenu,
       screen: Routes.ShareEarnScreen,
     },
+    */
+
     {
-      title: 'Order History',
+      title: '주문내역 >',
       iconPath: images.drawerMenuIcons.orderHistoryIcon,
       routeName: Routes.OrderHistoryModuleMenu,
       screen: Routes.OrderHistoryHomeScreen,
     },
+
+    /*
     {
       title: 'Favorite Products',
       iconPath: images.drawerMenuIcons.featuredProductsIcon,
       routeName: Routes.FavoriteProductsModuleMenu,
       screen: Routes.FavoriteProductsHomeScreen,
     },
+    */
+
     {
-      title: 'Payment Methods',
+      title: '카드등록 >',
       iconPath: images.drawerMenuIcons.paymentMethodsIcon,
       routeName: Routes.PaymentMethodModuleMenu,
       screen: Routes.PaymentMethodsHomeScreen,
     },
     {
-      title: 'Settings',
+      title: '설정 >',
       iconPath: images.drawerMenuIcons.settingIcon,
       routeName: Routes.SettingModuleMenu,
       screen: Routes.Settings,
     },
     {
-      title: 'Support',
+      title: '고객센터 >',
       iconPath: images.drawerMenuIcons.supportIcon,
       routeName: Routes.SupportModuleMenu,
       screen: Routes.SupportHomeScreen,
     },
     {
-      title: 'Language',
-      iconPath: selectFlag(),
-      routeName: Routes.SupportModuleMenu,
-    },
-    {
-      title: 'Other',
+      title: 'Other >',
       iconPath: images.drawerMenuIcons.discoverIcon,
       routeName: Routes.OtherModuleMenu,
       screen: Routes.OtherModuleMenu,
     },
   ];
-  /*------ Menu Items Present in the Main Menu of Authenticated User End ------- */
-
-  /*----- Function that determines which flag to show according to selected language start ------*/
-  function selectFlag() {
-    let flag = useSelector(state => state.selectedLanguage);
-    switch (flag) {
-      case ENGLISH_LANGUAGE:
-        return images.countryFlags.USAFlag;
-      case RUSSIAN_LANGUAGE:
-        return images.countryFlags.RussianFlag;
-      case GEORGIAN_LANGUAGE:
-        return images.countryFlags.GeorgianFlag;
-      case TURKISH_LANGUAGE:
-        return images.countryFlags.TurkishFlag;
-      default:
-        return images.countryFlags.USAFlag;
-    }
-  }
-  /*----- Function that determines which flag to show according to selected language end ------*/
 
   const navigationWithPush = (routeName, params) => {
     props.navigation.toggleDrawer();
     pushScreen(routeName, params);
   };
+
+
+  const loginInfomation = useSelector(state => state.loginInfomation, shallowEqual);
 
   return (
     <DrawerContentScrollView
@@ -274,10 +235,10 @@ const DrawerContent = props => {
               borderColor={allColors.borderBlack}
             />
             <View style={styles.userDetailView}>
-              <Text style={[styles.welcomeText]}>Welcome</Text>
-              <Text style={styles.userNameText}>Sabrina Lorenstein</Text>
+              <Text style={[styles.welcomeText]}>반갑습니다</Text>
+              <Text style={styles.userNameText}>{loginInfomation[0].name}</Text>
               <Text style={[globalStyles.RobotoFont100, styles.userNumberText]}>
-                +1 (917) 470-9281
+                {loginInfomation[0].phone}
               </Text>
             </View>
           </View>
@@ -310,7 +271,7 @@ const DrawerContent = props => {
             source={images.drawerMenuIcons.logoutIcon}
             style={styles.logoutIconStyle}
           />
-          <Text style={styles.drawerLabel}>Logout</Text>
+          <Text style={styles.drawerLabel}>로그아웃</Text>
         </TouchableOpacity>
         {/*----Logout Button End ------*/}
       </SafeAreaView>

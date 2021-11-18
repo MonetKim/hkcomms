@@ -11,12 +11,13 @@ const styles = StyleSheet.create({
   commentText: {
     fontFamily: FONT_FAMILY.RobotoLight,
     fontWeight: '300',
-    fontSize: scaleFontSize(12),
+    marginTop: verticalScale(9),
+    fontSize: scaleFontSize(15),
     color: allColors.black,
   },
   dotView: {
     color: allColors.yellow,
-    marginRight: horizontalScale(3),
+    marginRight: horizontalScale(3),    
   },
   textInputView: {
     marginTop: verticalScale(8),

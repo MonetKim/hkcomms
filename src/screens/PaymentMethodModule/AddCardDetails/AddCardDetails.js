@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,18 +7,17 @@ import {
   ScrollView,
 } from 'react-native';
 
-//Components
+//컴포낸트
 import Header from '../../../components/Header/Header';
 import LongButton from '../../../components/LongButton/LongButton';
 import SquareGenericInputField from '../../../components/SquareGenericInputField/SquareGenericInputField';
-import TitleText from '../../../components/TitleText/TitleText';
-
-//Publicly Available Icons that Can be Used for Commercial Purposes
 import CreditCard from '../../../assets/images/mastercardSVG.svg';
-import Question from '../../../assets/icons/generalIcons/questionSVG.svg';
 import SaveIcon from '../../../assets/images/saveWhiteSVG.svg';
+import Action from '../../../redux/action';
 
-//Utils
+import {useDispatch,useSelector, shallowEqual  } from 'react-redux';
+import {navigate} from '../../../utility/NavigationService';
+//유틸
 import globalStyles from '../../../assets/styles/globalStyles';
 import Routes from '../../../navigation/Routes';
 import styles from './style';
@@ -27,65 +26,79 @@ import {BUTTON_TYPE, FONT_FAMILY} from '../../../constants/constants';
 import {cc_format} from '../../../utility/Helper';
 
 const AddCardDetails = ({navigation}) => {
+
   const [cardNumber, setCardNumber] = useState('');
   const [expirationMonth, setExpirationMonth] = useState('');
   const [expirationYear, setExpirationYear] = useState('');
-  const [cvv, setCVV] = useState('');
-  const [name, setName] = useState('');
+  const [cardValid, setcardValid] = useState(false);
+  const [lastname, setlastName] = useState('');
+
+
+  // 귀찮으니까 여기서 reg 날리자
+  //var visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+  //var mastercardRegEx = /^(?:5[1-5][0-9]{14})$/;
+  //var amexpRegEx = /^(?:3[47][0-9]{13})$/;
+  //var discovRegEx = /^(?:6(?:011|5[0-9][0-9])[0-9]{12})$/;
+  
+  //받아온 현재 로그인 멤버 정보
+  const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
+  
+  
+  //다음 redux에 액션 지정
+  const dispatch = useDispatch();
+
+  const numValidCheck = (text) =>{   
+    setCardNumber(text);            
+  }
+
+  const updateCards = () => {                 
+      //cardNumber, expirationMonth, expirationYear, lastname, index_id 
+      dispatch(Action.cardUpdate(cardNumber,expirationMonth, expirationYear, lastname, loginInformation[0].index_id));
+      navigate(Routes.ProfileHomeScreen);
+  }
 
   return (
+
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
-      {/*------- Header Start -----*/}
       <Header
-        title={'Add Card Information'}
+        title={'카드 정보 변경'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
-      {/*------- Header End -----*/}
-      <ScrollView
+
+      <ScrollView 
         keyboardShouldPersistTaps={'always'}
         style={globalStyles.flex}
-        contentContainerStyle={globalStyles.commonScrollViewPadding}
+        contentContainerStyle={globalStyles.commonScrollViewPadding}        
         showsVerticalScrollIndicator={false}>
-        <View style={globalStyles.horizontalGeneralPadding}>
-          {/*------- Page Introductory Title Start ------*/}
-          <TitleText
-            title={'Add New Card Info'}
-            description={
-              'Drive license number is needed if driver has registered a car. For bicycle is not necessary.'
-            }
-            containerBottomPadding={0}
-            containerTopPadding={15}
-            titleFontWeight={'300'}
-          />
-          {/*------- Page Introductory Title End ------*/}
-          {/*-------- Card Number Input Start --------*/}
+
+        <View style={globalStyles.horizontalGeneralPadding}>                     
           <View style={globalStyles.marginTop30}>
             <View>
-              <Text style={styles.titleText}>Card Number</Text>
-              <SquareGenericInputField
+              <Text style={styles.titleText}>카드번호</Text>
+              <SquareGenericInputField              
                 rightIconComponent={<CreditCard />}
                 rightIconPaddingLeft={10}
+                keyboardType="numeric"
                 rightIconPaddingRight={15}
-                placeholder="**** **** **** 5024"
-                value={cardNumber}
-                onChange={text => setCardNumber(cc_format(text))}
+                placeholder="**** **** **** 8888"
+                value={cardNumber}                
+                onChangeText={text => numValidCheck(cc_format(text))}
                 keyboardType={'number-pad'}
                 cardValidation={true}
                 maxLength={19}
-                backgroundColor={allColors.lightYellowBg}
+                backgroundColor={allColors.lightYellowBg}              
               />
-            </View>
-            {/*-------- Card Number Input End --------*/}
+            </View>            
             <View
               style={[
                 globalStyles.marginTop15,
                 globalStyles.flexDirectionRow,
                 globalStyles.justifySpaceBetween,
               ]}>
-              {/*-------- Expiration Date Input Start --------*/}
+
               <View style={globalStyles.flex}>
-                <Text style={styles.titleText}>Expiration Date</Text>
+                <Text style={styles.titleText}>유효기간</Text>
                 <View style={globalStyles.flexDirectionRow}>
                   <View
                     style={[
@@ -113,9 +126,7 @@ const AddCardDetails = ({navigation}) => {
                   </View>
                 </View>
               </View>
-              {/*-------- Expiration Date Input End --------*/}
-
-              {/*-------- CVV Start --------*/}
+{/*
               <View>
                 <View style={[globalStyles.flexDirectionRow, styles.cvvView]}>
                   <Text style={styles.cvvText}>CVV/CVC</Text>
@@ -132,26 +143,23 @@ const AddCardDetails = ({navigation}) => {
                   maxLength={3}
                 />
               </View>
+*/}
             </View>
-            {/*-------- CVV End --------*/}
 
-            {/*-------- Card Holder Name Start --------*/}
             <View style={[globalStyles.marginTop15]}>
-              <Text style={styles.titleText}>Card Holder Full Name</Text>
+              <Text style={styles.titleText}>카드소지자 이름</Text>
               <SquareGenericInputField
-                placeholder={'Card Holder Full Name'}
-                value={name}
-                onChange={text => setName(text)}
+                placeholder={'정확한 이름을 입력해주세요'}
+                value={lastname}
+                onChange={text => setlastName(text)}
                 backgroundColor={allColors.lightYellowBg}
               />
             </View>
-            {/*-------- Card Holder Name End --------*/}
 
-            {/*-------- Save Button Start --------*/}
             <View style={[globalStyles.marginTop20]}>
               <LongButton
-                title={'SAVE'}
-                titleFontColor={allColors.white}
+                title={'저장하기'}
+                titleFontColor={allColors.black}
                 titleFontFamily={FONT_FAMILY.RobotoCondensedRegular}
                 titleFontSize={18}
                 titleFontWeight={'400'}
@@ -160,12 +168,11 @@ const AddCardDetails = ({navigation}) => {
                 tailingIconComponent={<SaveIcon />}
                 type={BUTTON_TYPE.SECONDARY}
                 onPress={() =>
-                  navigation.navigate(Routes.PaymentMethodsHomeScreen)
+                  updateCards() 
                 }
               />
             </View>
-            {/*-------- Save Button End --------*/}
-          </View>
+          </View>          
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -17,17 +17,20 @@ import ActionType from './action-type';
 import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
+  personalInfo : [],
   onSignup:[],
+  caseInsert : [],
   loginInfomations : [],
   passwordFinder:[],
   isEmailCheck: [],
   testis:[],
+  passChange : [],
   menudata:[],
   orderitem:[],
   orderdetail:[],
   optionitem:[],
   category: 1,
-
+  passUpdate : [],
   authToken: null, 
   userInfo: null,
   internetConnected: false,
@@ -50,6 +53,7 @@ const reducerInitialState = {
   subItems: [],
   menuList: [],
   userReviewList: [],
+  caseResult: [],
   checkoutList: [],
   deliveryItem: {},
   orderedItems: {},
@@ -66,6 +70,9 @@ const reducerInitialState = {
 
 const reducerLogoutState = {
   onSignup:[],
+  passChange : [],
+  caseInsert : [],
+  personalInfo:[],
   loginInfomations : [],
   passwordFinder: [],
   isEmailCheck: [],
@@ -75,6 +82,7 @@ const reducerLogoutState = {
   orderdetail:[],
   optionitem:[],
   category: 1,
+  passUpdate: [],
 
   authToken: null,
   showActivityLoader: false,
@@ -103,6 +111,7 @@ const reducerLogoutState = {
   shareEarnList: [],
   orderHistoryList: [],
   invoiceData: [],
+  caseResult :[],
   couponList: [],
   favoritedItems: [],
   deliveryAddressData: {}
@@ -110,6 +119,42 @@ const reducerLogoutState = {
 
 const reducer = (state = reducerInitialState, action) => {
   switch (action.type) {
+
+    case ActionType.personalInfo:
+      return {
+        ...state,
+        personalInfo : action.data,
+      }
+
+    case ActionType.passUpdate : {
+      return {
+        ...state,
+        passUpdate : action.data
+      }
+    }
+    case ActionType.caseInsert :{
+      return {
+        ...state,
+        caseInsert : action.data
+      }
+
+    } 
+
+    case ActionType.caseResult : {
+      return {
+        ...state,
+        caseResult : action.data
+      }
+
+
+    }
+
+    //비밀번호 초기화
+    case ActionType.passChange:
+      return {
+        ...state,
+        passChange : action.data,
+      }  
     case ActionType.storeAuthToken:
       //console.log("지금타지는곳?  ")
       return Object.assign({}, state, { authToken: action.data });

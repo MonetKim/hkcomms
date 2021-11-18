@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState} from 'react';
-import {SafeAreaView, View, ScrollView, Image} from 'react-native';
+import {SafeAreaView, View, ScrollView,Text, Image} from 'react-native';
 
 //Components
 import ArrowRightLongIcon from '../../../components/icons/ArrowRightLongIcon/ArrowRightLongIcon';
@@ -9,10 +9,13 @@ import RadioButton from '../../../components/RadioButton/RadioButton';
 import SquareListIcon from '../../../components/SquareListIcon/SquareListIcon';
 import TitlePicture from '../../../components/TitlePicture/TitlePicture';
 
-//Publicly Available Icons that Can be Used for Commercial Purposes
-import Apple from '../../../assets/images/appleSVG.svg';
+
+import {useDispatch,useSelector, shallowEqual  } from 'react-redux';
 import CreditCard from '../../../assets/images/mastercardSVG.svg';
-import PayPal from '../../../assets/images/paypalSVG.svg';
+import styles from '../AddCardDetails/style';
+import SquareGenericInputField from '../../../components/SquareGenericInputField/SquareGenericInputField';
+
+import {allColors} from '../../../assets/styles/mainColors';
 
 //Utils
 import globalStyles from '../../../assets/styles/globalStyles';
@@ -25,7 +28,7 @@ const paymentOptionsDisplayedArr = [
   {
     id: 0,
     isActive: true,
-    title: 'SET AS PRIMARY',
+    title: '등록 카드 현황',  
     component: (
       <SquareListIcon
         onPress={() => navigate(Routes.AddCardDetails)}
@@ -33,49 +36,26 @@ const paymentOptionsDisplayedArr = [
         leftIconRightPadding={20}
         leftIconLeftPadding={20}
         leftIconComponent={<CreditCard />}
-        title={'Credit Card'}
+        title={'신용/체크 카드'}
         rightIconComponent={<ArrowRightLongIcon />}
       />
     ),
-  },
-  {
-    id: 1,
-    isActive: false,
-    title: 'SET AS PRIMARY',
-    component: (
-      <SquareListIcon
-        onPress={() => navigate(Routes.AddNewPaypal)}
-        showBorder={true}
-        leftIconRightPadding={20}
-        leftIconLeftPadding={20}
-        leftIconComponent={<PayPal />}
-        title={'PayPal'}
-        rightIconComponent={<ArrowRightLongIcon />}
-      />
-    ),
-  },
-  {
-    id: 2,
-    isActive: false,
-    title: 'SET AS PRIMARY',
-    component: (
-      <SquareListIcon
-        showBorder={true}
-        leftIconComponent={<Apple />}
-        title={'Apple Pay'}
-        leftIconRightPadding={20}
-        leftIconLeftPadding={20}
-        rightIconComponent={<ArrowRightLongIcon />}
-      />
-    ),
-  },
+  } 
 ];
 /*-------------------- Payment Method Options Displayed Data End --------------------*/
 
 const PaymentMethodHomeScreen = ({navigation}) => {
+  
   const [optionArray, setOptionArray] = useState(paymentOptionsDisplayedArr);
+  
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationMonth, setExpirationMonth] = useState('');
+  const [expirationYear, setExpirationYear] = useState('');
+  const [cardValid, setcardValid] = useState(false);
+  const [lastname, setlastName] = useState('');
 
-  /* ------ which option is selected from the payment method options that are displayed initially start ------- */
+  const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
+  
   const selectOption = id => {
     setOptionArray(
       optionArray.map(object => {
@@ -87,48 +67,39 @@ const PaymentMethodHomeScreen = ({navigation}) => {
       }),
     );
   };
-  /* ------ which option is selected from the payment method options that are displayed initially end ------- */
-
   return (
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
-      {/*------- Header Start -----*/}
+      
       <Header
-        title={'Payment Method'}
+        title={'카드 등록'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
-      {/*------- Header End -----*/}
 
-      {/*------- Vertical Scroll View Start -----*/}
       <ScrollView
         style={[globalStyles.flex]}
         contentContainerStyle={globalStyles.commonScrollViewPadding}
         showsVerticalScrollIndicator={false}>
         <View style={globalStyles.horizontalGeneralPadding}>
-          {/*---- Page Title and Picture Container Start ------*/}
           <View>
             <TitlePicture
               componentTopPadding={35}
               imageComponent={
                 <Image
-                    source={require('../../../assets/placeholders/105x100.png')}
-                  style={{height: horizontalScale(100), width: verticalScale(105), borderRadius: 3}}
+                    source={require('../../../assets/images/card.png')}
+                  style={{height: horizontalScale(100), width: verticalScale(95), borderRadius: 3}}
                 />
               }
               titleTopPadding={16}
-              title={'Payment Methods'}
+              title={'나만의 카드 등록'}
               description={
-                'Enter your new password and then click on the "Save" button below'
+                '타인 카드 등록은 불법입니다'
               }
               descriptionTopPadding={7}
               componentBottomPadding={25}
             />
-          </View>
-          {/*---- Page Title and Picture Container End ------*/}
-
-          {/*---- Page Title and Picture Container End ------*/}
+          </View>          
           <View>
-            {/*---- Radio Button Component used to display the options presented in the data as a list of radio button options start --- */}
             <RadioButton
               onItemSelection={id => selectOption(id)}
               paddingBottom={23}
@@ -136,12 +107,82 @@ const PaymentMethodHomeScreen = ({navigation}) => {
               align={'top'}
               optionArr={optionArray}
             />
-            {/*---- Radio Button Component used to display the options presented in the data as a list of radio button options end --- */}
+           
           </View>
+        </View>        
+      <View 
+        keyboardShouldPersistTaps={'always'}
+        style={globalStyles.flex}
+        contentContainerStyle={globalStyles.commonScrollViewPadding}        
+        showsVerticalScrollIndicator={false}>
+
+        <View style={globalStyles.horizontalGeneralPadding}>                     
+          <View style={globalStyles.marginTop30}>
+            <View>
+              <Text style={styles.titleText}>카드번호</Text>
+              <SquareGenericInputField              
+                rightIconComponent={<CreditCard />}
+                rightIconPaddingLeft={10}
+                keyboardType="numeric"
+                rightIconPaddingRight={15}
+                placeholder="**** **** **** 8888"                
+                value= {loginInformation[0].cardnum == '' ? cardNumber : loginInformation[0].cardnum}
+                keyboardType={'number-pad'}
+                cardValidation={true}
+                maxLength={19}
+                editable={false}  
+                backgroundColor={allColors.lightYellowBg}              
+              />
+            </View>            
+            <View
+              style={[
+                globalStyles.marginTop15,
+                globalStyles.flexDirectionRow,
+                globalStyles.justifySpaceBetween,
+              ]}>
+              <View style={globalStyles.flex}>
+                <Text style={styles.titleText}>유효기간</Text>
+                <View style={globalStyles.flexDirectionRow}>
+                  <View
+                    style={[
+                      globalStyles.marginRight10,
+                      styles.expirationField,
+                    ]}>
+                    <SquareGenericInputField
+                      placeholder="01"
+                      value= {loginInformation[0].expmon == '' ? expirationMonth : loginInformation[0].expmon}                  
+                      keyboardType={'number-pad'}
+                      maxLength={2}
+                      editable={false}  
+                      backgroundColor={allColors.lightYellowBg}
+                    />                                                            
+                  </View>
+                  <View style={styles.expirationField}>
+                    <SquareGenericInputField
+                      placeholder="21"
+                      value={loginInformation[0].expyear == '' ? expirationYear : loginInformation[0].expyear}    
+                      editable={false}  
+                      keyboardType={'number-pad'}
+                      maxLength={2}
+                      backgroundColor={allColors.lightYellowBg}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={[globalStyles.marginTop15]}>
+              <Text style={styles.titleText}>카드소지자 이름</Text>
+              <SquareGenericInputField
+                placeholder={'정확한 이름을 입력해주세요'}
+                value={loginInformation[0].lastname == '' ? lastname : loginInformation[0].lastname}
+                editable={false}  
+                backgroundColor={allColors.lightYellowBg}
+              />
+            </View>            
+          </View>          
         </View>
-        {/*---- Page Title and Picture Container End ------*/}
+      </View>
       </ScrollView>
-      {/*------- Vertical Scroll View End -----*/}
     </SafeAreaView>
   );
 };
