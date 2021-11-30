@@ -189,7 +189,7 @@ const CartItem = props => {
             {/*--Delivery Fee End--*/}
             <View style={styles.cartRightSection}>
               {/*--Counter Start--*/}
-                <Text >수량</Text>
+                <Text >수량</Text> 
                   <Counter
                     isDisabled={props.isCounterDisabled}
                     onChange={number =>
@@ -221,13 +221,13 @@ const CartItem = props => {
           <TouchableOpacity
             onPress={() => props.onPressReorder && props.onPressReorder()}
             style={styles.sectionView}>
-            <Text style={styles.sectionText}>{'Reorder'}</Text>
+            <Text style={styles.sectionText}>{'재주문'}</Text>
           </TouchableOpacity>
           <View style={styles.sectionBorderView} />
           <TouchableOpacity
             onPress={() => props.onPressRate && props.onPressRate()}
             style={styles.sectionView}>
-            <Text style={styles.sectionText}>{'Rate'}</Text>
+            <Text style={styles.sectionText}>{'삭제'}</Text>
           </TouchableOpacity>
         </View>
       )}

@@ -13,7 +13,7 @@ import styles from './style';
 import * as images from '../../assets/images/map';
 
 class LargeRestaurantInfo extends PureComponent { 
-  render() {console.log("프롭스   "+ JSON.stringify(this.props))
+  render() {
     return (
       <TouchableOpacity
         onPress={() => this.props.onPress()}

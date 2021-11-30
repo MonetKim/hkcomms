@@ -336,6 +336,25 @@ const reducer = (state = reducerInitialState, action) => {
     }
 //////////////////////////////////////
 
+////////////////////////////////////--카트아이템 삭제하기
+case ActionType.DELETE_CARTITEM:
+  const indexdec = state.cartitem.findIndex(cartitem => (cartitem.menu_id == action.payload) && (cartitem.menu_option_insert == action.paymenu) &&
+        (cartitem.taste_option_insert == action.paytaste) && (cartitem.add_option_insert == action.payadd)); //인덱스찾기..
+      const newArraydec = [...state.cartitem]; //making a new array
+      //newArraydec[indexdec].quantity = newArraydec[indexdec].quantity - 1;//changing value in the new array
+    console.log("리덕스에서 카트아이템 메뉴아이디 검색되어진거 찾기 " + JSON.stringify(newArraydec));
+      //if (newArraydec[indexdec].quantity == 0) {
+        newArraydec.splice(indexdec, 1);
+        //console.log(" 삭제 0일때 " + JSON.stringify(newArraydec.splice(indexdec)) )
+      //}
+
+      return {
+        ...state,
+        cartitem: newArraydec,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+      }
+//////////////////////////////////////
+
+
 
 
 
