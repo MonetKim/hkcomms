@@ -66,14 +66,14 @@ const TitleWithTopIconView = props => {
   const [searchView, setSearchView] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [headerTitle, setHeaderTitle] = useState(
-    props.route.params.headerTitle,
+    "MENU",
   );
 
   //on click of right icons, what functions should be shown
   function handleRightIconClick(value) {
     switch (value) {
       case 'SearchClicked': {
-        setHeaderTitle(searchView ? props.route.params.headerTitle : '');
+        setHeaderTitle(searchView ? "MENU": '');
         setSearchView(!searchView);
         break;
       }
@@ -94,7 +94,7 @@ const TitleWithTopIconView = props => {
       if (searchView) {
         setHeaderTitle('');
       } else {
-        setHeaderTitle(props.route.params.headerTitle);
+        setHeaderTitle("MENU");
       }
     }
   }, [searchValue]);

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {SafeAreaView, FlatList, Text, View, ScrollView, Image,Platform, PermissionsAndroid} from 'react-native';
+import {SafeAreaView, FlatList, Text, View, ScrollView, Image,Platform, PermissionsAndroid , Alert} from 'react-native';
 
 //Third Party
 import {useDispatch, useSelector} from 'react-redux';
@@ -97,10 +97,11 @@ const RestaurantListView = React.memo(({route}) => {
 
     
     const geoLocation = () => {
+      console.log("적어도 시작은 해야지 " );
         Geolocation.getCurrentPosition(
             position => {
-                const lat = JSON.stringify(position.coords.latitude);
-                const lon = JSON.stringify(position.coords.longitude);
+                var lat = JSON.stringify(position.coords.latitude);
+                var lon = JSON.stringify(position.coords.longitude);
                 console.log(lon + ' 위경도전시 ' +lat)
                 setLatitude(lat);
                 setLogitude(lon);
@@ -108,7 +109,7 @@ const RestaurantListView = React.memo(({route}) => {
                 dispatch(Action.SetCurDistance(position.coords));
                 
                
-                //console.log("거리계산 리스트는 " + JSON.stringify(storedist));
+                console.log("거리계산 리스트는 " + JSON.stringify(storedist));
             },
             error => { console.log(error.code, error.message); },
             {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
@@ -203,25 +204,59 @@ const RestaurantListView = React.memo(({route}) => {
   });
 
   //restaurant list row item
-  const renderRestaurantListRows = ({item, index}) => { console.log("스토어 거리확인 전시 " + JSON.stringify(item));
-    return (
-      <LargeRestaurantInfo
-        key={'large_restaurant_info_' +index}
-        title={item.store_name}
-        //rating={item.rating}
-        store_dist={Number(item.store_dist)}
-        description={item.store_address}
-        deliveryFee={ item.store_tel}
-        onPress={() =>
-          navigate(Routes.SliderSelectedScreen, {
-            headerTitle: route.params.headerTitle,
-            topTitle: route.params.topTitle,
-          })
-        }
-        imageIconPath={item.store_imageview}
-      />
-    );
-  };
+  // const renderRestaurantListRows = ({item, index}) => { console.log("스토어 거리확인 전시 " + JSON.stringify(item));
+  //   return (
+  //     <LargeRestaurantInfo
+  //       key={'large_restaurant_info_' +index}
+  //       title={item.store_name}
+  //       //rating={item.rating}
+  //       store_dist={Number(item.store_dist)}
+  //       description={item.store_address}
+  //       deliveryFee={ item.store_tel}
+  //       onPress={() =>
+  //         navigate(Routes.SliderSelectedScreen, {
+  //           headerTitle: route.params.headerTitle,
+  //           topTitle: route.params.topTitle,
+  //         })
+  //       }
+  //       imageIconPath={item.store_imageview}
+  //     />
+  //   );
+  // };
+  function saveStore(storeid, storename) {
+    Alert.alert(
+      String(storename),
+      "선택하신 매장이 맞습니까? " + Number(storeid),
+      [
+        //{ text: '확인', onPress: _gomenu.bind(this) },
+        { text: '확인', onPress: () => _gomenu(storeid,storename) }, // 스토어저장하고 화면이동
+        { text: '취소', onPress: () => null },
+      ],
+      { cancelable: true }
+
+    )
+  }
+  function _gomenu(storeid,storename) {
+    //스토어 아이디 테이블에 저장해야함... db유저테이블에 스토어컬럼 추가해~
+    dispatch(Action.SetCurStoreInfo(storeid,storename)); 
+    //여기서 데이터카트 아이 초기화 기능 만들어야함
+    //navigate("MenuScreen");
+    navigate(Routes.SliderSelectedScreen);
+  }
+  const renderRestaurantListRows = ({item, index}) => { //console.log("스토어 거리확인 전시 " + JSON.stringify(item));
+  return (
+    <LargeRestaurantInfo
+      key={'large_restaurant_info_' +index}
+      title={item.store_name}
+      //rating={item.rating}
+      store_dist={Number(item.store_dist)}
+      description={item.store_address}
+      deliveryFee={ item.store_tel}
+      onPress={() => saveStore(item.store_id, item.store_name)}
+      imageIconPath={item.store_imageview}
+    />
+  );
+};
 
   const store_list = useSelector(state => state.storeinfo);
 

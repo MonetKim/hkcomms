@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 
 //Third Party
 import PropTypes from 'prop-types';
@@ -26,12 +26,17 @@ const OrderedItem = props => {
       ]}>
       {/*--Order Image Start--*/}
       <View style={styles.profileView}>
-        {/*props.restaurantIconPath.length > 0 && (
+    
           <CachableImage
             style={styles.imageView}
-            source={{uri: props.restaurantIconPath}}
+            source={{uri: props.imageview}}
           />
-        )*/}
+        {/* <Image source={{ uri: props.imageview }} /> */}
+        {/* <CachableImage
+            source={{uri: 'https://hkclient.herokuapp.com/images/STORE_IMAGE/gangnam.jpg'}}
+            style={[globalStyles.flex, {borderRadius: 10}]}
+            resizeMode={'stretch'}
+          /> */}
         {/*props.restaurantIconPath.length === 0 &&
           props.restaurantIconComponent && (
             <View>{props.restaurantIconComponent}</View>
@@ -56,8 +61,9 @@ const OrderedItem = props => {
             <Text style={styles.inviteCodeText}>{props.invoiceNumber}</Text>
           </View>
         )}
+        <Text style={styles.inviteCodeTitle}>{props.orderdetail}</Text>
         {/*-Invoice Information End--*/}
-
+        <Text style={styles.nameText}>{(props.date).substr(0,10)+" " +(props.date).substr(11,5)}</Text>
         {/*--Description Start--*/}
         
         {/*--Description End--*/}
@@ -91,6 +97,8 @@ OrderedItem.defaultProps = {
   name: '',
   restaurantIconPath: '',
   restaurantIconComponent: {},
+  orderdetail:'',
+  imageview:'',
 };
 /*---- Default Props End -------*/
 
@@ -105,6 +113,8 @@ OrderedItem.propTypes = {
   onPress: PropTypes.func,
   restaurantIconComponent: PropTypes.object,
   restaurantIconPath: PropTypes.string,
+  orderdetail: PropTypes.string,
+  imageview: PropTypes.string,
 };
 /*---- Prop Type Expectations End -------*/
 export default OrderedItem;

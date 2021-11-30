@@ -123,7 +123,7 @@ SingleFoodItemInfo.defaultProps = {
 /*---- Prop Type Expectations Start -------*/
 SingleFoodItemInfo.propTypes = {
   addToCartOnPress: PropTypes.func,
-  price: PropTypes.string,
+  price: PropTypes.number,
   deliveryTime: PropTypes.string,
   description: PropTypes.string,
   imageIconPath: PropTypes.string,

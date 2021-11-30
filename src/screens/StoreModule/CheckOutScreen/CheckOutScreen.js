@@ -84,6 +84,7 @@ const CheckOutScreen = ({ navigation, route }) => {
 
   function total() { //데이터카트에 닮긴 옵션가격도 추가해주자.
     var total = 0;
+    console.log("체크박스 중복 표시 "+ JSON.stringify(cartitem));
     for (var i = 0; i < cartitem.length; i++) {
       total = total + ((cartitem[i].price
         + findOptionPrice(cartitem[i].menu_option_insert)
@@ -157,10 +158,17 @@ const CheckOutScreen = ({ navigation, route }) => {
   }
 
   //delete an item from the list
-  const deleteItem = (item) => {
-    dispatch(Action.deleteCheckoutItem(item.id))
-    setTotalPrice((totalPrice - item.totalPrice))
+  // const deleteItem = (item) => {
+  //   dispatch(Action.deleteCheckoutItem(item.id))
+  //   setTotalPrice((totalPrice - item.totalPrice))
+  // }
+  
+  const DeleteCartitem = (menu_id,menu_option_insert,taste_option_insert,add_option_insert) => {
+    console.log("삭제부분 타고잇는거임 ? ??" + JSON.stringify(menu_id))
+    dispatch(Action.DeleteCartitem(menu_id,menu_option_insert,taste_option_insert,add_option_insert));
+    //setTotalPrice((totalPrice - item.totalPrice))
   }
+
 
   //change the quantity of an item
   const changeCounter = (item, counter) => {
@@ -181,11 +189,12 @@ const CheckOutScreen = ({ navigation, route }) => {
             //ratingNum={item.review}
             //isRateVisible={false}
             topRightIconComponent={<DeleteCross />}
-            onTopRightIconPress={() => deleteItem(item)}
+            onTopRightIconPress={() => DeleteCartitem(item.menu_id,item.menu_option_insert,item.taste_option_insert,item.add_option_insert)}
             isCounterVisible={true}
             isAddToCartVisible={false}
             imageIconPath={item.imageview}
             counterStartingValue={item.quantity}
+            onPressRate = {() => DeleteCartitem(item.menu_id,item.menu_option_insert,item.taste_option_insert,item.add_option_insert)}
             //onCounterChange={(counter) => changeCounter(item, counter)}
             //onItemPress={() => navigate(Routes.AddToCartScreen)}
         />
@@ -230,7 +239,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                   <Text style={styles.deliverTitle}>총 가격 :</Text>
                   <Text style={styles.deliverPriceText}>{total()}원</Text>
                 </View>
-                <View>
+                {/* <View>
                   <Text style={styles.deliverAddressText}>{currentAddress}
                     <Text>{''}
                       {
@@ -240,7 +249,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                       }
                     </Text>
                   </Text>
-                </View>
+                </View> */}
               </View>
               {/*------ Delivery Costs End -----------*/}
 
@@ -251,7 +260,7 @@ const CheckOutScreen = ({ navigation, route }) => {
               {/*------ Divider End -----------*/}
 
               {/*------ Delivery Information Start -----------*/}
-              <View>
+              {/* <View>
                 <View>
                   <Text style={styles.deliverTitle}>{'Delivery ㄴDate & Time:'}</Text>
                 </View>
@@ -269,7 +278,7 @@ const CheckOutScreen = ({ navigation, route }) => {
                     <Edit/>
                   </View>
                 </View>
-              </View>
+              </View> */}
               {/*------ Delivery Information End -----------*/}
 
               {/*------ Apply Promo Code Start -----------*/}
@@ -281,12 +290,12 @@ const CheckOutScreen = ({ navigation, route }) => {
                       selectionColor={allColors.black}
                       placeholderTextColor={allColors.placeholderColor}
                       autoCorrect={false}
-                      placeholder={'Promo code orㄴ coupon'}
+                      placeholder={'쿠폰번호를 입력하세요'}
                       value={couponCode}
                       onChangeText={(text) => setCouponCode(text)}
                   />
                   <TouchableOpacity style={styles.applyButton}>
-                    <Text style={styles.applyText}>{'Apply'}</Text>
+                    <Text style={styles.applyText}>{'적용하기'}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -300,11 +309,11 @@ const CheckOutScreen = ({ navigation, route }) => {
               {/*------ Calculated Prices Start -----------*/}
               <View style={globalStyles.alignItemsFlexEnd}>
                 <View style={globalStyles.flexDirectionRow}>
-                  <Text style={styles.taxText}>{'Tax: '}</Text>
-                  <Text style={styles.priceText}>{'$' + taxPrice.toFixed(2)}</Text>
+                  <Text style={styles.taxText}>{'할인율 : '}</Text>
+                  <Text style={styles.priceText}>{'0 %'}</Text>
                 </View>
                 <View style={[globalStyles.flexDirectionRow, globalStyles.marginTop5]}>
-                  <Text style={styles.totalText}>{'Total: '}</Text>
+                  <Text style={styles.totalText}>{'최종가격 : '}</Text>
                   <Text style={styles.totalPriceText}>{total()} 원</Text>
                 </View>
               </View>
@@ -313,7 +322,7 @@ const CheckOutScreen = ({ navigation, route }) => {
               {/*------ Checkout Button Start -----------*/}
               <View style={globalStyles.marginTop25}>
                 <LongButton
-                    title={'Checkout'}
+                    title={'결제하기'}
                     titleFontSize={18}
                     titleFontColor={allColors.white}
                     titleFontWeight={'400'}
@@ -330,9 +339,9 @@ const CheckOutScreen = ({ navigation, route }) => {
                     fontFamily={FONT_FAMILY.RobotoLight}
                     fontWeight={'300'}
                     fontSize={14}
-                    onPress={() => navigate(Routes.RestaurantMenuScreen, {title: route.params.title})}
+                    onPress={() => navigate(Routes.SliderSelectedScreen)}
                     isUnderlined={true}
-                    title={'Continue Shopping'}
+                    title={'메뉴 추가하기'}
                     color={'rgb(255,0,0)'}
                     style={{opacity: 0.8}}
                 />

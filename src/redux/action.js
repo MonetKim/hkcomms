@@ -730,7 +730,17 @@ const SetCurDistance = (dist) =>{
   }
 }
 //-----------------------------------------------------------------------------------------------------------
-
+//---------------------------카트아이템 삭제하기-------------------------------------------------------------
+const DeleteCartitem = (item, menu_option_insert, taste_option_insert, add_option_insert) =>{
+  return {
+    type: ActionType.DELETE_CARTITEM,
+    payload: item,
+    paymenu: menu_option_insert,
+    paytaste: taste_option_insert,
+    payadd: add_option_insert,
+  }
+}
+//-----------------------------------------------------------------------------------------------------------
 
 
 
@@ -772,6 +782,9 @@ const configureAPI = ({ token }) => {
 
   SetCurLocation,
   SetCurDistance,
+
+  DeleteCartitem, // 카트아이템삭제하기
+
 
 
   addPayPalAddress,

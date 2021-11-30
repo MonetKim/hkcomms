@@ -59,6 +59,18 @@ const AddToCartScreen = ({ navigation, route }) => {
     setTotalValue((menudetail.price * counterValue));
   }, [counterValue]);
 
+  // useEffect(() => {
+  //   var add_option_display = JSON.parse(JSON.stringify(route.params.menudetail.add_option));
+  //   var add_option_array = add_option_display.split(",");
+  //   var add_contest = [];
+  //   for (var i = 0; i < add_option_array.length; i++) {
+  //     //contest = [...contest, { key: optionitem[arrtes[i] - 1].option_name, id: optionitem[arrtes[i] - 1].option_id }]
+  //     add_contest = [...add_contest, { key: optionitem[add_option_array[i] - 1].option_name, id: optionitem[add_option_array[i] - 1].option_id, checked:false}]
+  //     //setSaveoption(contest);;
+  //   }
+  // }, []);
+
+
   //console.log("메뉴상세 설정 !! = " + JSON.stringify(route.params))
   //checkout screen with title
   const navigateToScreen = () => {
@@ -102,14 +114,18 @@ const AddToCartScreen = ({ navigation, route }) => {
     var arrtes = option_display.split(",");
     var contest = [];
     for (var i = 0; i < arrtes.length; i++) {
-      contest = [...contest, { key: optionitem[arrtes[i] - 1].option_name, id: optionitem[arrtes[i] - 1].option_id }]
+      //contest = [...contest, { key: optionitem[arrtes[i] - 1].option_name, id: optionitem[arrtes[i] - 1].option_id }]
+      contest = [...contest, { key: optionitem[arrtes[i] - 1].option_name, id: optionitem[arrtes[i] - 1].option_id, checked:false}]
       //setSaveoption(contest);;
     }
+
 
     return contest.map((item, id) => {
       return (
         <View style={{ flexDirection: "row" }} key={id}>
-          <CheckBox value={ischeck} onValueChange={() => save_option(item.id, kind_num)}
+          <CheckBox 
+          value={ischeck}  
+          onChange={() => (ischeck ?save_option(null, kind_num) :save_option(item.id, kind_num), console.log("함수2개실행가능 ?%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%") ,setIscheck(!ischeck) )}
           />
           <Text style={{ fontSize: 20, color: '#333' }}>    {item.id}    {item.key}{JSON.stringify(ischeck)}</Text>
         </View>
@@ -187,7 +203,7 @@ const AddToCartScreen = ({ navigation, route }) => {
       if (cartitem[i].menu_id == carttemp.menu_id &&
         cartitem[i].menu_option_insert == carttemp.menu_option_insert &&
         cartitem[i].taste_option_insert == carttemp.taste_option_insert &&
-        cartitem.add_option_insert == carttemp.add_option_insert) {
+        cartitem[i].add_option_insert == carttemp.add_option_insert) {
         check = true;
         dispatch(Action.changeCartNum(i, counterValue));
       }
@@ -302,10 +318,10 @@ const AddToCartScreen = ({ navigation, route }) => {
 
           {/*------ Food Item Description Start -------*/}
           <View style={styles.descView}>
-            <Text style={styles.descriptionTitle}>{'What is?'}</Text>
+            <Text style={styles.descriptionTitle}>{'알레르기 성분'}</Text>
             <Text style={styles.descriptionText}>
               {
-                'hhbhbCurabiturs sit amet massa nunc. Lusce iresticia magna. Fusce eget dapibus dui. Lorem ipsum curabitur sit amet massa nunc. Fusce at tristique magna. Fusce eget dapibus dui.'
+                '알레르기 성분은...                                         '
               }
             </Text>
           </View>
@@ -314,7 +330,7 @@ const AddToCartScreen = ({ navigation, route }) => {
           {/*------ Add to Cart Button Start -------*/}
           <View style={styles.buttonView}>
             <LongButton
-              title={'Add to Cart ' + get_price()}
+              title={'카트담기 ' + get_price()}
               titleFontColor={allColors.black}
               titleFontFamily={FONT_FAMILY.RobotoCondensedLight}
               titleFontSize={18}

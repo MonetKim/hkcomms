@@ -94,6 +94,10 @@ const ActionType = {
 
   SET_GET_DISTANCE: 'SET_GET_DISTANCE',
   
+  DELETE_CARTITEM: 'DELETE_CARTITEM',
+
+
+
 };
 
 export default ActionType;

@@ -66,7 +66,8 @@ const InvoiceScreen = ({ navigation, route }) => {
     const orderdetail = useSelector(state => state.orderdetail);
     const optionitem = useSelector(state => state.optionitem);
     const currentAddress = useSelector(state => state.currentAddress, []);
-    
+    const current_store_name = useSelector(state => state.current_store_name, []);
+
     //get the data in redux store and update
     useEffect(() => {
         storeInvoiceData()
@@ -133,8 +134,8 @@ const InvoiceScreen = ({ navigation, route }) => {
                     /> : <LogoIcon />}
                 </View>
                 <View style={[globalStyles.marginTop15, globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]}>
-                    <Text style={styles.invoiceTitle} >{'Invoice No. '}</Text>
-                    <Text style={styles.invoiceText}>{'30WT43GD54'}</Text>
+                    <Text style={styles.invoiceTitle} >{'주문번호:  '}</Text>
+                    <Text style={styles.invoiceText}>{order_id}</Text>
                 </View>
                 <View style={[globalStyles.marginTop5]} >
                     <Text style={styles.descriptionText} >{JSON.stringify(route.params)}
@@ -170,8 +171,8 @@ const InvoiceScreen = ({ navigation, route }) => {
                     <Text style={styles.deliveryManName} >{tempInvoiceData && tempInvoiceData.driverName}</Text>
                 </View>
                 <View style={[globalStyles.marginTop5, globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]}>
-                    <Text style={styles.smallInvoiceTitle} >{'Invoice No. '}</Text>
-                    <Text style={styles.smallInvoiceText}>{'30WT43GD54'}</Text>
+                    <Text style={styles.smallInvoiceTitle} >{'주문번호:  '}</Text>
+                    <Text style={styles.smallInvoiceText}>{order_id}</Text>
                     <TouchableOpacity style={globalStyles.marginLeft5} onPress={() => navigate(Routes.SurrenderActScreen, { totalPrice: totalPriceWithTax.toFixed(2) })}>
                         <Image style={styles.pdfImage} source={images.generalIcons.pdfIcon} />
                     </TouchableOpacity>
@@ -192,7 +193,7 @@ const InvoiceScreen = ({ navigation, route }) => {
             <View style={[globalStyles.alignItemsFlexEnd, globalStyles.marginTop25]} >
                 <TouchableOpacity onPress={() => setShowMap(!showMap)} style={[globalStyles.flexDirectionRow, globalStyles.alignItemsCenter]} >
                     {showMap ? <ActiveLocation /> : <Location />}
-                    <Text style={styles.trackingHistoryText} >{'Tracking History' + order_id}</Text>
+                    <Text style={styles.trackingHistoryText} >{current_store_name}</Text>
                 </TouchableOpacity>
             </View>
         )

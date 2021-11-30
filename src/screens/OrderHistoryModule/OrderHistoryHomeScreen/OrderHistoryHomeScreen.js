@@ -60,10 +60,9 @@ const OrderHistoryHomeScreen = ({navigation}) => {
   useEffect(() => {
     dispatch(Action.getOrderresults(22));
     dispatch(Action.getOrderresults(22)); // 이부분 아이디값 갖고와서 넣어주기
-    console.log("지금여기 타고잇냐?22222"+JSON.stringify(orderitem));
   }, []);
   const orderitem = useSelector(state => state.orderitem);
-
+  const orderdetail = useSelector(state => state.orderdetail);
   //오더상세 아이템 갖고오기
   useEffect(() => {
     dispatch(Action.getOrderresultsDetail(22));
@@ -71,7 +70,6 @@ const OrderHistoryHomeScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(Action.fetchGetOption());
-    console.log("옵션데이터 서버에서 갖고오기");
   }, []);
 
 
@@ -115,6 +113,48 @@ const OrderHistoryHomeScreen = ({navigation}) => {
   }
 
   //render list items  
+
+  //주문 번호당 이미지 갖고오기
+  function showorderimage(temp) {
+
+    var sum = '';
+    sum = '';
+    var count = 0;
+    
+    for (var i = 0; i < orderdetail.length; i++) {
+        if(orderdetail[i].order_id == temp){
+                sum = sum +orderdetail[i].imageview ;
+                break;
+        }
+        //sum = 'tt';
+    }
+    return sum
+}
+
+  //주문번호당 메뉴 찾아오기
+  function showorderdetail(temp) {
+
+    var sum = '';
+    sum = '';
+    var count = 0;
+    
+    for (var i = 0; i < orderdetail.length; i++) {
+        if(orderdetail[i].order_id == temp){
+            if(count === 0){
+                sum = sum +orderdetail[i].menu_title ;
+            }
+            count++;
+        }
+        //sum = 'tt';
+    }
+    if(count >1){
+        count--;
+        sum = sum+' 외 '+ count+'개';
+    }
+    return sum
+}
+
+  //render list items
   const renderListRows = ({item, index}) => {
     return (
       <OrderedItem
@@ -124,9 +164,11 @@ const OrderHistoryHomeScreen = ({navigation}) => {
         //description={item.description}
         amountPaid={item.total_price}
         isCompleted={item.ischeck}
+        imageview={showorderimage(item.order_id)}
         //restaurantIconPath={item.order_image}
         //restaurantIconComponent={item.restaurantIconComponent}
-        date={item.orderdate}
+        orderdetail ={showorderdetail(item.order_id)}
+        date={item.timezone}
         onPress={() => navigate(Routes.InvoiceScreen,{isCompleted: item.ischeck, 
                                                       order_id: item.order_id })}
       />
@@ -164,7 +206,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
       {/*------- Header Start -----*/}
       <Header
-        title={'Order History'}
+        title={'주문 내역'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
@@ -176,9 +218,9 @@ const OrderHistoryHomeScreen = ({navigation}) => {
         <View style={globalStyles.horizontalGeneralPadding}>
           {/*------- Page Introductory Title Start ------*/}
           <TitleText
-            title={'Order History'}
+            title={'주문 내역'}
             description={
-              'Drive license number is needed if driver has registered a car. For bicycle is not necessary.'
+              '고객님 파란만잔한 하루 보내세요'
             }
             containerBottomPadding={13}
             containerTopPadding={10}
@@ -192,9 +234,9 @@ const OrderHistoryHomeScreen = ({navigation}) => {
               globalStyles.justifySpaceBetween,
             ]}>
             <View>
-              <Text style={styles.sectionText}>{'All Orders'}</Text>
+              <Text style={styles.sectionText}>{'주문 내역'}</Text>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => setAscendingOrder(!ascendingOrder)}
               style={[
                 globalStyles.flexDirectionRow,
@@ -204,7 +246,7 @@ const OrderHistoryHomeScreen = ({navigation}) => {
               <View style={globalStyles.marginLeft5}>
                 {ascendingOrder ? <PriceDown /> : <PriceUp />}
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           {/*------- All Orders List Title End ------*/}
 
@@ -217,7 +259,8 @@ const OrderHistoryHomeScreen = ({navigation}) => {
                 //maxToRenderPerBatch={1} // Reduce number in each render batch
                 // windowSize={7} // Reduce the window size
                 showsVerticalScrollIndicator={false}
-                data={orderitem}
+                //data={orderitem}
+                data={orderitem.sort((a, b) => (String(b.timezone)).localeCompare(String(a.timezone)))}
                 renderItem={renderListRows}
                 // getItemLayout={getOrderHistoryItemLayout}
                 keyExtractor={(item, index) => index.toString()}
