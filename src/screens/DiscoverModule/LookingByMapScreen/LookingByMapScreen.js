@@ -70,7 +70,7 @@ const LookingByMapScreen = props => {
     //navigate("MenuScreen");
   }
   console.log("이시 다 " +JSON.stringify(props.googleMarker[0].latitude) )
-
+    
   return (
     <View
       style={[
