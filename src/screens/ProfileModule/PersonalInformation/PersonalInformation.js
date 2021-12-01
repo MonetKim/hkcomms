@@ -54,10 +54,10 @@ const PersonalInformation = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [emailValid, setEmailValid] = useState('');
   const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
+  const loginInformations = useSelector(state => state.loginInfomations, shallowEqual );
 
-
-  //console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation[0].name));
-
+  console.log('로그인 페이지 졲  정보 습득 완료' + JSON.stringify(loginInformation));
+  console.log('로그인 페이지 졲  임포메이션s   ' + JSON.stringify(loginInformations));
   //Profile Picture Placeholder and Camera Icon Definition
   const ReturnCameraIcon = () => {
     return (

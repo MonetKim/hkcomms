@@ -19,20 +19,9 @@ import globalStyles from '../assets/styles/globalStyles';
 
 const reducerInitialState = {
   personalInfo : [],
-  onSignup:[],
   caseInsert : [],
-  loginInfomations : [],
-  passwordFinder:[],
-  isEmailCheck: [],
-  testis:[],
   passChange : [],
-  menudata:[],
-  orderitem:[],
-  orderdetail:[],
-  optionitem:[],
-  category: 1,
   passUpdate : [],
-  authToken: null, 
   onSignup: [],
   loginInfomations: [],
   passwordFinder: [],
@@ -91,11 +80,10 @@ const reducerInitialState = {
 };
 
 const reducerLogoutState = {
-  onSignup:[],
-  passChange : [],
+  personalInfo : [],
   caseInsert : [],
-  personalInfo:[],
-  loginInfomations : [],
+  passChange : [],
+  passUpdate : [],
   onSignup: [],
   loginInfomations: [],
   passwordFinder: [],
@@ -108,7 +96,6 @@ const reducerLogoutState = {
   cartitem: [],
   carttemp: [],
   category: 1,
-  passUpdate: [],
   storeinfo: [],
   current_store_id: null,
   current_store_name: null,
@@ -247,6 +234,8 @@ const reducer = (state = reducerInitialState, action) => {
         onSignup: action.data,
       }
     case ActionType.loginInfomation:
+      console.log('리덕스 로그인 페이지 졲  정보 습득 완료' + JSON.stringify(state.loginInformation));
+  console.log('리덕스 로그인 페이지 졲   임포메이션s   ' + JSON.stringify(state.loginInformations));
       return {
         ...state,
         loginInfomation: action.data,
@@ -386,9 +375,6 @@ const reducer = (state = reducerInitialState, action) => {
         //newArray[i].store_dist = action.payload.coords.latitude;
 
     }
-    console.log("기존스토어 데이터가"+JSON.stringify(state.storeinfo) );
-
-    console.log("스토어위치 재전시하기 "+JSON.stringify(newArray) );
     return {
         ...state,
         storedist: newArray,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
