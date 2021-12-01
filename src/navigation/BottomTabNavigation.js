@@ -141,6 +141,21 @@ const DiscoverModuleStackNavigator = () => {
 /*----------------- Discover Module Tab Menu Screens End ---------------------*/
 
 /*----------------- Order History Module Tab Menu Screens Start ---------------------*/
+
+const MenuModule = createStackNavigator();
+const MenuModuleStackNavigator = () => {
+  return (
+  <MenuModule.Navigator>
+    <MenuModule.Screen 
+      name = {Routes.SliderSelectedScreen}
+      component = {SliderSelectedScreen}
+      options={{headerShown: false}}
+    />         
+  </MenuModule.Navigator>
+  );
+}
+
+
 const OrderHistoryModule = createStackNavigator();
 const OrderHistoryModuleStackNavigator = () => {
   return (
@@ -341,6 +356,37 @@ const BottomTabNavigator = ({initialRouteName, subInitialRootName}) => {
         }}
         component={DiscoverModuleStackNavigator}
       />
+
+      <Tab.Screen
+            name={Routes.SliderSelectedScreen}
+            options={{
+              tabBarLabel: '메뉴',
+              activeTabBarIcon: (
+                <Image 
+                  source={require('../assets/placeholders/home.png')}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    borderRadius: 3,
+                  }}
+                />
+              ),
+              tabBarIcon: (
+                <Image
+                  source={require('../assets/placeholders/home.png')}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    borderRadius: 3,
+                  }}
+                />
+              ),
+            }}
+            component={MenuModuleStackNavigator}
+    />
+
+
+
       <Tab.Screen
         name={Routes.HistoryTabMenu}
         options={{

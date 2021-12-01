@@ -523,7 +523,6 @@ const fetchGetmenu = () => {
 
 //-------------------------------------오더갖고오기----------------------------------------------------------------------
 const fetchOrderSuccess = (item) => {
-  console.log("오더아이템 "+ JSON.stringify(item) );
   return {
       type: ActionType.getorderitem,
       payload: item
@@ -552,7 +551,6 @@ const fetchOrderResultDetailRequest  =() =>{
 }
 const fetchOrderResultDetailSuccess  =(item) =>{
   
-  console.log("상세오더아이템 "+ JSON.stringify(item) );
   return {
       type: ActionType.GET_ORDERRESULTDETAIL_SUCCESS,
       payload :item

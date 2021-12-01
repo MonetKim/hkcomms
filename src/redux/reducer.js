@@ -87,7 +87,7 @@ const reducerLogoutState = {
   onSignup: [],
   //loginInfomation: [],
   passwordFinder: [],
-  isEmailCheck: [],
+  isEmailCheck: [], 
   testis: [],
   menudata: [],
   orderitem: [],
@@ -234,8 +234,6 @@ const reducer = (state = reducerInitialState, action) => {
         onSignup: action.data,
       }
     case ActionType.loginInfomation:
-      console.log('리덕스 로그인 페이지 졲  정보 습득 완료' + JSON.stringify(state.loginInformation));
-  console.log('리덕스 로그인 페이지 졲   임포메이션s   ' + JSON.stringify(state.loginInformations));
       return {
         ...state,
         loginInfomation: action.data,

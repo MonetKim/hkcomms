@@ -10,6 +10,7 @@ import BottomTabNavigator from '../BottomTabNavigation';
 import ChatScreen from '../../screens/ChatModule/ChatScreen/ChatScreen';
 import FavoriteProductsHomeScreen from '../../screens/FavoriteProductsModule/FavoriteProductsHomeScreen/FavoriteProductsHomeScreen';
 import OrderHistoryHomeScreen from '../../screens/OrderHistoryModule/OrderHistoryHomeScreen/OrderHistoryHomeScreen';
+import SliderSelectedScreen from '../../screens/DiscoverModule/SliderSelectedScreen/SliderSelectedScreen';
 
 //Utility
 import Routes from '../Routes';
@@ -29,14 +30,35 @@ const DiscoverModuleMenu = () => {
         )}
       </Stack.Screen>
       <Stack.Screen
-        name={Routes.ChatScreen}
+        name={Routes.ChatScreen} 
         component={ChatScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
   );
 };
-/*==================== Discover Module Menu End =========================*/
+/*==================== Discover Menu End =========================*/
+const MenuModuleMenu = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="BottomTabBar" options={{headerShown: false}}>
+        {props => (
+          <BottomTabNavigator
+            {...props}
+            initialRouteName={Routes.SliderSelectedScreen}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name={Routes.SliderSelectedScreen}
+        component={SliderSelectedScreen}
+        options={{headerShown: true}}
+      />
+    </Stack.Navigator>
+  );
+};
+
+
 
 /*==================== Profile Module Menu Start =========================*/
 const ProfileModuleMenu = () => {
@@ -206,9 +228,12 @@ const SupportModuleMenu = () => {
     </Stack.Navigator>
   );
 };
+
+ 
 /*==================== Support Module Menu End =========================*/
-export {
+export {  
   CouponModuleMenu,
+  MenuModuleMenu,
   DiscoverModuleMenu,
   FavoriteProductsModuleMenu,
   OrderHistoryModuleMenu,

@@ -52,6 +52,8 @@ const Routes = {
   SupportHomeScreen: 'SupportHomeScreen',
 
   //Module Menus
+ 
+  MenuModuleMenu : 'MenuModuleMenu',
   CouponModuleMenu: 'CouponModuleMenu',
   DiscoverModuleMenu: 'DiscoverModuleMenu',
   FavoriteProductsModuleMenu: 'FavoriteProductsModuleMenu',
