@@ -39,6 +39,7 @@ import {pushScreen} from '../utility/NavigationService';
 
 //Navigators
 import {
+  PaymentWebViewMenu, 
   CouponModuleMenu,
   DiscoverModuleMenu,
   FavoriteProductsModuleMenu,
@@ -69,6 +70,11 @@ const Screens = ({style}) => {
           <Stack.Screen
             name={Routes.DiscoverModuleMenu}
             component={DiscoverModuleMenu}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name={Routes.PaymentWebView}
+            component={PaymentWebViewMenu}
             options={{headerShown: false}}
           />
 

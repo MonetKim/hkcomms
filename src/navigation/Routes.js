@@ -64,6 +64,10 @@ const Routes = {
   SettingModuleMenu: 'SettingModuleMenu',
   ShareEarnModuleMenu: 'ShareEarnModuleMenu',
   SupportModuleMenu: 'SupportModuleMenu',
+
+
+  //Payment Webview
+  PaymentWebView : 'PaymentWebView'
 };
 
 export default Routes;

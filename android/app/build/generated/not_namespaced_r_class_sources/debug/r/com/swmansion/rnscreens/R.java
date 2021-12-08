@@ -3620,10 +3620,10 @@ public final class R {
     public static final class xml {
         private xml() {}
 
-        public static final int rn_dev_preferences = 0x7f130001;
-        public static final int standalone_badge = 0x7f130003;
-        public static final int standalone_badge_gravity_bottom_end = 0x7f130004;
-        public static final int standalone_badge_gravity_bottom_start = 0x7f130005;
-        public static final int standalone_badge_gravity_top_start = 0x7f130006;
+        public static final int rn_dev_preferences = 0x7f130002;
+        public static final int standalone_badge = 0x7f130004;
+        public static final int standalone_badge_gravity_bottom_end = 0x7f130005;
+        public static final int standalone_badge_gravity_bottom_start = 0x7f130006;
+        public static final int standalone_badge_gravity_top_start = 0x7f130007;
     }
 }

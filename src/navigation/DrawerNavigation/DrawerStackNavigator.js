@@ -11,7 +11,7 @@ import ChatScreen from '../../screens/ChatModule/ChatScreen/ChatScreen';
 import FavoriteProductsHomeScreen from '../../screens/FavoriteProductsModule/FavoriteProductsHomeScreen/FavoriteProductsHomeScreen';
 import OrderHistoryHomeScreen from '../../screens/OrderHistoryModule/OrderHistoryHomeScreen/OrderHistoryHomeScreen';
 import SliderSelectedScreen from '../../screens/DiscoverModule/SliderSelectedScreen/SliderSelectedScreen';
-
+import PaymentWebView from '../../screens/PaymentWebView/PaymentWebViewScreen';
 //Utility
 import Routes from '../Routes';
 
@@ -37,6 +37,30 @@ const DiscoverModuleMenu = () => {
     </Stack.Navigator>
   );
 };
+/*==================== PaymenrWebView End =========================*/
+const PaymentWebViewMenu = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="BottomTabBar" options={{headerShown: false}}>
+        {props => (
+          <BottomTabNavigator
+            {...props}
+            initialRouteName={Routes.PaymentWebView}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen
+        name={Routes.PaymentWebView}
+        component={PaymentWebView}
+        options={{headerShown: true}}
+      />
+    </Stack.Navigator>
+  );
+
+}
+
+
+
 /*==================== Discover Menu End =========================*/
 const MenuModuleMenu = () => {
   return (
@@ -232,6 +256,7 @@ const SupportModuleMenu = () => {
  
 /*==================== Support Module Menu End =========================*/
 export {  
+  PaymentWebViewMenu,
   CouponModuleMenu,
   MenuModuleMenu,
   DiscoverModuleMenu,

@@ -57,6 +57,8 @@ import cl.json.RNSharePackage;
 import com.rssignaturecapture.RSSignatureCapturePackage;
 // react-native-svg
 import com.horcrux.svg.SvgPackage;
+// react-native-webview
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 
 public class PackageList {
   private Application application;
@@ -124,7 +126,8 @@ public class PackageList {
       new RNScreensPackage(),
       new RNSharePackage(),
       new RSSignatureCapturePackage(),
-      new SvgPackage()
+      new SvgPackage(),
+      new RNCWebViewPackage()
     ));
   }
 }

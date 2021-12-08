@@ -1,4 +1,4 @@
-# Referenced at D:\1130\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:33
+# Referenced at D:\1201\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:33
 -keep class androidx.core.app.CoreComponentFactory { <init>(); }
-# Referenced at D:\1130\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:33
+# Referenced at D:\1201\android\app\build\intermediates\merged_manifests\debug\AndroidManifest.xml:33
 -keep class com.foodapp.MainApplication { <init>(); }

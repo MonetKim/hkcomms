@@ -44,10 +44,8 @@ const paymentOptionsDisplayedArr = [
 ];
 /*-------------------- Payment Method Options Displayed Data End --------------------*/
 
-const PaymentMethodHomeScreen = ({navigation}) => {
-  
-  const [optionArray, setOptionArray] = useState(paymentOptionsDisplayedArr);
-  
+const PaymentMethodHomeScreen = ({navigation}) => {  
+  const [optionArray, setOptionArray] = useState(paymentOptionsDisplayedArr);  
   const [cardNumber, setCardNumber] = useState('');
   const [expirationMonth, setExpirationMonth] = useState('');
   const [expirationYear, setExpirationYear] = useState('');

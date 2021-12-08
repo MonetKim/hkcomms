@@ -10,6 +10,7 @@ import {
   Platform,
   TextInput,
   Image,
+  BackHandler
 } from 'react-native';
 
 //Third Party
@@ -30,6 +31,10 @@ import Edit from '../../../assets/icons/discoverMenuIcons/editSVG.svg';
 import DeleteCross from '../../../assets/icons/storeIcons/deleteSVG.svg';
 import DateIcon from '../../../assets/icons/storeIcons/dateSVG.svg';
 import TimeIcon from '../../../assets/icons/storeIcons/inactive/inactive_clockSVG.svg';
+
+//View
+import PaymentWebView from '../../PaymentWebView/PaymentWebViewScreen';
+
 
 //Utils
 import Action from '../../../redux/action';
@@ -83,8 +88,7 @@ const CheckOutScreen = ({ navigation, route }) => {
 
 
   function total() { //데이터카트에 닮긴 옵션가격도 추가해주자.
-    var total = 0;
-    console.log("체크박스 중복 표시 "+ JSON.stringify(cartitem));
+    var total = 0;   
     for (var i = 0; i < cartitem.length; i++) {
       total = total + ((cartitem[i].price
         + findOptionPrice(cartitem[i].menu_option_insert)
@@ -327,8 +331,8 @@ const CheckOutScreen = ({ navigation, route }) => {
                     titleFontColor={allColors.white}
                     titleFontWeight={'400'}
                     titleFontFamily={FONT_FAMILY.RobotoRegular}
-                    type={BUTTON_TYPE.SECONDARY}
-                    onPress={() => navigate(Routes.DeliveryProcessScreen)}
+                    type={BUTTON_TYPE.SECONDARY} 
+                    onPress={() => navigate(Routes.PaymentWebView)} 
                 />
               </View>
               {/*------ Checkout Button End -----------*/}
