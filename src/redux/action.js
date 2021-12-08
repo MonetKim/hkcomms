@@ -360,7 +360,6 @@ const cardUpdate = (cardNumber, expirationMonth, expirationYear, lastname, index
     })
     //.then(response => response.json())
     .then((response) => {
-      console.log(' 카드 등록 성공이에요' + JSON.stringify(response.data));
       dispatch(loginInfomations(response.data));  
     })
   }
@@ -449,7 +448,6 @@ const passwordFinder = (email,Phonenum) => {
   };
 //-------------------------------------유저정보----------------------------------------------------------------------
  const loginStatus = (comments) => {
-  console.log("에라이 집가 "+ comments);
     return {
       type: ActionType.loginStatus,
       payload: comments
@@ -486,7 +484,6 @@ const passChange = (index_id) => {
       })
             //.then(response => response.json())
             .then((response) => {
-              console.log('성공이에요' + JSON.stringify(response.data));
                 configureAPI({ token: `Bearer ${response.data}` });
                 dispatch(loginInfomations(response.data));
                 dispatch(isLoggedIn(true));
@@ -684,18 +681,18 @@ const fetchStoreFailure = (error) =>{
 
 
 const fetchStores =() =>{
-  return (dispatch) =>{
+  return async(dispatch) =>{
       
       // dispatch(fetchCommentRequest())
       // fetch("http://jsonplaceholder.typicode.com/comments")
-      dispatch(fetchStoreRequest())
-      API.post("/user/store", {
+      await dispatch(fetchStoreRequest())
+      await API.post("/user/store", {
           
         })
       //.then(response => response.json())
       .then((response) => {
           configureAPI({ token: `Bearer ${response.data}` });
-          dispatch(fetchStoreSuccess(response.data))
+          dispatch(fetchStoreSuccess(response.data));
       })
       
       .catch(error=> dispatch(fetchStoreFailure(error)))
@@ -738,6 +735,25 @@ const DeleteCartitem = (item, menu_option_insert, taste_option_insert, add_optio
     payadd: add_option_insert,
   }
 }
+//---------------------------카트아이템 전체 삭제하기-------------------------------------------------------------
+const DeleteAllCart = () =>{
+  return {
+    type: ActionType.REMOVE_ALL_CART,
+  }
+}
+
+
+//-----------------------------------------------------------------------------------------------------------
+
+//---------------------------메뉴 카테고리 별 필터-------------------------------------------------------------
+const SetCategoryData = (item) =>{
+  return {
+    type: ActionType.SET_MENU_CATEGORY_DATA,
+    payload: item,
+  }
+}
+
+
 //-----------------------------------------------------------------------------------------------------------
 
 
@@ -783,6 +799,8 @@ const configureAPI = ({ token }) => {
 
   DeleteCartitem, // 카트아이템삭제하기
 
+  DeleteAllCart,  
+  SetCategoryData,
 
 
   addPayPalAddress,

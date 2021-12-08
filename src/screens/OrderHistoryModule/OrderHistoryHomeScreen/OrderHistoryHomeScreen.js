@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 //Third party
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch,shallowEqual} from 'react-redux';
 
 //Components
 import Header from '../../../components/Header/Header';
@@ -50,6 +50,9 @@ const OrderHistoryHomeScreen = ({navigation}) => {
   const [offset, setOffset] = useState(1);
   const [noDataAvailable, setNoDataAvailable] = useState(false);
   const [ascendingOrder, setAscendingOrder] = useState(true);
+  const loginInformation = useSelector(state => state.loginInfomation, shallowEqual );
+  
+  console.log('주문목록' + JSON.stringify(loginInformation[0].index_id));
 
   //get order history data and update
   useEffect(() => {
@@ -58,14 +61,13 @@ const OrderHistoryHomeScreen = ({navigation}) => {
 
   //오더 아이템 갖고오기
   useEffect(() => {
-    dispatch(Action.getOrderresults(22));
-    dispatch(Action.getOrderresults(22)); // 이부분 아이디값 갖고와서 넣어주기
+    dispatch(Action.getOrderresults(loginInformation[0].index_id)); // 이부분 아이디값 갖고와서 넣어주기
   }, []);
   const orderitem = useSelector(state => state.orderitem);
   const orderdetail = useSelector(state => state.orderdetail);
   //오더상세 아이템 갖고오기
   useEffect(() => {
-    dispatch(Action.getOrderresultsDetail(22));
+    dispatch(Action.getOrderresultsDetail(loginInformation[0].index_id));
   }, []);
 
   useEffect(() => {

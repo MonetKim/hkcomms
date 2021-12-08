@@ -222,7 +222,6 @@ const InvoiceScreen = ({ navigation, route }) => {
 
     function total(item) { //데이터카트에 닮긴 옵션가격도 추가해주자. //여기선 각자 해야함...
         var total = 0;
-        console.log(JSON.stringify(optionitem)+" 옵션 가격갖고오기   "+JSON.stringify(item))
         const cart = item;
         total = total + ((cart.menu_price
           + findOptionPrice(cart.menu_option)

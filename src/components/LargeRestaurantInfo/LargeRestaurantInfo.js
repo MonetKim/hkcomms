@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 //Component
 import CachableImage from '../CachableImage/CachableImage';
+import BorderDivider from '../BorderDivider/BorderDivider';
 
 //Utils
 import globalStyles from '../../assets/styles/globalStyles';
@@ -15,6 +16,7 @@ import * as images from '../../assets/images/map';
 class LargeRestaurantInfo extends PureComponent { 
   render() {
     return (
+      <View>
       <TouchableOpacity
         onPress={() => this.props.onPress()}
         style={styles.mainView}>
@@ -57,10 +59,15 @@ class LargeRestaurantInfo extends PureComponent {
 
           {/*--Delivery Time Start--*/}
           {
+          this.props.store_dist != -1 
+          ?  
             this.props.store_dist >= 1
               ? <Text style={styles.deliveryTimeText}>거리  {this.props.store_dist}KM</Text>
               : <Text style={styles.deliveryTimeText}>거리  {Number(this.props.store_dist) * 1000}M</Text>
+          
+          :  <View></View>
           }
+          
           {/*--Delivery Time End Start--*/}
         </View>
         <View
@@ -82,6 +89,17 @@ class LargeRestaurantInfo extends PureComponent {
           {/*--Delivery Fee End--*/}
         </View>
       </TouchableOpacity>
+      <View>
+        <BorderDivider
+          containerTopMargin={12}
+          containerBottomMargin={20}
+          activeAreaAlignment={'left'}
+          activeAreaWidth={0}
+          isActiveOnly={false}
+          activeAreaHeight={1}
+        />
+      </View>
+      </View>
     );
   }
 }

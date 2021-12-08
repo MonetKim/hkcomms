@@ -13,7 +13,7 @@ const NoInformationText = () => {
         globalStyles.fontSize20,
         globalStyles.textCenter,
       ]}>
-      {'No Items to be displayed'}
+      {'아무것도 없습니다.'}
     </Text>
   );
 };

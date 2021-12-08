@@ -52,8 +52,6 @@ import {loadPagination} from '../../../utility/Helper';
 import {navigate} from '../../../utility/NavigationService';
 import Routes from '../../../navigation/Routes';
 
-//Dummy Data
-import SubItemsDummy from '../../../DummyData/SubItemsDummyData';
 
 //right title icon definition with the function names
 const rightIconArray = [
@@ -66,7 +64,7 @@ const TitleWithTopIconView = props => {
   const [searchView, setSearchView] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [headerTitle, setHeaderTitle] = useState(
-    "MENU",
+    "메뉴",
   );
 
   //on click of right icons, what functions should be shown
@@ -160,22 +158,22 @@ const CategoryView = () => {
   return (
     <View style={styles.navs}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(1))} style={[styles.navs_link, category==1 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(1))} style={[styles.navs_link, category==1 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>AMERICANO</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(2))} style={[styles.navs_link, category==2 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(2))} style={[styles.navs_link, category==2 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>COFFEE</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(3))} style={[styles.navs_link, category==3 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(3))} style={[styles.navs_link, category==3 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>NON-COFFEE</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(4))} style={[styles.navs_link, category==4 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(4))} style={[styles.navs_link, category==4 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>ESPRESSO</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(5))} style={[styles.navs_link, category==5 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(5))} style={[styles.navs_link, category==5 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>BAKERY</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => dispatch(Action.changeCategory(6))} style={[styles.navs_link, category==6 ? styles.navs_link__active : ""]}>
+          <TouchableOpacity onPress={() => dispatch(Action.SetCategoryData(6))} style={[styles.navs_link, category==6 ? styles.navs_link__active : ""]}>
             <Text style={styles.navs_link__text}>MD</Text>
           </TouchableOpacity>
           </ScrollView>
@@ -193,120 +191,27 @@ const CategoryView = () => {
 /* --- Start Best Dish Menu --- */
 const ListingView = () => {
   const dispatch = useDispatch();
-  const [itemList, setItemList] = useState([]);
-  const [blockView, setBlockView] = useState(true);
-  const [listView, setListView] = useState(false);
-  const [offset, setOffset] = useState(1);
-  const [noDataAvailable, setNoDataAvailable] = useState(false);
-  const [ascendingOrder, setAscendingOrder] = useState(true);
-
-  //get data for sub items in the redux store
-  const storeSubItemList = useCallback(
-    () => dispatch(Action.storeSubItemData(SubItemsDummy.data)),
-    [dispatch],
-  );
-  const subItems = useSelector(state => state.subItems, []);
-  const favoritedItems = useSelector(state => state.favoritedItems, []);
-  
- 
-  
-  //update after store update
-  useEffect(() => {
-    storeSubItemList();
-  }, []);
 
   //매뉴 아이템 갖고오기 이부분 이전에 갖고오는걸로하자.
   useEffect(() => {
     dispatch(Action.fetchGetmenu());
-    console.log("지금여기 타고잇냐?");
   }, []);
   useEffect(() => {
     dispatch(Action.fetchGetOption());
-    console.log("옵션데이터 서버에서 갖고오기");
   }, []);
 
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const menudata = useSelector(state => state.menudata);
+  const category_data = useSelector(state => state.category_data);
+  const category = useSelector(state => state.category, [category]);
+
+
+
+
+
+
   
-//이부분 usecallback 사용할지 정해서 잘사욧ㅇ하기
 
-
-const category = useSelector(state => state.category, [category]);
-
-  //pagination for items being viewed
-  useEffect(() => {
-    pagination(subItems, 2, offset);
-  }, [subItems]);
-
-  //pagination for items being viewed
-  useEffect(() => {
-    if (offset > 1) {
-      pagination(subItems, 2, offset);
-    }
-  }, [offset]);
-
-  //sort them in order
-  useEffect(() => {
-    if (itemList.length > 0) {
-      setItemList(Array.from(itemList).reverse());
-    }
-  }, [ascendingOrder]);
-
-  //pagination function
-  function pagination(array, page_size, page_number) {
-    let temp = loadPagination(array, page_size, page_number);
-    if (temp.length > 0) {
-      if (ascendingOrder) {
-        setItemList([...itemList, ...temp]);
-      } else {
-        setItemList([...temp, ...itemList]);
-      }
-      if (subItems.length <= itemList.length + page_size) {
-        setNoDataAvailable(true);
-      } else {
-        setNoDataAvailable(false);
-      }
-    } else {
-      setNoDataAvailable(true);
-    }
-  }
-
-  //load more button if there are many items available in the list
-  const LoadMoreButton = () => (
-    <View style={globalStyles.marginTop30}>
-      {noDataAvailable ? null : (
-        <LongButton
-          title={'LOAD MORE 999'}
-          titleFontSize={18}
-          titleFontColor={allColors.black}
-          titleFontWeight={'300'}
-          titleFontFamily={FONT_FAMILY.RobotoCondensedLight}
-          type={BUTTON_TYPE.LIGHT}
-          onPress={() => console.log(JSON.stringify(isLoggedIn)+"  메뉴데이터 콘솔 찍어보기!!    "+JSON.stringify(menudata))}
-        />
-      )}
-    </View>
-  );
-
-  //renders the rows when the item is viewed in 100% width
-  const renderListRows = ({item}) => {
-    let props = this.props;
-    return (
-      <FoodItem
-        key={'food_item_row' + item.id}
-        title={item.title}
-        rating={item.rating}
-        description={item.description}
-        deliveryFee={'$' + item.deliveryFee}
-        ratingNum={item.review}
-        isRateVisible={false}
-        topRightIconComponent={favoritedItems.indexOf(item.id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
-        onTopRightIconPress={() =>  dispatch(Action.toggleFavoriteItem(item.id))}
-        addToCartOnPress={() => navigate(Routes.AddToCartScreen)}
-        imageIconPath={item.imageIconPath}
-      />
-    );
-  };
 
   function onClickShowMenu(menu_id, item) {
     dispatch(Action.showMenuDetail(menu_id))
@@ -316,7 +221,6 @@ const category = useSelector(state => state.category, [category]);
 
   //renders rows of two items in the same row
   const renderBlockRows = ({item, index}) => {
-    if(category == item.category){
       return (
         <SingleFoodItemInfo
           key={'block_row_' + index}
@@ -327,6 +231,8 @@ const category = useSelector(state => state.category, [category]);
           //description={item.description}
           onPress={() => onClickShowMenu(item.menu_id,item)}
           price={item.price}
+          //category= {category == item.category ? true : false}
+          category= {true}
           showCartIcon={true}
           isAddToCartVisible={false}
           //topRightIconComponent={favoritedItems.indexOf(item.menu_id) >=0 ? <FavoriteActiveIcon /> : <FavoriteInactiveIcon /> }
@@ -335,8 +241,6 @@ const category = useSelector(state => state.category, [category]);
           imageIconPath={item.imageview}
         />
       );
-    }
-    return <View></View>
   };
 //스토어 저장위치 전시하기
 
@@ -350,7 +254,7 @@ const category = useSelector(state => state.category, [category]);
         globalStyles.flex,
         globalStyles.justifyCenter,
       ]}>
-      {itemList.length > 0 ? (
+      {category_data.length > 0 ? (
         <View style={globalStyles.flex}>
           {/* ------ List Settings Start ----- */}
           <View
@@ -369,65 +273,11 @@ const category = useSelector(state => state.category, [category]);
                 globalStyles.flex,
               ]}>
               {/*------ Choose a list type to see the food items with start-------------*/}
-              <View
-                style={[
-                  globalStyles.flexDirectionRow,
-                  globalStyles.alignItemsCenter,
-                ]}>
-                <Text style={styles.titleText}>{'List Items:'}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setBlockView(true);
-                    setListView(false);
-                  }}
-                  style={styles.verticalStyle}>
-                  {blockView ? (
-                    <ActiveBlock height={20} width={20} />
-                  ) : (
-                    <InActiveBlock height={18} width={18} />
-                  )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setListView(true);
-                    setBlockView(false);
-                  }}
-                  style={styles.verticalStyle}>
-                  {listView ? (
-                    <ActiveList height={20} width={20} />
-                  ) : (
-                    <InActiveList height={20} width={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
+              
               {/*------ Choose a list type to see the food items with end-------------*/}
 
               {/*------ List item filters start -------------*/}
-              <View
-                style={[
-                  globalStyles.flexDirectionRow,
-                  globalStyles.alignItemsCenter,
-                ]}>
-                <TouchableOpacity style={globalStyles.marginRight5}>
-                  <Menu height={15} width={15} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => setAscendingOrder(!ascendingOrder)}
-                  style={[
-                    styles.horizontalStyle,
-                    globalStyles.flexDirectionRow,
-                    globalStyles.alignItemsCenter,
-                    globalStyles.marginLeft5,
-                  ]}>
-                  <Text style={styles.titleText}>{'Price:'}</Text>
-                  {ascendingOrder && <PriceDown />}
-                  {!ascendingOrder && <PriceUp
-                    height={20}
-
-                  />}
-                </TouchableOpacity>
-              </View>
+              
               {/*------ List item filters end -------------*/}
             </View>
           </View>
@@ -436,32 +286,12 @@ const category = useSelector(state => state.category, [category]);
           {/* ------ Choose Render FlatList according to the user list type selection ----- */}
           <View
             style={[globalStyles.horizontalGeneralPadding, globalStyles.flex]}>
-            {blockView ? (
               <FlatList
-              data={menudata}
+              data={category_data}
               numColumns={2}
               renderItem={renderBlockRows}
               keyExtractor={(item, index) => index.toString()}
             />
-            ) : (
-              <FlatList
-                //performance settings
-                //initialNumToRender={2} // Reduce initial render amount
-                //maxToRenderPerBatch={1} // Reduce number in each render batch
-                // windowSize={7} // Reduce the window size
-                key={'2'}
-                showsVerticalScrollIndicator={false}
-                data={itemList}
-                renderItem={renderListRows}
-                contentContainerStyle={[
-                  globalStyles.paddingTop15,
-                  globalStyles.commonScrollViewPadding,
-                ]}
-                ItemSeparatorComponent={() => <View style={{height: 15}} />}
-                keyExtractor={(item, index) => index.toString()}
-                ListFooterComponent={() => <LoadMoreButton />}
-              />
-            )}
           </View>
         </View>
       ) : (

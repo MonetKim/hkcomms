@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, {useState, useEffect, useCallback} from 'react';
-import {SafeAreaView, FlatList, Text, View, ScrollView, Image,Platform, PermissionsAndroid , Alert} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { SafeAreaView, FlatList, Text, View, ScrollView, Image, Platform, PermissionsAndroid, Alert , TextInput } from 'react-native';
 
 //Third Party
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //Components
 import BorderDivider from '../../../components/BorderDivider/BorderDivider';
@@ -25,12 +25,13 @@ import HomeLocation from '../../../assets/icons/generalIcons/locationIcons/red_h
 import Action from '../../../redux/action';
 import globalStyles from '../../../assets/styles/globalStyles';
 import Routes from '../../../navigation/Routes';
-import {BUTTON_TYPE, FONT_FAMILY} from '../../../constants/constants';
-import {allColors} from '../../../assets/styles/mainColors';
-import {loadPagination} from '../../../utility/Helper';
-import {horizontalScale, verticalScale} from '../../../utility/Scale';
-import {navigate} from '../../../utility/NavigationService';
+import { BUTTON_TYPE, FONT_FAMILY } from '../../../constants/constants';
+import { allColors } from '../../../assets/styles/mainColors';
+import { loadPagination } from '../../../utility/Helper';
+import { horizontalScale, verticalScale } from '../../../utility/Scale';
+import { navigate } from '../../../utility/NavigationService';
 import Geolocation from '@react-native-community/geolocation';
+
 
 //Dummy Data
 import RestaurantListDummy from '../../../DummyData/RestaurantListDummyData.json';
@@ -39,7 +40,7 @@ import RestaurantListDummy from '../../../DummyData/RestaurantListDummyData.json
 
 /* --- Start Restaurant List --- */
 
-const RestaurantListView = React.memo(({route}) => {
+const RestaurantListView = React.memo(({ route }) => {
   const dispatch = useDispatch();
   //store the restaurant list in redux
   const storeRestaurantList = useCallback(
@@ -52,86 +53,93 @@ const RestaurantListView = React.memo(({route}) => {
   const [offset, setOffset] = useState(1);
   const [noDataAvailable, setNoDataAvailable] = useState(false);
 
-  const storedist = useSelector(state => state.storedist, []);
-    //현재 위치 갖고오기 테스트
-     async function requestLocationPermission() 
-{
-  
-  
-  //이부분 테스트해봐야함 아이폰일때~~~
-  if (Platform.OS === 'ios') {
-    Geolocation.requestAuthorization();
-    Geolocation.setRNConfiguration({
-      skipPermissionRequests: false,
-     authorizationLevel: 'whenInUse',
-   });
-  }
+  const [searchstore, setSearchstore] = useState("");
+
+  const start_lat_compare = useSelector(state => state.start_lat);
+  const storeinfo = useSelector(state => state.storeinfo);
+  const storedist = useSelector(state => state.storedist); //여기서 디스턴스 한번만 더해보자
+  //console.log("왜 막상 여긴 이상하게 나오냐 " +JSON.stringify(storedist))
+  //현재 위치 갖고오기 테스트
+  // async function requestLocationPermission() {
+
+
+  //   //이부분 테스트해봐야함 아이폰일때~~~
+  //   if (Platform.OS === 'ios') {
+  //     Geolocation.requestAuthorization();
+  //     Geolocation.setRNConfiguration({
+  //       skipPermissionRequests: false,
+  //       authorizationLevel: 'whenInUse',
+  //     });
+  //   }
 
 
 
 
-  if (Platform.OS === 'android') {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'Example App',
-        'message': 'Example App access to your location '
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {//여기서 기본값으로 세팅하자..
+  //   if (Platform.OS === 'android') {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         'title': 'Example App',
+  //         'message': 'Example App access to your location '
+  //       }
+  //     )
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {//여기서 기본값으로 세팅하자..
 
-      console.log("You can use the location     ")
-      alert("You can use the location   " +Platform.OS+' '+ granted);
-      geoLocation();
-    } else {
-      console.log("location permission denied     ")
-      alert("Locationㄴㄴ permission denied  " +Platform.OS+' '+ granted);
-      //여기서 기본값으로 세팅하자..
+  //       console.log("You can use the location     ")
+  //       alert("You can use the location   " + Platform.OS + ' ' + granted);
+  //       geoLocation();
+  //     } else {
+  //       console.log("location permission denied     ")
+  //       alert("Locationㄴㄴ permission denied  " + Platform.OS + ' ' + granted);
+  //       //여기서 기본값으로 세팅하자..
 
-    }
-  }
-}
-    
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLogitude] = useState(null);
+  //     }
+  //   }
+  // }
 
-    
-    const geoLocation = () => {
-      console.log("적어도 시작은 해야지 " );
-        Geolocation.getCurrentPosition(
-            position => {
-                var lat = JSON.stringify(position.coords.latitude);
-                var lon = JSON.stringify(position.coords.longitude);
-                console.log(lon + ' 위경도전시 ' +lat)
-                setLatitude(lat);
-                setLogitude(lon);
-                dispatch(Action.SetCurLocation(position.coords));
-                dispatch(Action.SetCurDistance(position.coords));
-                
-               
-                console.log("거리계산 리스트는 " + JSON.stringify(storedist));
-            },
-            error => { console.log(error.code, error.message); },
-            {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
-        )
-    }
+  const [latitude, setLatitude] = useState(77);
+  const [longitude, setLogitude] = useState(77);
+  const curAddress = useSelector(state => state.restaurantList, []);
+  //dispatch(Action.SetCurDistance(position.coords));
+
+  // const geoLocation = () => {
+  //   console.log("적어도 시작은 해야지 ");
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       var lat = JSON.stringify(position.coords.latitude);
+  //       var lon = JSON.stringify(position.coords.longitude);
+  //       console.log(lon + ' 위경도전시 ' + lat)
+  //       setLatitude(lat);
+  //       setLogitude(lon);
+  //       dispatch(Action.SetCurLocation(position.coords));
+  //       dispatch(Action.SetCurDistance(position.coords));
 
 
+  //       console.log("거리계산 리스트는 " + JSON.stringify(storedist));
+  //     },
+  //     error => { console.log(error.code, error.message); },
+  //     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+  //   )
+  // }
 
+
+  useEffect(() => {
+    dispatch(Action.SetCurDistance(1));
+  }, []);
 
   //updates after redux store update   왜 이렇게 하는지 알필요가잇어요~~
   useEffect(() => {
     storeRestaurantList();
   }, []);
 
-  useEffect(() => {
-    dispatch(Action.fetchStores());
-    requestLocationPermission();
-    //geoLocation();
-    console.log(latitude+"스토어 서버에서 인포갖고옴"+longitude);
-  }, []);
+  // useEffect(() => {
+  //   dispatch(Action.fetchStores());
+  //   requestLocationPermission();
+  //   //geoLocation();
+  //   console.log(latitude + "스토어 서버에서 인포갖고옴" + longitude);
+  // }, []);
 
-  
+
 
 
   //get other pages
@@ -183,7 +191,7 @@ const RestaurantListView = React.memo(({route}) => {
       <View style={globalStyles.marginTop30}>
         {noDataAvailable ? null : (
           <LongButton
-            title={latitude+'LOAD MORE^^'+longitude}
+            title={latitude + 'LOAD MORE^^' + longitude}
             titleFontSize={18}
             titleFontColor={allColors.black}
             titleFontWeight={'300'}
@@ -229,39 +237,51 @@ const RestaurantListView = React.memo(({route}) => {
       "선택하신 매장이 맞습니까? " + Number(storeid),
       [
         //{ text: '확인', onPress: _gomenu.bind(this) },
-        { text: '확인', onPress: () => _gomenu(storeid,storename) }, // 스토어저장하고 화면이동
+        { text: '확인', onPress: () => _gomenu(storeid, storename) }, // 스토어저장하고 화면이동
         { text: '취소', onPress: () => null },
       ],
       { cancelable: true }
 
     )
   }
-  function _gomenu(storeid,storename) {
+  function _gomenu(storeid, storename) {
     //스토어 아이디 테이블에 저장해야함... db유저테이블에 스토어컬럼 추가해~
-    dispatch(Action.SetCurStoreInfo(storeid,storename)); 
+    dispatch(Action.SetCurStoreInfo(storeid, storename));
     //여기서 데이터카트 아이 초기화 기능 만들어야함
     //navigate("MenuScreen");
     navigate(Routes.SliderSelectedScreen);
   }
-  const renderRestaurantListRows = ({item, index}) => { //console.log("스토어 거리확인 전시 " + JSON.stringify(item));
-  return (
-    <LargeRestaurantInfo
-      key={'large_restaurant_info_' +index}
-      title={item.store_name}
-      //rating={item.rating}
-      store_dist={Number(item.store_dist)}
-      description={item.store_address}
-      deliveryFee={ item.store_tel}
-      onPress={() => saveStore(item.store_id, item.store_name)}
-      imageIconPath={item.store_imageview}
-    />
-  );
-};
+  const renderRestaurantListRows = ({ item, index }) => { 
+  if ((item.store_name).includes(searchstore) || (item.store_address).includes(searchstore)) {
+    return (
+      <LargeRestaurantInfo
+        key={'large_restaurant_info_' + index}
+        title={item.store_name}
+        //rating={item.rating}
+        store_dist={item.store_dist !=null ? Number(item.store_dist) : -1}
+        description={item.store_address}
+        deliveryFee={item.store_tel}
+        onPress={() => saveStore(item.store_id, item.store_name)}
+        imageIconPath={item.store_imageview}
+      />
+    );
+  }
+  };
 
-  const store_list = useSelector(state => state.storeinfo);
+  //const store_list = useSelector(state => state.storeinfo);
 
   return (
     <View style={[globalStyles.flex, globalStyles.justifyCenter]}>
+       <TextInput
+                        placeholder="매장이름을 입력하세요"
+                        label="매장 검색"
+                        labelStyle={{ marginLeft: 0 }}
+                        inputContainerStyle={{ marginRight: 15 }}
+                        containerStyle={{ marginTop: 5 }}
+                        type='text'
+                         onChangeText={(text) => setSearchstore(text)}
+                        value={searchstore}
+                    />
       {restaurantList.length > 0 ? (
         <FlatList
           // Performance settings
@@ -271,7 +291,8 @@ const RestaurantListView = React.memo(({route}) => {
           // windowSize={7} // Reduce the window size
           showsVerticalScrollIndicator={false}
           //data={store_list}
-          data={ store_list.sort((a, b) => (String(Number(a.store_dist / 1000))).localeCompare(String(Number(b.store_dist / 1000)))) }
+          data={Number(start_lat_compare) != 37.532600  ? storedist.sort((a, b) => (String(Number(a.store_dist / 1000))).localeCompare(String(Number(b.store_dist / 1000))))
+                : storeinfo.sort((a, b) => (String(a.store_name)).localeCompare(String(b.store_name)))}
           //data={store_list.sort((a, b) => (String(a.store_name)).localeCompare(String(b.store_name)))}
           // getItemLayout={getRestaurantListItemLayout}
           renderItem={renderRestaurantListRows}
@@ -279,10 +300,10 @@ const RestaurantListView = React.memo(({route}) => {
             globalStyles.horizontalGeneralPadding,
             globalStyles.commonScrollViewPadding,
           ]}
-          ItemSeparatorComponent={SeparatorComponent}
-          ListFooterComponent={LoadMoreButton}
+          //ItemSeparatorComponent={SeparatorComponent}
+          //ListFooterComponent={LoadMoreButton}
           //keyExtractor={(_item, index) => _item.title.split(' ').join('')+index}
-          
+
           keyExtractor={(_item, index) => index.toString()}
         />
       ) : (
@@ -304,7 +325,7 @@ const TabMenuView = React.memo(() => {
 });
 /* --- End Tab Menu --- */
 
-const RestaurantsListing = ({navigation, route}) => {
+const RestaurantsListing = ({ navigation, route }) => {
   const [showMap, setShowMap] = useState(false);
 
   //title right icons definition
@@ -347,16 +368,16 @@ const RestaurantsListing = ({navigation, route}) => {
       <TitleWithSideIcons
         titleFontWeight={'normal'}
         fontSize={20}
-        title={'Restaurants'}
+        title={'매장 찾기'}
         containerTopPadding={17}
         containerBottomPadding={9}
         leftIcon={<Image
-            source={require('../../../assets/placeholders/20x20.png')}
-            style={{
-              height: verticalScale(20),
-              width: horizontalScale(20),
-              borderRadius: 3,
-            }}
+          source={require('../../../assets/placeholders/20x20.png')}
+          style={{
+            height: verticalScale(20),
+            width: horizontalScale(20),
+            borderRadius: 3,
+          }}
         />}
         rightIconComponentsArray={rightIconArray}
         iconOnPress={value => handleRightIconClick(value)}
@@ -373,10 +394,10 @@ const RestaurantsListing = ({navigation, route}) => {
   /* ---- Start map view component ----*/
   const ShowMapView = () => {
     const currentAddress = useSelector(state => state.currentAddress);
-    const storeinfo  = useSelector(state => state.storeinfo);
+    const storeinfo = useSelector(state => state.storeinfo);
     const start_lat = useSelector(state => state.start_lat);//즉각반영 가능하도록
     const start_lon = useSelector(state => state.start_lon);
-    console.log("구글맵은 "+JSON.stringify(storeinfo ));
+    console.log("구글맵은 " + JSON.stringify(storeinfo));
 
     return (
       <View style={[globalStyles.flex, globalStyles.horizontalGeneralPadding]}>
@@ -397,7 +418,7 @@ const RestaurantsListing = ({navigation, route}) => {
               longitude: start_lon,
             },
           ]}
-          storeinfo = {storeinfo}
+          storeinfo={storeinfo}
         />
       </View>
     );
@@ -408,7 +429,7 @@ const RestaurantsListing = ({navigation, route}) => {
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
       {/*------- Header Start -----*/}
       <Header
-        title={showMap ? 'Looking by Map' : 'Restaurants Listing'}
+        title={showMap ? '지도에서 찾기' : '매장 목록'}
         onLeftIconPress={() => navigation.goBack()}
         onRightIconPress={() => navigation.toggleDrawer()}
       />
