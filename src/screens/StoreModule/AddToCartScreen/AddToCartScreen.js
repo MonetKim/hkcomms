@@ -48,7 +48,6 @@ const AddToCartScreen = ({ navigation, route }) => {
   const baseValue = 65.0;
   let menudetail = JSON.parse(JSON.stringify(route.params.menudetail));
   const carttemp = useSelector(state => state.carttemp);
-  console.log("지금 재 초기화 되고잇는건가요 ?"+JSON.stringify(carttemp) )
   const optionitem = useSelector(state => state.optionitem);
   const cartitem = useSelector(state => state.cartitem);
 
@@ -173,17 +172,12 @@ const AddToCartScreen = ({ navigation, route }) => {
       //중복된 카트데이터찾아서 수량만 증가시키기 전시는 useselector로  값을 넘기는건 임시데이터 menudata로하자
     }
     else {
-      console.log(JSON.stringify(carttemp) + "카트탬프  ");
-      console.log("콜백 완료3");
       dispatch(Action.insertCart(carttemp,counterValue)); //수량 반영하려면 await써야하는데 흠 어케하지
     }
-    console.log("콜백 완료4");
     go_cart_screen();
   }
 
   function go_cart_screen() {
-    console.log(JSON.stringify(cartitem) + "카트데이터 보여줘 ");
-    console.log("콜백 완료5");
     Alert.alert(
       "장바구니로 이동 하시겠습니까?",
       ` `,
@@ -212,21 +206,18 @@ const AddToCartScreen = ({ navigation, route }) => {
   }
   function get_price() {
     var sum = Number(carttemp.price);
-    console.log(" 카트탬프는 "+JSON.stringify(carttemp));
     if (carttemp.menu_option_insert != null) {
-      sum = sum + Number(optionitem[Number(carttemp.menu_option_insert) - 1].option_price);// 원래는 함수를 통해서 props.옵션.옵션아이디 == menu option insert 해서갖고와야함
-      console.log(JSON.stringify("1인서트 넘버는 "+carttemp.menu_option_insert));
+      sum = sum + Number(optionitem[Number(carttemp.menu_option_insert) - 1].option_price);
+      // 원래는 함수를 통해서 props.옵션.옵션아이디 == menu option insert 해서갖고와야함
     }
     if (carttemp.taste_option_insert != null) {
       sum = sum + Number(optionitem[Number(carttemp.taste_option_insert) - 1].option_price);
-      console.log(JSON.stringify("2인서트 넘버는 "+carttemp.taste_option_insert));
     }
     if (carttemp.add_option_insert != null) {
       sum = sum + Number(optionitem[Number(carttemp.add_option_insert) - 1].option_price);
       console.log(JSON.stringify("3인서트 넘버는 "+carttemp.add_option_insert));
     }
     sum = sum * counterValue;
-    console.log("썸값은!!  "+sum);
     return sum;
   }
  

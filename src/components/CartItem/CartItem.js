@@ -25,7 +25,7 @@ const CartItem = props => {
   function total() { //데이터카트에 닮긴 옵션가격도 추가해주자. //여기선 각자 해야함...
     var total = 0;
     const cart = props.item;
-    console.log("총가격구하기" + JSON.stringify(cart))
+    //console.log("총가격구하기" + JSON.stringify(cart))
     total = total + ((cart.price
       + findOptionPrice(cart.menu_option_insert)
       + findOptionPrice(cart.taste_option_insert)

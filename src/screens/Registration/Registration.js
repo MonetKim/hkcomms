@@ -43,7 +43,7 @@ const LoginTab = (props) => {
   const dispatch = useDispatch();      
   const [email,setEmail] = useState("");
   const [password, setPassword] = useState('');
-
+  //dispatch(Action.fetchStores());
 
   return (
     <View style={[globalStyles.flex, globalStyles.bgWhite]}>

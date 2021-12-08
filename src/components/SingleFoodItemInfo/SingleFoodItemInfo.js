@@ -12,11 +12,18 @@ import globalStyles from '../../assets/styles/globalStyles';
 import styles from './style';
 import * as images from '../../assets/images/map';
 import {horizontalScale, verticalScale} from '../../utility/Scale';
+import {allColors} from '../../assets/styles/mainColors';
+
 
 const SingleFoodItemInfo = props => {
   return (
+    
     <View style={styles.mainView}>
-      {/* --- Top Right Icon Start --*/}
+      {
+      props.category
+      ?
+      <View>
+         {/* --- Top Right Icon Start --*/}
       <TouchableOpacity
         onPress={() => props.onTopRightIconPress && props.onTopRightIconPress()}
         style={styles.productIcon}>
@@ -103,6 +110,11 @@ const SingleFoodItemInfo = props => {
           </View>
         </View>
       </TouchableOpacity>
+      </View> 
+      :
+      <View ></View> 
+      }
+     
     </View>
   );
 };
@@ -117,6 +129,7 @@ SingleFoodItemInfo.defaultProps = {
   rating: 0,
   title: '',
   topRightIconComponent: null,
+  category: true,
 };
 /*---- Default Props End -------*/
 
@@ -133,6 +146,7 @@ SingleFoodItemInfo.propTypes = {
   rating: PropTypes.number,
   title: PropTypes.string,
   topRightIconComponent: PropTypes.object,
+  category: PropTypes.bool,
 };
 /*---- Prop Type Expectations End -------*/
 export default SingleFoodItemInfo;

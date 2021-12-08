@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
+  PermissionsAndroid,
 } from 'react-native';
 
 //Third Party
@@ -42,6 +43,9 @@ import {allColors} from '../../../assets/styles/mainColors';
 import {FONT_FAMILY} from '../../../constants/constants';
 import {navigate} from '../../../utility/NavigationService';
 import {screenHeight} from '../../../utility/Scale';
+import Geolocation from '@react-native-community/geolocation';
+
+
 
 const actionSheetRef = createRef();
 
@@ -58,6 +62,16 @@ const DiscoverHomeScreen = ({navigation}) => {
     () => dispatch(Action.storeUserAddress(AddressSettingDummyData.data)),
     [dispatch],
   );
+  const fetchStores = useCallback(
+    () => dispatch(Action.fetchStores()),
+    [dispatch],
+  );
+    
+  // const SetCurLocation = useCallback(
+  //   () => dispatch(Action.SetCurLocation()),
+  //   [dispatch],
+  // );
+
   /*---- Get the address option data end -----*/
 
   /*---- Set the address options for location popup start -----*/
@@ -84,10 +98,77 @@ const DiscoverHomeScreen = ({navigation}) => {
   ]);
   /*---- Set the address options for location popup start -----*/
 
+  /*----  주소 설정 -----*/
+
+  async function requestLocationPermission() {
+    //이부분 테스트해봐야함 아이폰일때~~~
+    //dispatch(Action.fetchStores());
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization();
+      Geolocation.setRNConfiguration({
+        skipPermissionRequests: false,
+        authorizationLevel: 'whenInUse',
+      });
+    }
+
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Paranmanjan App',
+          'message': 'Paranmanjan App access to your location '
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {//여기서 기본값으로 세팅하자..
+        console.log("You can use the location     ")
+        alert("You can use the location   " + Platform.OS + ' ' + granted);
+        geoLocation();
+      } else {
+        console.log("location permission denied     ")
+        alert("Locationㄴㄴ permission denied  " + Platform.OS + ' ' + granted);
+        //여기서 기본값으로 세팅하자..
+        //dispatch(Action.SetCurDistance(position.coords));
+      }
+    }
+  }
+
+  const geoLocation = () => {
+    console.log("적어도 시작은 해야지 ");
+    Geolocation.getCurrentPosition(
+      position => {
+        var lat = JSON.stringify(position.coords.latitude);
+        var lon = JSON.stringify(position.coords.longitude);
+        console.log(lon + ' 위경도전시 ' + lat)
+        dispatch(Action.SetCurLocation(position.coords));
+        dispatch(Action.SetCurDistance(position.coords));
+      },
+      error => { console.log(error.code, error.message); },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+    )
+  }
+
+  function store_fetch(abc){
+    abc();
+  }
+  // function testabcd(){
+  //   dispatch(Action.fetchStores());
+  // }
+
+  useEffect(() => {
+    dispatch(Action.fetchStores());
+      //fetchStores();
+      
+       requestLocationPermission();
+  }, []);
+
+
+
   /*---- Update the user address data ----*/
   useEffect(() => {
     storeUserAddressData();
   }, [storeUserAddressData]);
+
+ 
 
   /*----- if only 3 default options are available - see if user should have more options from the addresses saved -----*/
   useEffect(() => {

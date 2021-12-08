@@ -40,7 +40,7 @@ const reducerInitialState = {
   start_lat:  37.532600,
   start_lon: 127.024612,
   storedist: [],
-
+  category_data: [], 
 
   authToken: null,
   userInfo: null,
@@ -102,6 +102,7 @@ const reducerLogoutState = {
   start_lat:  37.532600,
   start_lon: 127.024612,
   storedist: [],
+  category_data: [], 
 
   authToken: null,
   showActivityLoader: false,
@@ -175,11 +176,9 @@ const reducer = (state = reducerInitialState, action) => {
         passChange : action.data,
       }  
     case ActionType.storeAuthToken:
-      //console.log("지금타지는곳?  ")
       return Object.assign({}, state, { authToken: action.data });
 
     case ActionType.loginStatus:
-      //console.log("리듀스 갑변화는?  "+ JSON.stringify(state.isLoggedIn))
       return {
         ...state,
         isLoggedIn: action.payload,
@@ -219,7 +218,7 @@ const reducer = (state = reducerInitialState, action) => {
         err: action.payload,
         loading: false,
       }
-    //---------------------카테고리 바꾸기
+    //---------------------카테고리 바꾸기 , 카테고리별 메뉴데이터 분류
     case ActionType.CHANGE_CATEGORY:
       let newCategory = state.category; //making a new array
       newCategory = action.payload;//changing value in the new array
@@ -227,6 +226,17 @@ const reducer = (state = reducerInitialState, action) => {
         ...state,
         category: Number(newCategory),    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }
+
+      case ActionType.SET_MENU_CATEGORY_DATA:
+      const Array_category_data = JSON.parse(JSON.stringify(state.menudata.filter(i => i.category == action.payload)));
+      //newCategory = action.payload;//changing value in the new array
+      return {
+        ...state,
+        category: Number(action.payload),  
+        category_data: Array_category_data,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
+      }
+
+
     ////////////////////////////////////////////////////////
     case ActionType.onSignup:
       return {
@@ -263,7 +273,6 @@ const reducer = (state = reducerInitialState, action) => {
     case ActionType.SHOW_MENUDETAIL:   //상세메뉴보여주기
       const indexshow = state.menudata.findIndex(menudata => menudata.menu_id == action.payload); //인덱스찾기..
       const newArrayshow = [...state.menudata]; //making a new array
-      console.log("리덕스 카트 임시는 " + JSON.stringify(indexshow))
       return {
         ...state,
         carttemp: newArrayshow[indexshow],    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
@@ -274,7 +283,6 @@ const reducer = (state = reducerInitialState, action) => {
     case ActionType.SET_DATACART:   //임시 카트 아이템
       //const indexDataCart = state.dataMenudetail.findIndex(dataMenudetail => dataMenudetail.menu_id == action.find_menu); //인덱스찾기..
       //const newArrayDataCart = [state.dataMenudetail]; 왜 이건안돼고 밑에것만되는거지?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      console.log("누가먼저 되니1@@");
       const newArrayDataCart = JSON.parse(JSON.stringify(state.carttemp)); //making a new array
       if (action.kind == 1) {
         newArrayDataCart.quantity = action.payload;
@@ -326,7 +334,6 @@ const reducer = (state = reducerInitialState, action) => {
 
     ////////////////////////////////////--카트에 아이템 넣기
     case ActionType.INSERT_CART: //데이터카트 장바구니 요소 추가
-      console.log("누가먼저 되니2##");
       // const newArrayCartItem = JSON.parse(JSON.stringify(state.carttemp));
       // newArrayCartItem.quantity = action.num;
       return {
@@ -348,7 +355,6 @@ const reducer = (state = reducerInitialState, action) => {
     case ActionType.SET_CUR_LOCATION:
       var curlat = Number(action.payload.latitude);
       var curlon = Number(action.payload.longitude);
-      console.log("리덕스 위치 전시하기 "+JSON.stringify(action.payload) );
       return {
           ...state,
           start_lat: curlat,
@@ -359,14 +365,18 @@ const reducer = (state = reducerInitialState, action) => {
 ////////////////////////////////////--스토어에서 현재위치 거리 계산
   case ActionType.SET_GET_DISTANCE:
     //const index = state.dataFood.findIndex(dataFood => dataFood.menu_id == action.payload); //인덱스찾기..
-    const newArray = [...state.storeinfo]; //making a new array
+    //const newArray = [...state.storeinfo]; //making a new array
+
+    const newArray = JSON.parse(JSON.stringify(state.storeinfo));//making a new array
+    
     //newArray[index].iscart = true;//changing value in the new array
     //newArray[index].quantity = newArray[index].quantity + 1;  //수량증가
+
     for (var i = 0; i < newArray.length; i++) {
 
 
         let a = { latitude: Number(newArray[i].store_lat), longitude: Number(newArray[i].store_lon) }
-        let b = { latitude: Number(action.payload.latitude), longitude: Number(action.payload.longitude) }
+        let b = { latitude: Number(state.start_lat), longitude: Number(state.start_lon) }
 
 
         newArray[i].store_dist = haversine(a, b).toFixed(2);
@@ -385,9 +395,8 @@ case ActionType.DELETE_CARTITEM:
         (cartitem.taste_option_insert == action.paytaste) && (cartitem.add_option_insert == action.payadd)); //인덱스찾기..
       const newArraydec = [...state.cartitem]; //making a new array
       //newArraydec[indexdec].quantity = newArraydec[indexdec].quantity - 1;//changing value in the new array
-    console.log("리덕스에서 카트아이템 메뉴아이디 검색되어진거 찾기 " + JSON.stringify(newArraydec));
       //if (newArraydec[indexdec].quantity == 0) {
-        newArraydec.splice(indexdec, 1);
+        newArraydec.splice(indexdec, 1); // 제이슨 파스로 할지 정하자
         //console.log(" 삭제 0일때 " + JSON.stringify(newArraydec.splice(indexdec)) )
       //}
 
@@ -395,6 +404,15 @@ case ActionType.DELETE_CARTITEM:
         ...state,
         cartitem: newArraydec,    //state.dataCart.push(action.payload) // 카트로 값 넘겨주기
       }
+
+      case ActionType.REMOVE_ALL_CART: //데이터카트 장바구니 모두 비우기
+      const newArraycart = [];
+      return {
+        ...state,
+        cartitem: newArraycart,
+      }
+
+
 //////////////////////////////////////
 
 
