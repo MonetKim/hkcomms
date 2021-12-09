@@ -160,6 +160,9 @@ const DiscoverHomeScreen = ({navigation}) => {
       
        requestLocationPermission();
   }, []);
+  useEffect(() => {
+    dispatch(Action.fetchGetmenu());
+  }, []);
 
 
 

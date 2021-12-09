@@ -193,16 +193,17 @@ const ListingView = () => {
   const dispatch = useDispatch();
 
   //매뉴 아이템 갖고오기 이부분 이전에 갖고오는걸로하자.
+
   useEffect(() => {
-    dispatch(Action.fetchGetmenu());
+    dispatch(Action.SetCategoryData(1));
   }, []);
   useEffect(() => {
     dispatch(Action.fetchGetOption());
   }, []);
 
   const isLoggedIn = useSelector(state => state.isLoggedIn);
-  const menudata = useSelector(state => state.menudata);
-  const category_data = useSelector(state => state.category_data);
+  //const menudata = useSelector(state => state.menudata);
+  const category_data = useSelector(state => state.category_data,[category_data]);
   const category = useSelector(state => state.category, [category]);
 
 
