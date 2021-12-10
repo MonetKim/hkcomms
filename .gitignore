@@ -1,2 +1,10 @@
-node_modules/*
-android/*
+node_modules/
+.gradle/
+build/
+android/
+*.lock
+
+# macOS
+.DS_Store
+
+오후 4:33 2021-12-10
