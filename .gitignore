@@ -3,6 +3,8 @@ node_modules/
 build/
 android/
 *.flat
+*.bin
+*.lock
 
 # macOS
 .DS_Store
