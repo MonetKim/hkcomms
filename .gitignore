@@ -1,7 +1,9 @@
 node_modules/
 .gradle/
 build/
-android/.
+android/
+*.flat
+
 # macOS
 .DS_Store
 
