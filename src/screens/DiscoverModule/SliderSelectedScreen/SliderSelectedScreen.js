@@ -353,7 +353,7 @@ const SliderSelectedScreen = ({navigation, route}) => {
 else{
   return (
     <SafeAreaView style={[globalStyles.bgWhite, globalStyles.flex]}>
-      {/*---- Title with top icon view Start (see definition above) ss----*/}
+      {/*---- Title with top icon view Start (see definition above) ----*/}
       <TitleWithTopIconView
         //topTitle={route.params.topTitle}
         topTitle={'MENU'}
